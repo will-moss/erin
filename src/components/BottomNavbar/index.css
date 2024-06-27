@@ -1,0 +1,35 @@
+.bottom-navbar {
+  position: sticky;
+  background-color: #161616;
+  bottom: 0;
+  width: 100%;
+  height: 56px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 100;
+}
+
+.bottom-navbar .nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  justify-content: center;
+  background: transparent;
+  outline: 0;
+  border: 0;
+}
+
+.bottom-navbar .icon {
+  font-size: 18px;
+  color: #d4d3d3;
+  width: 24px;
+  height: 24px;
+}
+
+.bottom-navbar .item-name {
+  color: #d4d3d3;
+  font-size: 10px;
+  margin-top: 4px;
+}

@@ -1,0 +1,40 @@
+version: '3'
+services:
+  erin:
+    image: mosswill/erin:latest
+    networks:
+      - global
+    expose:
+      - 80
+    volumes:
+      - ./videos:/srv/videos
+    environment:
+      PUBLIC_URL: "http://your-domain.tld"
+      AUTH_SECRET: "<YOUR-HASH>"
+
+      VIRTUAL_HOST: "your-domain.tld"
+      VIRTUAL_PORT: "80"
+
+      # Depending on your setup, you may also need
+      # CERT_NAME: "default"
+      # Or even
+      # LETSENCRYPT_HOST: "your-domain.tld"
+      #
+      # Note that, in this example, your app will, indeed, be accessible over HTTPS
+      # in spite of PUBLIC_URL using HTTP. This is to prevent Caddy from generating a
+      # certificate, assuming that our proxy takes care of that already.
+
+  proxy:
+    image: jwilder/nginx-proxy
+    networks:
+      - global
+    ports:
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+
+networks:
+  # Assumption made : network "global" is created beforehand
+  # with            : docker network create global
+  global:
+    external: true
