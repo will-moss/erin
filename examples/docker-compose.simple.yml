@@ -1,0 +1,11 @@
+version: '3'
+services:
+  erin:
+    image: mosswill/erin:latest
+    ports:
+      - "443:443"
+    volumes:
+      - ./videos:/srv/videos
+    environment:
+      PUBLIC_URL: "https://localhost"
+      AUTH_SECRET: "<YOUR-HASH>"

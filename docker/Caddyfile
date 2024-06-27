@@ -1,0 +1,86 @@
+# Module Replace-Response
+{
+	order replace after encode
+}
+
+# Snippets
+(redirect-on-404) {
+	redir /* / permanent
+}
+(disable-auth-prompt) {
+  header {
+    -Www-Authenticate
+  }
+}
+
+# Server configuration
+{$PUBLIC_URL} {
+  vars auth_enabled {$AUTH_ENABLED}
+
+	# File server
+	handle_path /media/* {
+		root /srv/videos/
+		file_server browse
+
+		# CORS
+		@cors_preflight method OPTIONS
+
+		# CORS - General & Preflight
+		header {
+			Access-Control-Allow-Origin "{header.origin}"
+			Access-Control-Expose-Headers "Authorization"
+			Access-Control-Allow-Credentials "true"
+			Access-Control-Allow-Request-Headers "Authorization"
+			Vary Origin
+		}
+
+		# CORS - Preflight
+		handle @cors_preflight {
+			header {
+				Access-Control-Allow-Methods "GET, POST, PUT, PATCH, DELETE"
+				Access-Control-Allow-Headers "Authorization"
+				Access-Control-Allow-Credentials "true"
+				Access-Control-Max-Age "3600"
+			}
+			respond "" 204
+		}
+
+		# Authentication
+		@auth_active expression {method} == "GET" && {vars.auth_enabled} == true && !query({'hash': '{$AUTH_SECRET}'})
+    handle @auth_active {
+      basic_auth {
+        Erin {$AUTH_SECRET}
+      }
+      respond "{ \"hash\": \"{$AUTH_SECRET}\" }"
+    }
+	}
+
+	# React App
+	@react-assets path *.js *.css *.ico *.json *.webmanifest *.jpg *.png
+	handle @react-assets {
+		root * /srv/
+		file_server
+		try_files {path} =404
+	}
+	@react-root path /
+	handle @react-root {
+		root * /srv/
+		file_server
+		try_files /index.html
+
+    # React variables
+    replace __PUBLIC_URL__ {$PUBLIC_URL}
+    replace __USE_SECRET__ {$AUTH_ENABLED}
+	}
+
+	# 404 Redirect
+	handle /* {
+		import redirect-on-404
+	}
+	handle_errors 404 {
+		import redirect-on-404
+	}
+  handle_errors 401 {
+    import disable-auth-prompt
+  }
+}

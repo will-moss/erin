@@ -1,0 +1,171 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-snap-type: y mandatory;
+  font-family: "Inter", sans-serif;
+}
+
+body {
+  background-color: #000;
+}
+
+.screen {
+  height: 100vh;
+  background-color: #000;
+  display: grid;
+  place-items: center;
+}
+
+.container {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  overflow: scroll;
+  scroll-snap-type: y mandatory;
+}
+
+.container::-webkit-scrollbar {
+  display: none;
+}
+
+.container {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.login-state,
+.empty-state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+}
+
+.empty-state {
+  padding: 0 12px;
+}
+
+.login-state h1,
+.empty-state h1 {
+  text-align: center;
+  color: white;
+  font-family: "Inter", sans-serif;
+  font-size: 26px;
+  margin-top: 24px;
+  font-weight: 800;
+}
+
+.login-state p,
+.empty-state p {
+  margin-top: 16px;
+  text-align: center;
+  color: white;
+  font-family: "Inter", sans-serif;
+}
+
+.login-state form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 0 12px;
+  margin-top: 96px;
+}
+
+.login-state form .form-error {
+  color: red;
+  margin-top: 12px;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.login-state .icon-wrapper,
+.empty-state .icon-wrapper {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-state .icon-wrapper img,
+.empty-state .icon-wrapper img {
+  width: 100%;
+  height: 100%;
+}
+
+.login-state label {
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  color: white;
+  font-weight: 500;
+}
+
+.login-state input {
+  width: 100%;
+  border-radius: 6px;
+  height: 52px;
+  padding: 0 12px;
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  margin-top: 6px;
+}
+
+.login-state button,
+.empty-state button {
+  margin-top: 12px;
+  width: 100%;
+  font-size: 14px;
+  height: 52px;
+  border-radius: 6px;
+  outline: 0;
+  border: 0;
+  font-weight: 700;
+  font-family: "Inter", sans-serif;
+  background-color: blue;
+  color: white;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: border-color 0.3s;
+  border: 1px solid blue;
+}
+.login-state button:hover,
+.empty-state button:hover {
+  border-color: white;
+}
+.loading-state {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.loading-state svg {
+  animation: spin 1s infinite linear;
+  width: 96px;
+  height: 96px;
+  color: blue;
+  background-color: white;
+  border-radius: 50%;
+  overflow: hidden;
+}
