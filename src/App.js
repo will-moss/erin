@@ -218,7 +218,7 @@ const App = () => {
                 {window.USE_SECRET && (
                   <div className="login-state">
                     <div className="icon-wrapper">
-                      <img src={`${window.PUBLIC_URL}/logo.png`} alt="Erin logo" />
+                      <img src={`/logo.png`} alt="Erin logo" />
                     </div>
                     <h1>Welcome to Erin</h1>
                     <p>Let's connect and watch a few clips</p>
@@ -243,7 +243,7 @@ const App = () => {
             {hasReachedRemoteServer && videos.length === 0 && (
               <div className="empty-state">
                 <div className="icon-wrapper">
-                  <img src={`${window.PUBLIC_URL}/logo.png`} alt="Erin logo" />
+                  <img src={`/logo.png`} alt="Erin logo" />
                 </div>
                 <h1>Nothing to watch</h1>
                 <p>No video was found on your remote server</p>
