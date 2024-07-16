@@ -56,6 +56,9 @@ docker run -d --env-file .env -p <YOUR-PORT-MAPPING> -v ./videos:/srv/videos mos
 
 > **Note :** A `sample.env` file is located at the root of the repository to help you get started
 
+> **Note :** When using `docker run --env-file`, make sure to remove the quotes around `AUTH_ENABLED` and `AUTH_SECRET`, or else
+your container might crash due to unexpected interpolation and type conversions operated by Docker behind the scenes.
+
 ### Deploy with Docker Compose
 
 To help you get started quickly, a few example `docker-compose` files are located in the ["examples/"](examples) directory.
