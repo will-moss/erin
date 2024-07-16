@@ -16,3 +16,6 @@ yarn-error.log*
 scripts/_*.sh
 .prettierrc
 tmp
+dev
+*.dev.*
+.warn
