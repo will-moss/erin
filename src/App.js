@@ -1,5 +1,5 @@
 // Dependencies
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useEffect, useState, useRef, useCallback, useMemo } from "react";
 
 // Components
 import VideoCard from "./components/VideoCard";
@@ -76,10 +76,12 @@ const App = () => {
   const _isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
   const _toAuthenticatedUrl = (url) => `${url}?hash=${secureHash}`;
-  const _veryFirsPageTitle = document.title;
-  const _updatePageTitle = (video) => {
-    if (!_veryFirsPageTitle.includes("[VIDEO_TITLE]")) return;
-    document.title = _veryFirsPageTitle.replace("[VIDEO_TITLE]", video.title);
+  const _veryFirsPageTitle = useMemo(() => document.title, []);
+  const _updatePageTitle = (video = null) => {
+    if (video) {
+      if (!_veryFirsPageTitle.includes("[VIDEO_TITLE]")) document.title = _veryFirsPageTitle;
+      else document.title = _veryFirsPageTitle.replace("[VIDEO_TITLE]", video.title);
+    } else if (window.USE_SECRET) document.title = "Erin - Authentication";
   };
 
   // Method - Test connectivity with the remote server
@@ -176,6 +178,8 @@ const App = () => {
 
   // Hook - On mount - Retrieve the locally-stored secret
   useEffect(() => {
+    _updatePageTitle();
+
     if (!window.USE_SECRET) {
       setAutoconnect(true);
       return;
