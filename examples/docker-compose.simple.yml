@@ -5,7 +5,7 @@ services:
     ports:
       - "443:443"
     volumes:
-      - ./videos:/srv/videos
+      - ./videos:/srv/videos:ro
     environment:
       PUBLIC_URL: "https://localhost"
       AUTH_SECRET: "<YOUR-HASH>"

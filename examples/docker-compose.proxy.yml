@@ -7,7 +7,7 @@ services:
     expose:
       - 80
     volumes:
-      - ./videos:/srv/videos
+      - ./videos:/srv/videos:ro
     environment:
       PUBLIC_URL: "http://your-domain.tld"
       AUTH_SECRET: "<YOUR-HASH>"

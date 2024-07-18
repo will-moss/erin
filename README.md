@@ -48,10 +48,10 @@ touch .env
 # Edit .env file ...
 
 # Option 1 : Run Erin attached to the terminal (useful for debugging)
-docker run --env-file .env -p <YOUR-PORT-MAPPING> -v ./videos:/srv/videos mosswill/erin
+docker run --env-file .env -p <YOUR-PORT-MAPPING> -v ./videos:/srv/videos:ro mosswill/erin
 
 # Option 2 : Run Erin as a daemon
-docker run -d --env-file .env -p <YOUR-PORT-MAPPING> -v ./videos:/srv/videos mosswill/erin
+docker run -d --env-file .env -p <YOUR-PORT-MAPPING> -v ./videos:/srv/videos:ro mosswill/erin
 ```
 
 > **Note :** A `sample.env` file is located at the root of the repository to help you get started
