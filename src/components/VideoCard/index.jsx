@@ -1,25 +1,13 @@
 // Dependencies
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef } from "react";
 
 // Assets
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFilm } from '@fortawesome/free-solid-svg-icons';
-import './index.css';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFilm } from "@fortawesome/free-solid-svg-icons";
+import "./index.css";
 
-const VideoCard = ({
-  index,
-  url,
-  title,
-  autoplay,
-  isLoaded,
-  isMuted,
-  refForwarder,
-}) => {
+const VideoCard = ({ index, url, title, isLoaded, isMuted, refForwarder }) => {
   const videoRef = useRef(null);
-
-  useEffect(() => {
-    if (autoplay) videoRef.current.play();
-  }, [autoplay]);
 
   // Toggle play/pause on click
   const togglePause = () => {
@@ -47,7 +35,7 @@ const VideoCard = ({
             <div className="footer-left">
               <div className="text">
                 <div className="ticker">
-                  <FontAwesomeIcon icon={faFilm} style={{ width: '30px' }} />
+                  <FontAwesomeIcon icon={faFilm} style={{ width: "30px" }} />
                   <span>{title}</span>
                 </div>
               </div>
