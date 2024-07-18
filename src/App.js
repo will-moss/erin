@@ -1,5 +1,5 @@
 // Dependencies
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 
 // Components
 import VideoCard from "./components/VideoCard";
@@ -181,27 +181,30 @@ const App = () => {
 
     // Listener called when scroll is performed
     const handleIntersection = (entries) => {
-      let visibleIndex = false;
+      // Trick to always retrieve fresh state, rather than closure-scoped one
+      setVisibleIndexes((_visibleIndexes) => {
+        let visibleIndex = false;
 
-      entries.forEach((entry) => {
-        const videoElement = entry.target;
-        const currentIndex = parseInt(videoElement.getAttribute("data-index"));
+        entries.forEach((entry) => {
+          const videoElement = entry.target;
+          const currentIndex = parseInt(videoElement.getAttribute("data-index"));
 
-        // Case when a video is scroll-snapped and occupies the screen
-        if (entry.isIntersecting) {
-          visibleIndex = currentIndex;
-          videoElement.play();
-        }
-        // Case when a video is off-screen or being scrolled in / out of the screen
-        else {
-          if (!visibleIndexes.includes(currentIndex)) return;
-          videoElement.pause();
-        }
+          // Case when a video is scroll-snapped and occupies the screen
+          if (entry.isIntersecting) {
+            visibleIndex = currentIndex;
+            videoElement.play();
+          }
+          // Case when a video is off-screen or being scrolled in / out of the screen
+          else {
+            if (!_visibleIndexes.includes(currentIndex)) return;
+            videoElement.pause();
+          }
+        });
+
+        if (visibleIndex === false) return _visibleIndexes;
+
+        return [visibleIndex - 1, visibleIndex, visibleIndex + 1];
       });
-
-      if (visibleIndex === false) return;
-
-      setVisibleIndexes([visibleIndex - 1, visibleIndex, visibleIndex + 1]);
     };
 
     // Set up the observer
