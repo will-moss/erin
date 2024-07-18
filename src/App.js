@@ -32,6 +32,22 @@ const App = () => {
   const [muted, setMuted] = useState(true);
   const toggleMute = () => setMuted(!muted);
 
+  // Video control - Download the current video
+  const download = () => {
+    const url = videos[0].url;
+
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = url.split("/").pop();
+    anchor.target = "_blank";
+
+    document.body.appendChild(anchor);
+
+    anchor.click();
+
+    document.body.removeChild(anchor);
+  };
+
   // Member - Saves a ref to every video element on the page
   const videoRefs = useRef([]);
   const saveVideoRef = (index) => (ref) => {
