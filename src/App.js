@@ -262,13 +262,17 @@ const App = () => {
                     index={index}
                     title={video.title}
                     url={video.url}
-                    autoplay={index === 0}
                     isLoaded={visibleIndexes.includes(index)}
                     isMuted={muted}
                     refForwarder={saveVideoRef(index)}
                   />
                 ))}
-                <BottomNavbar className="bottom-navbar" onToggleMute={toggleMute} isMuted={muted} />
+                <BottomNavbar
+                  className="bottom-navbar"
+                  onDownload={download}
+                  onToggleMute={toggleMute}
+                  isMuted={muted}
+                />
               </>
             )}
           </>
