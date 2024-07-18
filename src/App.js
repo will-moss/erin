@@ -108,44 +108,68 @@ const App = () => {
       });
   };
 
-  // Method - Retrieve all the video links
-  const retrieveVideos = () => {
-    setLoading(true);
-
-    fetch(_toAuthenticatedUrl(`${window.PUBLIC_URL}/media/`), {
+  // Method - Recursive video retrieval
+  const _retrieveVideosRecursively = (path = "") => {
+    return fetch(_toAuthenticatedUrl(`${window.PUBLIC_URL}/media/${path}`), {
       method: "GET",
       cache: "no-cache",
       headers: _makeHTTPHeaders(),
     })
       .then((r) => r.json())
-      .then((files) => {
-        if (!files) return setLoading(false);
+      .then(
+        (files) =>
+          new Promise((res, rej) => {
+            if (!files) return res([]);
 
-        // Store the videos' metadata in the state
-        setVideos(
-          files
-            .filter((f) => _isVideo(f))
-            .map((v) => ({
-              url: _toAuthenticatedUrl(`${window.PUBLIC_URL}/media/${v.url.substr(2)}`),
-              title: v.name
-                .replaceAll("-", " ")
-                .replaceAll("__", " - ")
-                .split(".")
-                .slice(0, -1)
-                .join(""),
-            }))
-            .sort((a, b) => 0.5 - Math.random())
-        );
+            const _folders = files.filter((f) => f.is_dir);
+            const _files = files
+              .filter((f) => !f.is_dir)
+              .map((f) => ({ ...f, url: `${path}${f.url.slice(2)}` }));
 
-        // Load the first two videos
-        setVisibleIndexes([0, 1]);
-
-        setLoading(false);
-      });
+            const promises = _folders.map((f) => _retrieveVideosRecursively(`${path}${f.name}`));
+            Promise.all(promises).then((results) => {
+              res([...results.flat(), ..._files]);
+            });
+          })
+      );
   };
 
-  // Hook - On mount - Retrieve the locally-stored secret
+  // Method - Retrieve all the video links
+  const retrieveVideos = () => {
+    setLoading(true);
+
+    _retrieveVideosRecursively().then((files) => {
+      if (!files) setLoading(false);
+
+      setVideos(
+        files
+          .filter((f) => _isVideo(f))
+          .map((v) => ({
+            url: _toAuthenticatedUrl(`${window.PUBLIC_URL}/media/${v.url}`),
+            title: v.name
+              .replaceAll("-", " ")
+              .replaceAll("__", " - ")
+              .split(".")
+              .slice(0, -1)
+              .join(""),
+          }))
+          .sort((a, b) => 0.5 - Math.random())
+      );
+      // localStorage.setItem('erin_videos', )
+
+      // Load the first two videos
+      setVisibleIndexes([0, 1]);
+
+      setLoading(false);
+    });
+  };
+
+  // Hook - On mount - Retrieve the locally-stored secret and videos
   useEffect(() => {
+    const storedVideos = localStorage.getItem("erin_videos");
+
+    if (storedVideos) setVideos(JSON.parse(storedVideos));
+
     if (!window.USE_SECRET) {
       setAutoconnect(true);
       return;
