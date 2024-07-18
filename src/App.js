@@ -167,7 +167,7 @@ const App = () => {
 
   // Hook - When the secure hash was retrieved ( = remote server reached and authenticated )
   useEffect(() => {
-    if (!window.USE_SECRET || secureHash) retrieveVideos();
+    if (hasReachedRemoteServer) retrieveVideos();
   }, [secureHash, hasReachedRemoteServer]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Hook - When videos are loaded - Set up the UI scroll observer
