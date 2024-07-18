@@ -19,14 +19,9 @@ module.exports = {
       "@codedependant/semantic-release-docker",
       {
         dockerTags: ["latest", "{{version}}", "{{major}}-latest", "{{major}}.{{minor}}"],
-        dockerImage: "erin",
+        dockerImage: "mosswill/erin",
         dockerFile: "Dockerfile",
-        dockerProject: "codedependant",
         dockerPlatform: ["linux/amd64", "linux/arm64", "linux/arm/v7"],
-        dockerBuildFlags: {
-          pull: null,
-          target: "release"
-        },
         dockerArgs: {
           RELEASE_DATE: new Date().toISOString(),
         }
