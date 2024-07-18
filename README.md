@@ -21,7 +21,7 @@ Erin has all these features implemented :
 - Automatic clip-naming based on file name
 - Simple and optional security using a master password
 - Support for HTTP and HTTPS
-- Support for standalone / proxy deployment
+- Support for Docker / proxy deployment
 
 On top of these, please note that Erin is only a React app powered entirely by [Caddy](https://github.com/caddyserver/caddy).
 Caddy takes care of authentication, serving static files, and serving the React app all at once.
@@ -80,23 +80,6 @@ docker-compose up -d
 # Show the logs written by Erin (useful for debugging)
 docker logs <NAME-OF-YOUR-CONTAINER>
 ```
-
-### Deploy as a standalone application
-
-Better documentation in progress, along with an installation script.
-
-For interested readers, here's an outline :
-- Make sure you have Node and Caddy installed on your machine
-- Clone the repository, and `cd` to it
-- Run `npm install` to install React dependenceies
-- Run `npm build` to build the React App
-- Copy `/docker/Caddyfile` at the root of the project
-- Run `mkdir videos` and put your video files here
-- Tweak your new Caddyfile to serve the newly-created `build` directory (replace `/srv` occurrences)
-- Tweak your new Caddyfile to serve the newly-created `videos` directory (replace `/srv` occurrences)
-- Create and configure a `.env` file at the root of the project
-- Run `caddy run --envfile .env`
-- Everything should work now, but read Caddy's logs and their documentation if you have issues
 
 ## Configuration
 
@@ -200,6 +183,21 @@ Supported extensions are : `.webm`, `.mp4`, and `.ogg`.
 However, please note that Safari doesn't seem to support `.ogg`, hence these videos will be ignored for Safari users.
 
 Should you have any advice or idea to support more extensions (especially for Safari users), please feel free to open an issue.
+
+#### My custom password doesn't work
+
+There seems to be a few caveats when using Docker / Docker Compose with Caddy-generated password hashes.
+
+These are the rules you should follow :
+- If you deployed Erin using the Docker CLI, via the command `docker run ... --env-file .env ...`, then your `AUTH_SECRET` should have no quote at all, and all the dollar signs should stay as they are without escape or doubling
+- If you deployed Erin using Docker Compose, via a `docker-compose.yml` file, then your `AUTH_SECRET` should have its dollar signs doubled. Example : `i$am$groot` becomes `i$$am$$groot`.
+
+That said, remember that your password hash must be generated with the following command :
+
+```sh
+docker run caddy caddy hash-password --plaintext "your-new-password"
+```
+
 
 #### Something else
 
