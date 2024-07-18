@@ -74,6 +74,11 @@ const App = () => {
   const _isVideo = (file) =>
     ["mp4", "ogg", "webm"].includes(file.name.toLowerCase().split(".").at(-1));
   const _toAuthenticatedUrl = (url) => `${url}?hash=${secureHash}`;
+  const _veryFirsPageTitle = document.title;
+  const _updatePageTitle = (video) => {
+    if (!_veryFirsPageTitle.includes("[VIDEO_TITLE]")) return;
+    document.title = _veryFirsPageTitle.replace("[VIDEO_TITLE]", video.title);
+  };
 
   // Method - Test connectivity with the remote server
   const attemptToReachRemoteServer = (evt) => {
@@ -215,6 +220,7 @@ const App = () => {
           if (entry.isIntersecting) {
             visibleIndex = currentIndex;
             videoElement.play();
+            _updatePageTitle(videos[currentIndex]);
           }
           // Case when a video is off-screen or being scrolled in / out of the screen
           else {
