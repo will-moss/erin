@@ -1,9 +1,9 @@
 // Dependencies
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 
 // Assets
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilm } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./index.css";
 
 const VideoCard = ({ index, url, title, isLoaded, isMuted, refForwarder }) => {
