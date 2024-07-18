@@ -73,6 +73,8 @@ const App = () => {
   };
   const _isVideo = (file) =>
     ["mp4", "ogg", "webm"].includes(file.name.toLowerCase().split(".").at(-1));
+  const _isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+
   const _toAuthenticatedUrl = (url) => `${url}?hash=${secureHash}`;
   const _veryFirsPageTitle = document.title;
   const _updatePageTitle = (video) => {
@@ -146,7 +148,7 @@ const App = () => {
     _retrieveVideosRecursively().then((files) => {
       if (!files) setLoading(false);
 
-      const _videoFiles = files
+      let _videoFiles = files
         .filter((f) => _isVideo(f))
         .map((v) => ({
           url: _toAuthenticatedUrl(`${window.PUBLIC_URL}/media/${v.url}`),
@@ -156,8 +158,12 @@ const App = () => {
             .split(".")
             .slice(0, -1)
             .join(""),
+          extension: v.url.split(".").at(-1).toLowerCase(),
         }))
         .sort((a, b) => 0.5 - Math.random());
+
+      // Fix for Safari : .ogg files are not supported
+      if (_isSafari) _videoFiles = _videoFiles.filter((f) => f.extension !== "ogg");
 
       setVideos(_videoFiles);
 
