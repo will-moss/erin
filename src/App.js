@@ -141,21 +141,20 @@ const App = () => {
     _retrieveVideosRecursively().then((files) => {
       if (!files) setLoading(false);
 
-      setVideos(
-        files
-          .filter((f) => _isVideo(f))
-          .map((v) => ({
-            url: _toAuthenticatedUrl(`${window.PUBLIC_URL}/media/${v.url}`),
-            title: v.name
-              .replaceAll("-", " ")
-              .replaceAll("__", " - ")
-              .split(".")
-              .slice(0, -1)
-              .join(""),
-          }))
-          .sort((a, b) => 0.5 - Math.random())
-      );
-      // localStorage.setItem('erin_videos', )
+      const _videoFiles = files
+        .filter((f) => _isVideo(f))
+        .map((v) => ({
+          url: _toAuthenticatedUrl(`${window.PUBLIC_URL}/media/${v.url}`),
+          title: v.name
+            .replaceAll("-", " ")
+            .replaceAll("__", " - ")
+            .split(".")
+            .slice(0, -1)
+            .join(""),
+        }))
+        .sort((a, b) => 0.5 - Math.random());
+
+      setVideos(_videoFiles);
 
       // Load the first two videos
       setVisibleIndexes([0, 1]);
@@ -164,12 +163,8 @@ const App = () => {
     });
   };
 
-  // Hook - On mount - Retrieve the locally-stored secret and videos
+  // Hook - On mount - Retrieve the locally-stored secret
   useEffect(() => {
-    const storedVideos = localStorage.getItem("erin_videos");
-
-    if (storedVideos) setVideos(JSON.parse(storedVideos));
-
     if (!window.USE_SECRET) {
       setAutoconnect(true);
       return;
@@ -186,12 +181,15 @@ const App = () => {
   // Hook - When locally-stored secret was retrieved - Auto-connect to the remote server
   useEffect(() => {
     if (!autoconnect) return;
+
     attemptToReachRemoteServer();
   }, [autoconnect]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Hook - When the secure hash was retrieved ( = remote server reached and authenticated )
+  // Hook - When the remote server was reached and the user was authenticated - Retrieve the videos
   useEffect(() => {
-    if (hasReachedRemoteServer) retrieveVideos();
+    if (!hasReachedRemoteServer) return;
+
+    retrieveVideos();
   }, [secureHash, hasReachedRemoteServer]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Hook - When videos are loaded - Set up the UI scroll observer
