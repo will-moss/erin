@@ -1,5 +1,5 @@
 .bottom-navbar {
-  position: sticky;
+  position: fixed;
   background-color: #161616;
   bottom: 0;
   width: 100%;
