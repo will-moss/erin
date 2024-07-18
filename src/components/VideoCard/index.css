@@ -3,7 +3,6 @@
   flex-direction: column;
   margin-bottom: 60px;
   width: 100%;
-  padding-bottom: 2px;
   padding-left: 1px;
 }
 
@@ -23,21 +22,21 @@
 }
 
 .ticker {
-  height: fit-content;
   width: 100%;
   display: flex;
-  align-items: center;
+  height: 22px;
   flex-shrink: 1;
 }
 
 .footer-left span {
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 400;
   color: #fff;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
   max-width: 90%;
+  height: 100%;
 }
 
 .video {
