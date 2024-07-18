@@ -1,6 +1,6 @@
 {
   "name": "erin",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
@@ -15,6 +15,7 @@
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/exec": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
+    "@codedependant/semantic-release-docker": "^5.0.3",
     "cz-conventional-changelog": "^3.3.0"
   },
   "config": {
