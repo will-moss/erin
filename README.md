@@ -191,6 +191,16 @@ Erin randomly shuffles your video files on every browser refresh.
 
 As a result, there is no specific order for your videos to appear.
 
+#### Some of my videos seem to be missing or not loaded at all
+
+For now, Erin will only attempt to retrieve the videos that have a supported extension.
+
+Supported extensions are : `.webm`, `.mp4`, and `.ogg`.
+
+However, please note that Safari doesn't seem to support `.ogg`, hence these videos will be ignored for Safari users.
+
+Should you have any advice or idea to support more extensions (especially for Safari users), please feel free to open an issue.
+
 #### Something else
 
 Please feel free to open an issue, explaining what happens, and describing your environment.
