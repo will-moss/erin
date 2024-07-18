@@ -28,6 +28,7 @@ const VideoCard = ({ index, url, title, isLoaded, isMuted, refForwarder }) => {
         onClick={togglePause}
         muted={isMuted}
         loop
+        playsInline
       />
       <div className="bottom-controls">
         <div className="footer-left">
