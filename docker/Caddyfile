@@ -71,7 +71,7 @@
     # React variables
     replace __PUBLIC_URL__ {$PUBLIC_URL}
     replace __USE_SECRET__ {$AUTH_ENABLED}
-    replace __APP_TITLE__  {$APP_TITLE}
+    replace __APP_TITLE__  "{$APP_TITLE}"
 	}
 
 	# 404 Redirect
