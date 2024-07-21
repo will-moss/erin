@@ -26,6 +26,7 @@ module.exports = {
           RELEASE_DATE: new Date().toISOString(),
         }
       }
-    ]
+    ],
+    "@semantic-release/github"
   ]
 };
