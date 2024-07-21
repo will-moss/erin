@@ -12,10 +12,11 @@
     "react-scripts": "5.0.1"
   },
   "devDependencies": {
+    "@codedependant/semantic-release-docker": "^5.0.3",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/exec": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
-    "@codedependant/semantic-release-docker": "^5.0.3",
+    "@semantic-release/github": "^10.1.1",
     "cz-conventional-changelog": "^3.3.0"
   },
   "config": {
