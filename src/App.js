@@ -34,7 +34,7 @@ const App = () => {
 
   // Video control - Download the current video
   const download = () => {
-    const url = videos[0].url;
+    const url = videos[visibleIndexes.length === 2 ? visibleIndexes[0] : visibleIndexes[1]].url;
 
     const anchor = document.createElement("a");
     anchor.href = url;
