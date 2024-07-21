@@ -38,7 +38,7 @@ const App = () => {
 
     const anchor = document.createElement("a");
     anchor.href = url;
-    anchor.download = url.split("/").pop();
+    anchor.download = url.split("?")[0].split("/").pop();
     anchor.target = "_blank";
 
     document.body.appendChild(anchor);
