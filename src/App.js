@@ -178,6 +178,12 @@ const App = () => {
 
   // Hook - On mount - Retrieve the locally-stored secret
   useEffect(() => {
+    window.onload = () => {
+      setTimeout(() => {
+        window.scrollTo(0, 1);
+      }, 0);
+    };
+
     _updatePageTitle();
 
     if (!window.USE_SECRET) {
