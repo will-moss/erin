@@ -110,7 +110,7 @@ body {
 
 .login-state label {
   font-family: "Inter", sans-serif;
-  font-size: 14px;
+  font-size: 16px;
   color: white;
   font-weight: 500;
 }
@@ -121,7 +121,7 @@ body {
   height: 52px;
   padding: 0 12px;
   font-family: "Inter", sans-serif;
-  font-size: 13px;
+  font-size: 16px;
   margin-top: 6px;
 }
 
@@ -129,7 +129,7 @@ body {
 .empty-state button {
   margin-top: 12px;
   width: 100%;
-  font-size: 14px;
+  font-size: 16px;
   height: 52px;
   border-radius: 6px;
   outline: 0;
