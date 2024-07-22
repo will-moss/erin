@@ -4,6 +4,12 @@
   box-sizing: border-box;
 }
 
+html,
+body,
+#app {
+  height: 100%;
+}
+
 html {
   scroll-snap-type: y mandatory;
   font-family: "Inter", sans-serif;
@@ -14,7 +20,7 @@ body {
 }
 
 .screen {
-  height: 100vh;
+  height: 100%;
   width: 100%;
   background-color: #000;
   display: grid;

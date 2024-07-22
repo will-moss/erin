@@ -9,6 +9,7 @@ import VideoCard from "./components/VideoCard";
 import { faCompactDisc } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./App.css";
+import BottomMetadata from "./components/BottomMetadata";
 
 const App = () => {
   // Members - Form & Auth management
@@ -37,7 +38,7 @@ const App = () => {
 
   // Video control - Download the current video
   const download = () => {
-    const url = videos[visibleIndexes.length === 2 ? visibleIndexes[0] : visibleIndexes[1]].url;
+    const url = videos[_currentVideoIndex()].url;
 
     const anchor = document.createElement("a");
     anchor.href = url;
@@ -111,6 +112,7 @@ const App = () => {
     for (let i = 0; i < _a.length; ++i) if (_a[i] !== _b[i]) return false;
     return true;
   };
+  const _currentVideoIndex = () => (visibleIndexes.length === 2 ? 0 : visibleIndexes[1]);
 
   // Method - Test connectivity with the remote server
   const attemptToReachRemoteServer = (evt) => {
@@ -377,12 +379,8 @@ const App = () => {
                     refForwarder={saveVideoRef(index)}
                   />
                 ))}
-                <BottomNavbar
-                  className="bottom-navbar"
-                  onDownload={download}
-                  onToggleMute={toggleMute}
-                  isMuted={muted}
-                />
+                <BottomMetadata video={videos[_currentVideoIndex()]} />
+                <BottomNavbar onDownload={download} onToggleMute={toggleMute} isMuted={muted} />
               </>
             )}
           </>
