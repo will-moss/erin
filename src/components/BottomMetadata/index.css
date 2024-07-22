@@ -1,0 +1,23 @@
+.bottom-metadata {
+  height: 30px;
+  display: flex;
+  align-items: center;
+  position: fixed;
+  bottom: 60px;
+  width: 100%;
+  z-index: 10;
+}
+.bottom-metadata svg {
+  color: white;
+}
+
+.bottom-metadata p {
+  font-size: 16px;
+  font-weight: 400;
+  color: #fff;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 90%;
+  line-height: normal;
+}

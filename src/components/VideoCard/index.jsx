@@ -30,20 +30,6 @@ const VideoCard = ({ index, url, title, isLoaded, isMuted, refForwarder }) => {
         loop
         playsInline
       />
-      <div className="bottom-controls">
-        <div className="footer-left">
-          <div className="footer-container">
-            <div className="footer-left">
-              <div className="text">
-                <div className="ticker">
-                  <FontAwesomeIcon icon={faFilm} style={{ width: "30px" }} />
-                  <span>{title}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   );
 };

@@ -8,6 +8,7 @@
   justify-content: space-around;
   align-items: center;
   z-index: 100;
+  flex-shrink: 0;
 }
 
 .bottom-navbar .nav-item {
