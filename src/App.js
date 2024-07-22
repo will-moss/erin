@@ -1,14 +1,14 @@
 // Dependencies
-import { useEffect, useState, useRef, useCallback, useMemo } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 // Components
-import VideoCard from "./components/VideoCard";
 import BottomNavbar from "./components/BottomNavbar";
+import VideoCard from "./components/VideoCard";
 
 // Assets
-import "./App.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCompactDisc } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import "./App.css";
 
 const App = () => {
   // Members - Form & Auth management
@@ -17,6 +17,9 @@ const App = () => {
   const [formSecret, setFormSecret] = useState("");
   const [secureHash, setSecureHash] = useState("");
   const handleInputSecret = (e) => setFormSecret(e.target.value);
+
+  // Members - Cache management
+  const [hasCache, setHasCache] = useState(false);
 
   // Member - Determines whether we are able to communicate with the remote server
   const [loading, setLoading] = useState(false);
@@ -71,10 +74,24 @@ const App = () => {
   const _storeSecret = (s) => {
     localStorage.setItem("erin_secret", s);
   };
+  const _hasStoredVideos = () => {
+    let v = localStorage.getItem("erin_videos");
+    if (!v) return false;
+    v = JSON.parse(v);
+    if (!v || v.length === 0) return false;
+    return true;
+  };
+  const _storeVideos = (v) => {
+    localStorage.setItem("erin_videos", JSON.stringify(v));
+  };
+  const _getStoredVideos = () => {
+    const v = localStorage.getItem("erin_videos");
+    if (!v) return [];
+    return JSON.parse(v);
+  };
   const _isVideo = (file) =>
     ["mp4", "ogg", "webm"].includes(file.name.toLowerCase().split(".").at(-1));
   const _isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-
   const _toAuthenticatedUrl = (url) => `${url}?hash=${secureHash}`;
   const _veryFirsPageTitle = useMemo(() => document.title, []);
   const _updatePageTitle = (video = null) => {
@@ -82,6 +99,17 @@ const App = () => {
       if (!_veryFirsPageTitle.includes("[VIDEO_TITLE]")) document.title = _veryFirsPageTitle;
       else document.title = _veryFirsPageTitle.replace("[VIDEO_TITLE]", video.title);
     } else if (window.USE_SECRET) document.title = "Erin - Authentication";
+  };
+  const _arraysAreEqual = (a, b) => {
+    if (a === b) return true;
+    if (a == null || b == null) return false;
+    if (a.length !== b.length) return false;
+
+    const _a = [...a].sort();
+    const _b = [...b].sort();
+
+    for (let i = 0; i < _a.length; ++i) if (_a[i] !== _b[i]) return false;
+    return true;
   };
 
   // Method - Test connectivity with the remote server
@@ -145,7 +173,7 @@ const App = () => {
 
   // Method - Retrieve all the video links
   const retrieveVideos = () => {
-    setLoading(true);
+    if (!hasCache) setLoading(true);
 
     _retrieveVideosRecursively().then((files) => {
       if (!files) setLoading(false);
@@ -167,16 +195,26 @@ const App = () => {
       // Fix for Safari : .ogg files are not supported
       if (_isSafari) _videoFiles = _videoFiles.filter((f) => f.extension !== "ogg");
 
-      setVideos(_videoFiles);
+      setVideos((freshVideos) => {
+        if (!hasCache) return _videoFiles;
+        else if (hasCache && !_arraysAreEqual(_videoFiles, freshVideos))
+          return [
+            ...freshVideos,
+            ..._videoFiles.filter((f) => !freshVideos.some((v) => v.url === f.url)),
+          ];
+      });
+      _storeVideos(_videoFiles);
 
       // Load the first two videos
-      setVisibleIndexes([0, 1]);
+      if (!hasCache) {
+        setVisibleIndexes([0, 1]);
 
-      setLoading(false);
+        setLoading(false);
+      }
     });
   };
 
-  // Hook - On mount - Retrieve the locally-stored secret
+  // Hook - On mount - Retrieve the locally-stored secret / Attempt to hide the address bar / Retrieve the cache if any
   useEffect(() => {
     window.onload = () => {
       setTimeout(() => {
@@ -185,6 +223,8 @@ const App = () => {
     };
 
     _updatePageTitle();
+
+    if (_hasStoredVideos()) setHasCache(true);
 
     if (!window.USE_SECRET) {
       setAutoconnect(true);
@@ -210,7 +250,16 @@ const App = () => {
   useEffect(() => {
     if (!hasReachedRemoteServer) return;
 
-    retrieveVideos();
+    if (hasCache) {
+      setLoading(true);
+      setVideos(_getStoredVideos());
+      setVisibleIndexes([0, 1]);
+      setLoading(false);
+    }
+
+    setTimeout(() => {
+      retrieveVideos();
+    }, 5000);
   }, [secureHash, hasReachedRemoteServer]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Hook - When videos are loaded - Set up the UI scroll observer
