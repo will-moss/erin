@@ -257,9 +257,7 @@ const App = () => {
       setLoading(false);
     }
 
-    setTimeout(() => {
-      retrieveVideos();
-    }, 5000);
+    retrieveVideos();
   }, [secureHash, hasReachedRemoteServer]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Hook - When videos are loaded - Set up the UI scroll observer
