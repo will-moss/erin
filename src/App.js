@@ -12,52 +12,6 @@ import "./App.css";
 import BottomMetadata from "./components/BottomMetadata";
 
 const App = () => {
-  // Members - Form & Auth management
-  const [autoconnect, setAutoconnect] = useState(false);
-  const [hasEverSubmitted, setHasEverSubmitted] = useState(false);
-  const [formSecret, setFormSecret] = useState("");
-  const [secureHash, setSecureHash] = useState("");
-  const handleInputSecret = (e) => setFormSecret(e.target.value);
-
-  // Members - Cache management
-  const [hasCache, setHasCache] = useState(false);
-
-  // Member - Determines whether we are able to communicate with the remote server
-  const [loading, setLoading] = useState(false);
-  const [hasReachedRemoteServer, setHasReachedRemoteServer] = useState(false);
-
-  // Member - Saves a { url , title } dictionary for every video discovered
-  const [videos, setVideos] = useState([]);
-
-  // Member - Determines which videos are currently loaded and visible on screen
-  const [visibleIndexes, setVisibleIndexes] = useState([]);
-
-  // Member - Determines whether the audio is currently muted
-  const [muted, setMuted] = useState(true);
-  const toggleMute = () => setMuted(!muted);
-
-  // Video control - Download the current video
-  const download = () => {
-    const url = videos[_currentVideoIndex()].url;
-
-    const anchor = document.createElement("a");
-    anchor.href = url;
-    anchor.download = url.split("?")[0].split("/").pop();
-    anchor.target = "_blank";
-
-    document.body.appendChild(anchor);
-
-    anchor.click();
-
-    document.body.removeChild(anchor);
-  };
-
-  // Member - Saves a ref to every video element on the page
-  const videoRefs = useRef([]);
-  const saveVideoRef = (index) => (ref) => {
-    videoRefs.current[index] = ref;
-  };
-
   // Misc - General niceties
   const _reloadPage = (evt) => {
     evt.preventDefault();
@@ -90,6 +44,21 @@ const App = () => {
     if (!v) return [];
     return JSON.parse(v);
   };
+  const _getBlacklist = () => {
+    const l = localStorage.getItem("erin_blacklist");
+    if (!l) return [];
+    return JSON.parse(l);
+  };
+  const _addToBlackList = (v) => {
+    let l = _getBlacklist();
+    l = [...l, v];
+    localStorage.setItem("erin_blacklist", JSON.stringify(l));
+  };
+  const _removeFromBlacklist = (v) => {
+    let l = _getBlacklist();
+    l = l.filter((_v) => v.url !== _v.url);
+    localStorage.setItem("erin_blacklist", JSON.stringify(l));
+  };
   const _isVideo = (file) =>
     ["mp4", "ogg", "webm"].includes(file.name.toLowerCase().split(".").at(-1));
   const _isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
@@ -113,6 +82,87 @@ const App = () => {
     return true;
   };
   const _currentVideoIndex = () => (visibleIndexes.length === 2 ? 0 : visibleIndexes[1]);
+
+  // Members - Form & Auth management
+  const [autoconnect, setAutoconnect] = useState(false);
+  const [hasEverSubmitted, setHasEverSubmitted] = useState(false);
+  const [formSecret, setFormSecret] = useState("");
+  const [secureHash, setSecureHash] = useState("");
+  const handleInputSecret = (e) => setFormSecret(e.target.value);
+
+  // Members - Cache management
+  const [hasCache, setHasCache] = useState(false);
+
+  // Member - Determines whether we are able to communicate with the remote server
+  const [loading, setLoading] = useState(false);
+  const [hasReachedRemoteServer, setHasReachedRemoteServer] = useState(false);
+
+  // Member - Saves a { url , title } dictionary for every video discovered
+  const [videos, setVideos] = useState([]);
+
+  // Member - Trick to trigger state updates on localStorage updates
+  const [blackListUpdater, setBlacklistUpdater] = useState(0);
+  // Dynamically-computed - Visible videos
+  const visibleVideos = useMemo(
+    () =>
+      videos.filter(
+        (_v) =>
+          !_getBlacklist()
+            .map((v) => v.url)
+            .includes(_v.url)
+      ),
+    [videos, blackListUpdater]
+  );
+
+  // Member - Determines which videos are currently loaded and visible on screen
+  const [visibleIndexes, setVisibleIndexes] = useState([]);
+
+  // Member - Determines whether the audio is currently muted
+  const [muted, setMuted] = useState(true);
+  const toggleMute = () => setMuted(!muted);
+
+  // Video control - Download the current video
+  const download = () => {
+    const url = visibleVideos[_currentVideoIndex()].url;
+
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = url.split("?")[0].split("/").pop();
+    anchor.target = "_blank";
+
+    document.body.appendChild(anchor);
+
+    anchor.click();
+
+    document.body.removeChild(anchor);
+  };
+
+  // Video control - Blacklist
+  const container = useRef();
+  const blacklist = () => {
+    const currentIndex = _currentVideoIndex();
+    const video = visibleVideos[currentIndex];
+    _addToBlackList(video);
+
+    if (currentIndex === visibleVideos.length - 1 && visibleVideos.length > 1) {
+      container.current.scrollBy({ top: -1, left: 0, behavior: "smooth" });
+      setTimeout(() => {
+        setBlacklistUpdater((b) => b + 1);
+      }, 1000);
+    } else setBlacklistUpdater((b) => b + 1);
+  };
+
+  // Member - Manage blacklist UI
+  const [blacklistOpen, setBlacklistOpen] = useState(false);
+  const openBlacklist = () => {
+    setBlacklistOpen(true);
+  };
+
+  // Member - Saves a ref to every video element on the page
+  const videoRefs = useRef([]);
+  const saveVideoRef = (index) => (ref) => {
+    videoRefs.current[index] = ref;
+  };
 
   // Method - Test connectivity with the remote server
   const attemptToReachRemoteServer = (evt) => {
@@ -314,7 +364,7 @@ const App = () => {
 
   return (
     <div className="screen">
-      <div className="container">
+      <div className="container" ref={container}>
         {/* STATE - Loading */}
         {loading && (
           <div className="loading-state">
@@ -352,7 +402,7 @@ const App = () => {
             )}
 
             {/* STATE - Reached remote server but no video was found */}
-            {hasReachedRemoteServer && videos.length === 0 && (
+            {hasReachedRemoteServer && visibleVideos.length === 0 && (
               <div className="empty-state">
                 <div className="icon-wrapper">
                   <img src={`/logo.png`} alt="Erin logo" />
@@ -366,11 +416,11 @@ const App = () => {
             )}
 
             {/* STATE - Reached remote server and retrieved videos */}
-            {hasReachedRemoteServer && videos.length > 0 && (
+            {hasReachedRemoteServer && visibleVideos.length > 0 && (
               <>
-                {videos.map((video, index) => (
+                {visibleVideos.map((video, index) => (
                   <VideoCard
-                    key={index}
+                    key={video.url}
                     index={index}
                     title={video.title}
                     url={video.url}
@@ -379,8 +429,14 @@ const App = () => {
                     refForwarder={saveVideoRef(index)}
                   />
                 ))}
-                <BottomMetadata video={videos[_currentVideoIndex()]} />
-                <BottomNavbar onDownload={download} onToggleMute={toggleMute} isMuted={muted} />
+                <BottomMetadata video={visibleVideos[_currentVideoIndex()]} />
+                <BottomNavbar
+                  onDownload={download}
+                  onToggleMute={toggleMute}
+                  isMuted={muted}
+                  onBlacklist={blacklist}
+                  onOpenBlacklist={openBlacklist}
+                />
               </>
             )}
           </>
