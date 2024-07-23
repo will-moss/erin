@@ -146,6 +146,9 @@ body {
   transition: border-color 0.3s;
   border: 1px solid blue;
 }
+button.btn-alternate {
+  background: transparent;
+}
 .login-state button:hover,
 .empty-state button:hover {
   border-color: white;
