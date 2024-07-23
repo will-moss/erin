@@ -10,6 +10,7 @@ import { faCompactDisc } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./App.css";
 import BottomMetadata from "./components/BottomMetadata";
+import BlacklistManager from "./components/BlacklistManager";
 
 const App = () => {
   // Misc - General niceties
@@ -156,6 +157,13 @@ const App = () => {
   const [blacklistOpen, setBlacklistOpen] = useState(false);
   const openBlacklist = () => {
     setBlacklistOpen(true);
+  };
+  const hideBlacklist = () => {
+    setBlacklistOpen(false);
+  };
+  const removeFromBlacklist = (v) => {
+    _removeFromBlacklist(v);
+    setBlacklistUpdater((b) => b + 1);
   };
 
   // Member - Saves a ref to every video element on the page
@@ -354,13 +362,14 @@ const App = () => {
     const observer = new IntersectionObserver(handleIntersection, observerOptions);
 
     // Attach the observer to every video component
-    for (let i = 0; i < videoRefs.current.length; i++) observer.observe(videoRefs.current[i]);
+    for (let i = 0; i < videoRefs.current.length; i++)
+      if (videoRefs.current[i]) observer.observe(videoRefs.current[i]);
 
     // Disconnect the observer when unmounting
     return () => {
       observer.disconnect();
     };
-  }, [videos]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [videos, blackListUpdater]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div className="screen">
@@ -412,6 +421,20 @@ const App = () => {
                 <button type="button" onClick={_reloadPage}>
                   Refresh
                 </button>
+
+                {_getBlacklist().length > 0 && (
+                  <>
+                    <button type="button" className="btn-alternate" onClick={openBlacklist}>
+                      Manage masked videos
+                    </button>
+                    <BlacklistManager
+                      visible={blacklistOpen}
+                      videos={_getBlacklist()}
+                      onClose={hideBlacklist}
+                      onUnmask={removeFromBlacklist}
+                    />
+                  </>
+                )}
               </div>
             )}
 
@@ -436,6 +459,12 @@ const App = () => {
                   isMuted={muted}
                   onBlacklist={blacklist}
                   onOpenBlacklist={openBlacklist}
+                />
+                <BlacklistManager
+                  visible={blacklistOpen}
+                  videos={_getBlacklist()}
+                  onClose={hideBlacklist}
+                  onUnmask={removeFromBlacklist}
                 />
               </>
             )}
