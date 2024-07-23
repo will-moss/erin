@@ -245,7 +245,7 @@ const App = () => {
         .sort((a, b) => 0.5 - Math.random());
 
       // Fix for Safari : .ogg files are not supported
-      if (_isSafari) _videoFiles = _videoFiles.filter((f) => f.extension === "mp4");
+      if (_isSafari) _videoFiles = _videoFiles.filter((f) => f.extension !== "ogg");
 
       setVideos((freshVideos) => {
         if (!hasCache) return _videoFiles;
