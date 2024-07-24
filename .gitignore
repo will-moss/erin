@@ -10,6 +10,7 @@
 .env.production.local
 .env
 .env.dev
+.env.release
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
