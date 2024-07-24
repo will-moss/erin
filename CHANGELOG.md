@@ -1,3 +1,21 @@
+# [1.2.0](https://github.com/will-moss/erin/compare/v1.1.1...v1.2.0) (2024-07-24)
+
+
+### Bug Fixes
+
+* **client:** increased input font size for Safari users (to prevent zoom), and enforced mp4 files ([bcb44a5](https://github.com/will-moss/erin/commit/bcb44a590e9afdea281f3deec0fd57cb0658cf85))
+* **client:** new attempt to make the address bar disappear on mobile browsers (Chrome / Safari) ([6a8c2fc](https://github.com/will-moss/erin/commit/6a8c2fc4c4026afa9a0f52571aee35a97af81998))
+* **client:** removed unnecessary testing delay for cache ([e439954](https://github.com/will-moss/erin/commit/e439954c721673366216b12e4fd73ec41e19130e))
+* **client:** reverted a change preventing users from reading anything other than mp4 on Safari ([df57531](https://github.com/will-moss/erin/commit/df575310660ee6c4cbdc27310cbf7122db994af3))
+* **client:** rewrote the video's title bar to fix the visibility issue on mobile ([65a6c84](https://github.com/will-moss/erin/commit/65a6c84acfdd9688c3c6da77131ae69f1463f7a4))
+
+
+### Features
+
+* **client:** added blacklist feature : You can now hide videos from your feed ([5f0afdd](https://github.com/will-moss/erin/commit/5f0afdd8563ed7cb0fb0c2f75e2a5d70734549c6))
+* **client:** added blacklist manager to view and unmask previously-masked videos ([b9af397](https://github.com/will-moss/erin/commit/b9af397f15b842e84f91aa77754ce39e00bec5e8))
+* **client:** added local cache to improve loading performances ([18a71fe](https://github.com/will-moss/erin/commit/18a71fe7b5c210767168e55e486266b45a6aae0a))
+
 ## [1.1.1](https://github.com/will-moss/erin/compare/v1.1.0...v1.1.1) (2024-07-21)
 
 
