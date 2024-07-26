@@ -82,6 +82,13 @@ const App = () => {
     for (let i = 0; i < _a.length; ++i) if (_a[i] !== _b[i]) return false;
     return true;
   };
+  const _shuffleArray = (arr) => {
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+  };
+
   const _currentVideoIndex = () => (visibleIndexes.length === 2 ? 0 : visibleIndexes[1]);
 
   // Members - Form & Auth management
@@ -249,8 +256,8 @@ const App = () => {
             .slice(0, -1)
             .join(""),
           extension: v.url.split(".").at(-1).toLowerCase(),
-        }))
-        .sort((a, b) => 0.5 - Math.random());
+        }));
+      _shuffleArray(_videoFiles);
 
       // Fix for Safari : .ogg files are not supported
       if (_isSafari) _videoFiles = _videoFiles.filter((f) => f.extension !== "ogg");
