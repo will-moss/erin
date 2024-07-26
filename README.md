@@ -17,9 +17,9 @@ for a self-hostable app that can show filtered videos using TikTok's interface, 
 
 Erin has all these features implemented :
 - Display your own videos using TikTok's swipe feed
-- Mask the videos you don't want to see in your feed
+- Mask the videos you don't want to see in your feed *(\*long press to show the feed manager)*
 - Simple lazy-loading mechanism for your videos
-- Automatic clip-naming based on file name
+- Automatic clip naming based on file name
 - Simple and optional security using a master password
 - Support for HTTP and HTTPS
 - Support for Docker / proxy deployment
