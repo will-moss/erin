@@ -27,8 +27,9 @@ const VideoCard = ({ index, url, title, isLoaded, isMuted, refForwarder }) => {
         }}
         onClick={togglePause}
         muted={isMuted}
-        loop
-        playsInline
+        loop={true}
+        playsInline={true}
+        preload="auto"
       />
     </div>
   );
