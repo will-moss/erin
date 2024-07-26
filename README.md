@@ -17,7 +17,8 @@ for a self-hostable app that can show filtered videos using TikTok's interface, 
 
 Erin has all these features implemented :
 - Display your own videos using TikTok's swipe feed
-- Mask the videos you don't want to see in your feed *(\*long press to show the feed manager)*
+- Mask the videos you don't want to see in your feed\*
+- Choose which feed you want to play\*\*
 - Simple lazy-loading mechanism for your videos
 - Automatic clip naming based on file name
 - Simple and optional security using a master password
@@ -26,6 +27,10 @@ Erin has all these features implemented :
 
 On top of these, please note that Erin is only a React app powered entirely by [Caddy](https://github.com/caddyserver/caddy).
 Caddy takes care of authentication, serving static files, and serving the React app all at once.
+
+> \*: You can mask videos to hide them from your feed. Should you want to see which videos were masked, and even unmask them, you can long-press the `Mask` button, and the manager will open.
+
+> \*\*: By default, Erin will create a random feed from all the videos in your folder and its subdirectories. However, if you would like to create custom feeds, you can set your URL to any of the subdirectories path. For example: `https://my-server.tld/directory-a` will create a feed from the videos located in the `/directory-a` directory, and it works with any path (so, nested folders are supported).
 
 For more information, read about [Configuration](#configuration).
 
