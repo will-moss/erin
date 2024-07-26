@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/will-moss/erin/compare/v1.2.1...v1.3.0) (2024-07-26)
+
+
+### Features
+
+* **client:** added the ability to show a specific feed by changing the URL's path to match a folder ([7f24988](https://github.com/will-moss/erin/commit/7f24988cd0359709a60517fe935bbe27a0be3adf))
+
 ## [1.2.1](https://github.com/will-moss/erin/compare/v1.2.0...v1.2.1) (2024-07-26)
 
 
