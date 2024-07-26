@@ -1,3 +1,13 @@
+## [1.2.1](https://github.com/will-moss/erin/compare/v1.2.0...v1.2.1) (2024-07-26)
+
+
+### Bug Fixes
+
+* **client:** added a proper random-shuffling algorithm to replace the previous one ([28711cd](https://github.com/will-moss/erin/commit/28711cdc5c30b183728a33c777e655f3ffcacd47))
+* **client:** attempt at improving loading speed and caching of videos ([a2fe0c1](https://github.com/will-moss/erin/commit/a2fe0c1469b95f0af53b40b661e2218efe26fceb))
+* **client:** increased the bottom controls' width to make it easier to use them on mobile ([1b2c80e](https://github.com/will-moss/erin/commit/1b2c80e110b8ee73fa4b0befe8e2f31733035a64))
+* **client:** made the mask feature move on to the next video, rather than to the previous one ([6d20cc1](https://github.com/will-moss/erin/commit/6d20cc133b2c5083a520387548116d77ccc0793b))
+
 # [1.2.0](https://github.com/will-moss/erin/compare/v1.1.1...v1.2.0) (2024-07-24)
 
 
