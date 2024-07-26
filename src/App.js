@@ -356,7 +356,7 @@ const App = () => {
           // Case when a video is scroll-snapped and occupies the screen
           if (entry.isIntersecting) {
             visibleIndex = currentIndex;
-            videoElement.play();
+            videoElement.play().catch(_ => {});
             _updatePageTitle(videos[currentIndex]);
           }
           // Case when a video is off-screen or being scrolled in / out of the screen
