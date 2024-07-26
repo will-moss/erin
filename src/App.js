@@ -157,7 +157,10 @@ const App = () => {
       setTimeout(() => {
         setBlacklistUpdater((b) => b + 1);
       }, 1000);
-    } else setBlacklistUpdater((b) => b + 1);
+    } else {
+      setBlacklistUpdater((b) => b + 1);
+      container.current.scrollBy({ top: 1, left: 0 });
+    }
   };
 
   // Member - Manage blacklist UI
