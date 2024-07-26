@@ -9,8 +9,8 @@ import VideoCard from "./components/VideoCard";
 import { faCompactDisc } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./App.css";
-import BottomMetadata from "./components/BottomMetadata";
 import BlacklistManager from "./components/BlacklistManager";
+import BottomMetadata from "./components/BottomMetadata";
 
 const App = () => {
   // Misc - General niceties
@@ -119,7 +119,7 @@ const App = () => {
             .map((v) => v.url)
             .includes(_v.url)
       ),
-    [videos, blackListUpdater]
+    [videos, blackListUpdater] // eslint-disable-line react-hooks/exhaustive-deps
   );
 
   // Member - Determines which videos are currently loaded and visible on screen
@@ -238,14 +238,18 @@ const App = () => {
               res([...results.flat(), ..._files]);
             });
           })
-      );
+      )
+      .catch((_) => new Promise((res, rej) => res([])));
   };
 
   // Method - Retrieve all the video links
   const retrieveVideos = () => {
     if (!hasCache) setLoading(true);
 
-    _retrieveVideosRecursively().then((files) => {
+    let startingPath = window.location.pathname.slice(1);
+    if (startingPath.length > 1 && !startingPath.endsWith("/")) startingPath += "/";
+
+    _retrieveVideosRecursively(startingPath).then((files) => {
       if (!files) setLoading(false);
 
       let _videoFiles = files
