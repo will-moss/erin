@@ -364,7 +364,13 @@ const App = () => {
 
         if (visibleIndex === false) return _visibleIndexes;
 
-        return [visibleIndex - 1, visibleIndex, visibleIndex + 1];
+        return [
+          visibleIndex - 1,
+          visibleIndex,
+          visibleIndex + 1,
+          visibleIndex + 2,
+          visibleIndex + 3,
+        ];
       });
     };
 
