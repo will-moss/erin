@@ -1,3 +1,16 @@
+# [1.4.0](https://github.com/will-moss/erin/compare/v1.3.0...v1.4.0) (2024-07-30)
+
+
+### Bug Fixes
+
+* **client:** added a guard to prevent JS errors when swiping too fast ([7e3e7d3](https://github.com/will-moss/erin/commit/7e3e7d37c0011321227c66736848bf76ba835900))
+* **client:** rewrote the feed entirely to avoid causing a memory hog on instances with many videos ([a2c9cb2](https://github.com/will-moss/erin/commit/a2c9cb21a19823f25ac38733597c76fe60e49acc))
+
+
+### Features
+
+* **client:** added visual hover effects and borders on buttons, to make it more usable on mobile ([cda85cf](https://github.com/will-moss/erin/commit/cda85cf16d38f2dfc90fd525d808433272eb8c24))
+
 # [1.3.0](https://github.com/will-moss/erin/compare/v1.2.1...v1.3.0) (2024-07-26)
 
 
