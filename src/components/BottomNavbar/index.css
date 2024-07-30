@@ -22,6 +22,10 @@
   outline: 0;
   border: 0;
   cursor: pointer;
+  outline: 1px solid #333;
+}
+.bottom-navbar .nav-item:hover {
+  background: #333;
 }
 
 .bottom-navbar .icon {
