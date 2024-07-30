@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import VideoCard from "../VideoCard";
 import "./index.css";
 
-const VideoFeed = ({ videos, initialIndex, jumpToEnd, jumpBackForward, isMuted, onFocusVideo }) => {
+const VideoFeed = ({ videos, initialIndex, jumpToEnd, jumpBackForward, onFocusVideo }) => {
   // Member - Track the currently-visible video (0-indexed)
   const currentVideoIndex = useRef(0);
 
@@ -146,7 +146,6 @@ const VideoFeed = ({ videos, initialIndex, jumpToEnd, jumpBackForward, isMuted, 
           index={k + initialIndex}
           url={videos[k + initialIndex] ? videos[k + initialIndex].url : ""}
           isLoaded={true}
-          isMuted={isMuted}
           refForwarder={saveVideoRef(k)}
         />
       ))}
