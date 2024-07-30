@@ -1,3 +1,10 @@
+## [1.4.1](https://github.com/will-moss/erin/compare/v1.4.0...v1.4.1) (2024-07-30)
+
+
+### Bug Fixes
+
+* **client:** muting / Unmuting the player won't trigger a freeze anymore ([5507870](https://github.com/will-moss/erin/commit/55078702b41f25871b2f78722c2f35885070c208))
+
 # [1.4.0](https://github.com/will-moss/erin/compare/v1.3.0...v1.4.0) (2024-07-30)
 
 
