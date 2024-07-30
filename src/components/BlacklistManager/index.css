@@ -116,6 +116,9 @@
   text-decoration: none;
   color: #002dff;
 }
+.blacklist-entry .left a:hover {
+  text-decoration: underline;
+}
 .blacklist-entry .right {
   display: flex;
   flex-direction: column;
@@ -134,7 +137,11 @@
   width: 48px;
   border-radius: 23051998px;
   outline: 0;
+  cursor: pointer;
   border: 0;
+}
+.blacklist-entry .right button:hover {
+  background: #008f00;
 }
 .blacklist-entry .right button svg {
   font-size: 18px;
