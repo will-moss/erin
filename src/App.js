@@ -104,6 +104,17 @@ const App = () => {
   const [loading, setLoading] = useState(false);
   const [hasReachedRemoteServer, setHasReachedRemoteServer] = useState(false);
 
+  // Member - Determines whether the audio is currently muted
+  const [muted, setMuted] = useState(true);
+  const toggleMute = () => {
+    const _newMuted = !muted;
+
+    const currentVideo = document.querySelector(`video[data-index="${currentVideoIndex}"]`);
+    currentVideo.muted = _newMuted;
+
+    setMuted(!muted);
+  };
+
   // Member - Saves a { url , title } dictionary for every video discovered
   const [videos, setVideos] = useState([]);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
@@ -127,10 +138,6 @@ const App = () => {
       ),
     [videos, blackListUpdater] // eslint-disable-line react-hooks/exhaustive-deps
   );
-
-  // Member - Determines whether the audio is currently muted
-  const [muted, setMuted] = useState(true);
-  const toggleMute = () => setMuted(!muted);
 
   // Video control - Download the current video
   const download = () => {
@@ -298,6 +305,13 @@ const App = () => {
     });
   };
 
+  // Hook - When a new video is focused, update its muted state
+  useEffect(() => {
+    const currentVideo = document.querySelector(`video[data-index="${currentVideoIndex}"]`);
+    if (!currentVideo) return;
+    currentVideo.muted = muted;
+  }, [currentVideoIndex]); // eslint-disable-line react-hooks/exhaustive-deps
+
   // Memoized component - Video Feed
   const Feed = useMemo(
     () => {
@@ -316,12 +330,11 @@ const App = () => {
           }
           jumpBackForward={previousVideoIndex !== visibleVideos.length && currentVideoIndex > 1}
           videos={visibleVideos}
-          isMuted={muted}
           onFocusVideo={handleVideoFocus}
         />
       );
     },
-    [muted, visibleVideos] // eslint-disable-line react-hooks/exhaustive-deps
+    [visibleVideos] // eslint-disable-line react-hooks/exhaustive-deps
   );
 
   // Hook - On mount - Retrieve the locally-stored secret / Attempt to hide the address bar / Retrieve the cache if any
