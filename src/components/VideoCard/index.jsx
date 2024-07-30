@@ -1,12 +1,10 @@
 // Dependencies
-import { useRef } from "react";
+import { useCallback, useMemo, useRef } from "react";
 
 // Assets
-import { faFilm } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./index.css";
 
-const VideoCard = ({ index, url, title, isLoaded, isMuted, refForwarder }) => {
+const VideoCard = ({ index, url, isLoaded, isMuted, refForwarder }) => {
   const videoRef = useRef(null);
 
   // Toggle play/pause on click
@@ -15,16 +13,18 @@ const VideoCard = ({ index, url, title, isLoaded, isMuted, refForwarder }) => {
     else videoRef.current.pause();
   };
 
+  const forward = useCallback((_ref) => {
+    videoRef.current = _ref;
+    refForwarder(_ref);
+  }, []);
+
   return (
     <div className="video">
       <video
-        data-index={index}
         className="player"
+        data-index={index}
         src={isLoaded ? url : null}
-        ref={(_ref) => {
-          videoRef.current = _ref;
-          refForwarder(_ref);
-        }}
+        ref={forward}
         onClick={togglePause}
         muted={isMuted}
         loop={true}

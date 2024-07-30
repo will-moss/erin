@@ -1,13 +1,14 @@
 // Dependencies
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 // Components
 import BottomNavbar from "./components/BottomNavbar";
-import VideoCard from "./components/VideoCard";
+import VideoFeed from "./components/VideoFeed";
 
 // Assets
 import { faCompactDisc } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { usePrevious } from "@uidotdev/usehooks";
 import "./App.css";
 import BlacklistManager from "./components/BlacklistManager";
 import BottomMetadata from "./components/BottomMetadata";
@@ -89,8 +90,6 @@ const App = () => {
     }
   };
 
-  const _currentVideoIndex = () => (visibleIndexes.length === 2 ? 0 : visibleIndexes[1]);
-
   // Members - Form & Auth management
   const [autoconnect, setAutoconnect] = useState(false);
   const [hasEverSubmitted, setHasEverSubmitted] = useState(false);
@@ -107,9 +106,16 @@ const App = () => {
 
   // Member - Saves a { url , title } dictionary for every video discovered
   const [videos, setVideos] = useState([]);
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
+  const previousVideoIndex = usePrevious(currentVideoIndex);
+  const handleVideoFocus = useCallback((v, i) => {
+    _updatePageTitle(v);
+    setCurrentVideoIndex(i);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Member - Trick to trigger state updates on localStorage updates
   const [blackListUpdater, setBlacklistUpdater] = useState(0);
+
   // Dynamically-computed - Visible videos
   const visibleVideos = useMemo(
     () =>
@@ -122,16 +128,13 @@ const App = () => {
     [videos, blackListUpdater] // eslint-disable-line react-hooks/exhaustive-deps
   );
 
-  // Member - Determines which videos are currently loaded and visible on screen
-  const [visibleIndexes, setVisibleIndexes] = useState([]);
-
   // Member - Determines whether the audio is currently muted
   const [muted, setMuted] = useState(true);
   const toggleMute = () => setMuted(!muted);
 
   // Video control - Download the current video
   const download = () => {
-    const url = visibleVideos[_currentVideoIndex()].url;
+    const url = visibleVideos[currentVideoIndex].url;
 
     const anchor = document.createElement("a");
     anchor.href = url;
@@ -146,21 +149,37 @@ const App = () => {
   };
 
   // Video control - Blacklist
-  const container = useRef();
   const blacklist = () => {
-    const currentIndex = _currentVideoIndex();
-    const video = visibleVideos[currentIndex];
+    const video = visibleVideos[currentVideoIndex];
     _addToBlackList(video);
 
-    if (currentIndex === visibleVideos.length - 1 && visibleVideos.length > 1) {
-      container.current.scrollBy({ top: -1, left: 0, behavior: "smooth" });
-      setTimeout(() => {
-        setBlacklistUpdater((b) => b + 1);
-      }, 1000);
+    if (currentVideoIndex === visibleVideos.length - 1 && visibleVideos.length > 1) {
+      document.querySelector(".feed").scrollBy({ top: -1, left: 0, behavior: "smooth" });
     } else {
-      setBlacklistUpdater((b) => b + 1);
-      container.current.scrollBy({ top: 1, left: 0 });
+      document.querySelector(".feed").scrollBy({ top: 1, left: 0, behavior: "smooth" });
     }
+
+    setTimeout(
+      () => {
+        setBlacklistUpdater(blackListUpdater + 1);
+
+        // The last video is about to be removed - An array of 2 will become an array of 1
+        if (visibleVideos.length === 2) setCurrentVideoIndex(0);
+        // There are more than 2 videos, and we have removed one in the middle -> We adjust the current index
+        else if (
+          visibleVideos.length > 2 &&
+          previousVideoIndex <= visibleVideos.length - 1 &&
+          currentVideoIndex > 0 &&
+          currentVideoIndex === visibleVideos.length - 2 &&
+          previousVideoIndex > 0
+        ) {
+          setCurrentVideoIndex(currentVideoIndex - 1);
+        }
+      },
+
+      // Show no delay when the last video is removed
+      visibleVideos.length > 1 ? 800 : 0
+    );
   };
 
   // Member - Manage blacklist UI
@@ -173,13 +192,7 @@ const App = () => {
   };
   const removeFromBlacklist = (v) => {
     _removeFromBlacklist(v);
-    setBlacklistUpdater((b) => b + 1);
-  };
-
-  // Member - Saves a ref to every video element on the page
-  const videoRefs = useRef([]);
-  const saveVideoRef = (index) => (ref) => {
-    videoRefs.current[index] = ref;
+    setBlacklistUpdater(blackListUpdater + 1);
   };
 
   // Method - Test connectivity with the remote server
@@ -231,7 +244,7 @@ const App = () => {
             const _folders = files.filter((f) => f.is_dir);
             const _files = files
               .filter((f) => !f.is_dir)
-              .map((f) => ({ ...f, url: `${path}${f.url.slice(2)}` }));
+              .map((f) => ({ ...f, url: `${path}${f.url.slice(2).trim()}` }));
 
             const promises = _folders.map((f) => _retrieveVideosRecursively(`${path}${f.name}`));
             Promise.all(promises).then((results) => {
@@ -279,14 +292,37 @@ const App = () => {
       });
       _storeVideos(_videoFiles);
 
-      // Load the first two videos
       if (!hasCache) {
-        setVisibleIndexes([0, 1]);
-
         setLoading(false);
       }
     });
   };
+
+  // Memoized component - Video Feed
+  const Feed = useMemo(
+    () => {
+      return (
+        <VideoFeed
+          key={blackListUpdater}
+          initialIndex={
+            currentVideoIndex > 0
+              ? previousVideoIndex <= visibleVideos.length - 1 && previousVideoIndex > 0
+                ? currentVideoIndex - 2
+                : currentVideoIndex - 1
+              : 0
+          }
+          jumpToEnd={
+            previousVideoIndex === visibleVideos.length && visibleVideos.length > 1 ? true : false
+          }
+          jumpBackForward={previousVideoIndex !== visibleVideos.length && currentVideoIndex > 1}
+          videos={visibleVideos}
+          isMuted={muted}
+          onFocusVideo={handleVideoFocus}
+        />
+      );
+    },
+    [muted, visibleVideos] // eslint-disable-line react-hooks/exhaustive-deps
+  );
 
   // Hook - On mount - Retrieve the locally-stored secret / Attempt to hide the address bar / Retrieve the cache if any
   useEffect(() => {
@@ -327,73 +363,15 @@ const App = () => {
     if (hasCache) {
       setLoading(true);
       setVideos(_getStoredVideos());
-      setVisibleIndexes([0, 1]);
       setLoading(false);
     }
 
     retrieveVideos();
   }, [secureHash, hasReachedRemoteServer]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Hook - When videos are loaded - Set up the UI scroll observer
-  useEffect(() => {
-    // Default observer options
-    const observerOptions = {
-      root: null,
-      rootMargin: "0px",
-      threshold: 0.8,
-    };
-
-    // Listener called when scroll is performed
-    const handleIntersection = (entries) => {
-      // Trick to always retrieve fresh state, rather than closure-scoped one
-      setVisibleIndexes((_visibleIndexes) => {
-        let visibleIndex = false;
-
-        entries.forEach((entry) => {
-          const videoElement = entry.target;
-          const currentIndex = parseInt(videoElement.getAttribute("data-index"));
-
-          // Case when a video is scroll-snapped and occupies the screen
-          if (entry.isIntersecting) {
-            visibleIndex = currentIndex;
-            videoElement.play().catch(_ => {});
-            _updatePageTitle(videos[currentIndex]);
-          }
-          // Case when a video is off-screen or being scrolled in / out of the screen
-          else {
-            if (!_visibleIndexes.includes(currentIndex)) return;
-            videoElement.pause();
-          }
-        });
-
-        if (visibleIndex === false) return _visibleIndexes;
-
-        return [
-          visibleIndex - 1,
-          visibleIndex,
-          visibleIndex + 1,
-          visibleIndex + 2,
-          visibleIndex + 3,
-        ];
-      });
-    };
-
-    // Set up the observer
-    const observer = new IntersectionObserver(handleIntersection, observerOptions);
-
-    // Attach the observer to every video component
-    for (let i = 0; i < videoRefs.current.length; i++)
-      if (videoRefs.current[i]) observer.observe(videoRefs.current[i]);
-
-    // Disconnect the observer when unmounting
-    return () => {
-      observer.disconnect();
-    };
-  }, [videos, blackListUpdater]); // eslint-disable-line react-hooks/exhaustive-deps
-
   return (
     <div className="screen">
-      <div className="container" ref={container}>
+      <div className="container">
         {/* STATE - Loading */}
         {loading && (
           <div className="loading-state">
@@ -461,18 +439,10 @@ const App = () => {
             {/* STATE - Reached remote server and retrieved videos */}
             {hasReachedRemoteServer && visibleVideos.length > 0 && (
               <>
-                {visibleVideos.map((video, index) => (
-                  <VideoCard
-                    key={video.url}
-                    index={index}
-                    title={video.title}
-                    url={video.url}
-                    isLoaded={visibleIndexes.includes(index)}
-                    isMuted={muted}
-                    refForwarder={saveVideoRef(index)}
-                  />
-                ))}
-                <BottomMetadata video={visibleVideos[_currentVideoIndex()]} />
+                {Feed}
+                {visibleVideos[currentVideoIndex] && (
+                  <BottomMetadata video={visibleVideos[currentVideoIndex]} />
+                )}
                 <BottomNavbar
                   onDownload={download}
                   onToggleMute={toggleMute}
