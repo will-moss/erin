@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/will-moss/erin/compare/v1.4.1...v1.5.0) (2024-08-09)
+
+
+### Features
+
+* **client:** added autoplay feature, to automatically swipe to the next video when current ended ([cedc52e](https://github.com/will-moss/erin/commit/cedc52e865ef0f964509334d1187303973736ce3))
+
 ## [1.4.1](https://github.com/will-moss/erin/compare/v1.4.0...v1.4.1) (2024-07-30)
 
 
