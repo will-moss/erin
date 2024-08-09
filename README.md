@@ -19,6 +19,7 @@ Erin has all these features implemented :
 - Display your own videos using TikTok's swipe feed
 - Mask the videos you don't want to see in your feed\*
 - Choose which feed you want to play\*\*
+- Autoplay your feed without even swiping
 - Simple lazy-loading mechanism for your videos
 - Automatic clip naming based on file name
 - Simple and optional security using a master password
@@ -101,6 +102,7 @@ To run Erin, you will need to set the following environment variables in a `.env
 | `AUTH_ENABLED`          | `string`  | Whether Basic Authentication should be enabled. (This parameter is case sensitive) (Possible values : true, false) | true |
 | `AUTH_SECRET`           | `string`  | The secure hash of the password used to protect your instance of Erin. | Hash of `secure-password` |
 | `APP_TITLE`             | `string`  | The custom title that you would like to display in the browser's tab. (Tip: You can use `[VIDEO_TITLE]` here if you want Erin to dynamically display the title of the current video.) | Erin - TikTok feed for your own clips |
+| `AUTOPLAY_ENABLED`      | `boolean` | Whether autoplay should be enabled. (This parameter is case sensitive) (Possible values : true, false) | false |
 
 > **Tip :** To generate a secure hash for your instance, use the following command :
 
