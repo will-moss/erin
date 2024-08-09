@@ -2,7 +2,14 @@ import { useEffect, useRef } from "react";
 import VideoCard from "../VideoCard";
 import "./index.css";
 
-const VideoFeed = ({ videos, initialIndex, jumpToEnd, jumpBackForward, onFocusVideo }) => {
+const VideoFeed = ({
+  videos,
+  initialIndex,
+  jumpToEnd,
+  jumpBackForward,
+  onFocusVideo,
+  onFinishVideo,
+}) => {
   // Member - Track the currently-visible video (0-indexed)
   const currentVideoIndex = useRef(0);
 
@@ -21,7 +28,20 @@ const VideoFeed = ({ videos, initialIndex, jumpToEnd, jumpBackForward, onFocusVi
   // Member - Number of videos to load at a time
   const _bufferSize = 3;
 
+  // Member - Prevent double jump forward
   const hasJumpedForward = useRef(false);
+
+  // Mechanism - On video end, call a listener to trigger autoscroll + autoplay if enabled
+  const throttle = useRef(false);
+  const handleVideoTimeUpdate = (e) => {
+    if (e.target.currentTime === 0 && throttle.current === true) {
+      throttle.current = false;
+      onFinishVideo();
+      setTimeout(() => {
+        throttle.current = true;
+      }, 500);
+    }
+  };
 
   // Hook - On mount - Set the current scroll
   useEffect(() => {
@@ -58,9 +78,13 @@ const VideoFeed = ({ videos, initialIndex, jumpToEnd, jumpBackForward, onFocusVi
           visibleIndex = currentIndex;
           videoElement.play().catch((_) => {});
           onFocusVideo(videos[currentIndex], currentIndex);
+          videoElement.addEventListener("timeupdate", handleVideoTimeUpdate, true);
         }
         // Case when a video is off-screen or being scrolled in / out of the screen
-        else videoElement.pause();
+        else {
+          videoElement.pause();
+          videoElement.removeEventListener("timeupdate", handleVideoTimeUpdate, true);
+        }
       });
 
       if (visibleIndex === false) return;
@@ -134,6 +158,13 @@ const VideoFeed = ({ videos, initialIndex, jumpToEnd, jumpBackForward, onFocusVi
       observer.disconnect();
     };
   }, [videos]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Hook - On mount - Set our autoplay flag to ready
+  useEffect(() => {
+    setTimeout(() => {
+      throttle.current = true;
+    }, 500);
+  }, []);
 
   initialIndex = _bufferSize === videos.length ? 0 : initialIndex;
 

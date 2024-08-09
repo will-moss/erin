@@ -123,6 +123,10 @@ const App = () => {
     _updatePageTitle(v);
     setCurrentVideoIndex(i);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  const handleVideoFinish = () => {
+    if (!window.AUTOPLAY_ENABLED) return;
+    document.querySelector(".feed").scrollBy({ top: 1, left: 0, behavior: "smooth" });
+  };
 
   // Member - Trick to trigger state updates on localStorage updates
   const [blackListUpdater, setBlacklistUpdater] = useState(0);
@@ -331,6 +335,7 @@ const App = () => {
           jumpBackForward={previousVideoIndex !== visibleVideos.length && currentVideoIndex > 1}
           videos={visibleVideos}
           onFocusVideo={handleVideoFocus}
+          onFinishVideo={handleVideoFinish}
         />
       );
     },
