@@ -16,6 +16,9 @@ const VideoFeed = ({
   // Member - Reference to the feed element
   const feedRef = useRef();
 
+  // Member - Reference to the progress tracker
+  const progressRef = useRef();
+
   // Member - Reference to the padding element
   const padRef = useRef();
 
@@ -34,6 +37,9 @@ const VideoFeed = ({
   // Mechanism - On video end, call a listener to trigger autoscroll + autoplay if enabled
   const throttle = useRef(false);
   const handleVideoTimeUpdate = (e) => {
+    const progressRate = e.target.currentTime / (e.target.duration % 60);
+    progressRef.current.style.transform = `scaleX(${progressRate})`;
+
     if (e.target.currentTime === 0 && throttle.current === true) {
       throttle.current = false;
       onFinishVideo();
@@ -79,6 +85,7 @@ const VideoFeed = ({
           videoElement.play().catch((_) => {});
           onFocusVideo(videos[currentIndex], currentIndex);
           videoElement.addEventListener("timeupdate", handleVideoTimeUpdate, true);
+          progressRef.current.style.transform = `scaleX(0)`;
         }
         // Case when a video is off-screen or being scrolled in / out of the screen
         else {
@@ -180,6 +187,7 @@ const VideoFeed = ({
           refForwarder={saveVideoRef(k)}
         />
       ))}
+      <div className="video-track-progress" ref={progressRef} />
     </div>
   );
 };

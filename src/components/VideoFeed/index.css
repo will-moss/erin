@@ -13,3 +13,13 @@
 .feed::-webkit-scrollbar {
   display: none;
 }
+.video-track-progress {
+  height: 1px;
+  width: 100%;
+  background: blue;
+  position: fixed;
+  bottom: 57px;
+  transform: scaleX(0);
+  transform-origin: left;
+  z-index: 9;
+}
