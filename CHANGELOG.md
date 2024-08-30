@@ -1,3 +1,10 @@
+# [1.6.0](https://github.com/will-moss/erin/compare/v1.5.0...v1.6.0) (2024-08-30)
+
+
+### Features
+
+* **client:** added a progress tracker under the video player ([e16b861](https://github.com/will-moss/erin/commit/e16b861da7cb06718a7ca9fe15aacdfca4e6b636))
+
 # [1.5.0](https://github.com/will-moss/erin/compare/v1.4.1...v1.5.0) (2024-08-09)
 
 
