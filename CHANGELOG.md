@@ -1,3 +1,10 @@
+## [1.6.1](https://github.com/will-moss/erin/compare/v1.6.0...v1.6.1) (2024-09-02)
+
+
+### Bug Fixes
+
+* **client:** the autoplay feature is now working consistently across browsers and operating systems ([478f1dc](https://github.com/will-moss/erin/commit/478f1dcb4902207fc2e9dd65ab906ae78690ba93))
+
 # [1.6.0](https://github.com/will-moss/erin/compare/v1.5.0...v1.6.0) (2024-08-30)
 
 
