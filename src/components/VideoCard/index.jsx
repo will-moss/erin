@@ -26,7 +26,6 @@ const VideoCard = ({ index, url, isLoaded, refForwarder }) => {
         src={isLoaded ? url : null}
         ref={forward}
         onClick={togglePause}
-        loop={true}
         playsInline={true}
         muted={true}
         preload="auto"

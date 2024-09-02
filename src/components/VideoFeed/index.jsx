@@ -34,19 +34,14 @@ const VideoFeed = ({
   // Member - Prevent double jump forward
   const hasJumpedForward = useRef(false);
 
-  // Mechanism - On video end, call a listener to trigger autoscroll + autoplay if enabled
-  const throttle = useRef(false);
+  // Mechanism - On video end, call a listener to trigger autoscroll + autoplay if enabled + progress tracker
   const handleVideoTimeUpdate = (e) => {
     const progressRate = e.target.currentTime / (e.target.duration % 60);
     progressRef.current.style.transform = `scaleX(${progressRate})`;
-
-    if (e.target.currentTime === 0 && throttle.current === true) {
-      throttle.current = false;
-      onFinishVideo();
-      setTimeout(() => {
-        throttle.current = true;
-      }, 500);
-    }
+  };
+  const replayVideo = (e) => {
+    e.target.play();
+    onFinishVideo();
   };
 
   // Hook - On mount - Set the current scroll
@@ -85,12 +80,14 @@ const VideoFeed = ({
           videoElement.play().catch((_) => {});
           onFocusVideo(videos[currentIndex], currentIndex);
           videoElement.addEventListener("timeupdate", handleVideoTimeUpdate, true);
+          videoElement.addEventListener("ended", replayVideo, true);
           progressRef.current.style.transform = `scaleX(0)`;
         }
         // Case when a video is off-screen or being scrolled in / out of the screen
         else {
           videoElement.pause();
           videoElement.removeEventListener("timeupdate", handleVideoTimeUpdate, true);
+          videoElement.removeEventListener("ended", replayVideo, true);
         }
       });
 
@@ -165,13 +162,6 @@ const VideoFeed = ({
       observer.disconnect();
     };
   }, [videos]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  // Hook - On mount - Set our autoplay flag to ready
-  useEffect(() => {
-    setTimeout(() => {
-      throttle.current = true;
-    }, 500);
-  }, []);
 
   initialIndex = _bufferSize === videos.length ? 0 : initialIndex;
 
