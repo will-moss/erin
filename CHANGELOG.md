@@ -1,3 +1,11 @@
+# [1.7.0](https://github.com/will-moss/erin/compare/v1.6.1...v1.7.0) (2024-09-09)
+
+
+### Features
+
+* **client:** added support for moving the progress bar to the top / bottom via an env variable ([ddb4485](https://github.com/will-moss/erin/commit/ddb44854d5b13e509cb7a20c494b1e9455ab056f)), closes [#6](https://github.com/will-moss/erin/issues/6)
+* **client:** added support for seeking a video forward and backward using the left and right arrows ([0154aa8](https://github.com/will-moss/erin/commit/0154aa884cf81e956e2598e96fec56b7d6b7b0ed)), closes [#6](https://github.com/will-moss/erin/issues/6)
+
 ## [1.6.1](https://github.com/will-moss/erin/compare/v1.6.0...v1.6.1) (2024-09-02)
 
 
