@@ -171,8 +171,10 @@ const VideoFeed = ({
   const handleKeyboardSeeking = (e) => {
     if (e.code === "ArrowRight") seekVideoForward();
     else if (e.code === "ArrowLeft") seekVideoBackward();
-
-    return;
+    else if (e.code === "ArrowDown")
+      feedRef.current.scrollBy({ top: 1, left: 0, behavior: "smooth" });
+    else if (e.code === "ArrowUp")
+      feedRef.current.scrollBy({ top: -1, left: 0, behavior: "smooth" });
   };
   const seekVideoForward = () => {
     currentVideoElement.current.currentTime += 5;
