@@ -1,3 +1,10 @@
+# [1.8.0](https://github.com/will-moss/erin/compare/v1.7.0...v1.8.0) (2024-09-09)
+
+
+### Features
+
+* **client:** added capture of down and up arrows to ease scrolling when page is not focused ([1c7466d](https://github.com/will-moss/erin/commit/1c7466d709e6d64ed7e22687d82e3908fe98dcbe))
+
 # [1.7.0](https://github.com/will-moss/erin/compare/v1.6.1...v1.7.0) (2024-09-09)
 
 
