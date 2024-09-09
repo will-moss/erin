@@ -18,8 +18,13 @@
   width: 100%;
   background: blue;
   position: fixed;
-  bottom: 57px;
   transform: scaleX(0);
   transform-origin: left;
   z-index: 9;
+}
+.video-track-progress.bottom {
+  bottom: 57px;
+}
+.video-track-progress.top {
+  top: 0;
 }

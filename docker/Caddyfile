@@ -73,6 +73,7 @@
     replace __USE_SECRET__ {$AUTH_ENABLED}
     replace __APP_TITLE__  "{$APP_TITLE}"
     replace __AUTOPLAY_ENABLED__  {$AUTOPLAY_ENABLED}
+    replace __PROGRESS_BAR_POSITION__  {$PROGRESS_BAR_POSITION}
 	}
 
 	# 404 Redirect
