@@ -177,7 +177,7 @@ const VideoFeed = ({
           refForwarder={saveVideoRef(k)}
         />
       ))}
-      <div className="video-track-progress" ref={progressRef} />
+      <div className={`video-track-progress ${window.PROGRESS_BAR_POSITION}`} ref={progressRef} />
     </div>
   );
 };
