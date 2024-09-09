@@ -13,6 +13,9 @@ const VideoFeed = ({
   // Member - Track the currently-visible video (0-indexed)
   const currentVideoIndex = useRef(0);
 
+  // Member - Track the currently-visible video element
+  const currentVideoElement = useRef();
+
   // Member - Reference to the feed element
   const feedRef = useRef();
 
@@ -81,6 +84,7 @@ const VideoFeed = ({
           onFocusVideo(videos[currentIndex], currentIndex);
           videoElement.addEventListener("timeupdate", handleVideoTimeUpdate, true);
           videoElement.addEventListener("ended", replayVideo, true);
+          currentVideoElement.current = videoElement;
           progressRef.current.style.transform = `scaleX(0)`;
         }
         // Case when a video is off-screen or being scrolled in / out of the screen
@@ -162,6 +166,24 @@ const VideoFeed = ({
       observer.disconnect();
     };
   }, [videos]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Hook - On very first mount - Set keyboard forward/backward shortcuts
+  const handleKeyboardSeeking = (e) => {
+    if (e.code === "ArrowRight") seekVideoForward();
+    else if (e.code === "ArrowLeft") seekVideoBackward();
+
+    return;
+  };
+  const seekVideoForward = () => {
+    currentVideoElement.current.currentTime += 5;
+  };
+  const seekVideoBackward = () => {
+    currentVideoElement.current.currentTime -= 5;
+  };
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyboardSeeking);
+    return () => document.removeEventListener("keydown", handleKeyboardSeeking);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   initialIndex = _bufferSize === videos.length ? 0 : initialIndex;
 

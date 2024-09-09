@@ -20,6 +20,7 @@ Erin has all these features implemented :
 - Mask the videos you don't want to see in your feed\*
 - Choose which feed you want to play\*\*
 - Autoplay your feed without even swiping
+- Seek forward and backward using your keyboard
 - Simple lazy-loading mechanism for your videos
 - Automatic clip naming based on file name
 - Simple and optional security using a master password
