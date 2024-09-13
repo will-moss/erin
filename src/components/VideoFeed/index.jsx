@@ -182,6 +182,12 @@ const VideoFeed = ({
   const seekVideoBackward = () => {
     currentVideoElement.current.currentTime -= 5;
   };
+  const handleVideoTapToSeek = (e) => {
+    const halfWidth = e.target.offsetWidth / 2;
+
+    if (e.clientX > halfWidth) seekVideoForward();
+    else seekVideoBackward();
+  };
   useEffect(() => {
     document.addEventListener("keydown", handleKeyboardSeeking);
     return () => document.removeEventListener("keydown", handleKeyboardSeeking);
@@ -197,6 +203,7 @@ const VideoFeed = ({
           key={k}
           index={k + initialIndex}
           url={videos[k + initialIndex] ? videos[k + initialIndex].url : ""}
+          onDoubleClick={handleVideoTapToSeek}
           isLoaded={true}
           refForwarder={saveVideoRef(k)}
         />
