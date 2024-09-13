@@ -1,3 +1,10 @@
+# [1.9.0](https://github.com/will-moss/erin/compare/v1.8.0...v1.9.0) (2024-09-13)
+
+
+### Features
+
+* **client:** added double-tap seek feature for mobile users ([7e70d6f](https://github.com/will-moss/erin/commit/7e70d6ff1d120418d5252b1996e58321452d9003)), closes [#6](https://github.com/will-moss/erin/issues/6)
+
 # [1.8.0](https://github.com/will-moss/erin/compare/v1.7.0...v1.8.0) (2024-09-09)
 
 
