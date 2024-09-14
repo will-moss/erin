@@ -118,10 +118,30 @@ const App = () => {
   // Member - Saves a { url , title } dictionary for every video discovered
   const [videos, setVideos] = useState([]);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
+  const [currentVideoMetadata, setCurrentVideoMetadata] = useState(false);
   const previousVideoIndex = usePrevious(currentVideoIndex);
   const handleVideoFocus = useCallback((v, i) => {
+    // Update the browser tab's title
     _updatePageTitle(v);
+
+    // Refresh internal state
     setCurrentVideoIndex(i);
+
+    // Fetch metadata if any
+    if (v && v.metadataURL) {
+      return fetch(_toAuthenticatedUrl(`${window.PUBLIC_URL}/media/${v.metadataURL}`), {
+        method: "GET",
+        headers: _makeHTTPHeaders(),
+      })
+        .then((r) => r.json())
+        .then((r) => {
+          setCurrentVideoMetadata(r);
+
+          if (r.video_title) _updatePageTitle({ title: r.video_title });
+        });
+    } else {
+      setCurrentVideoMetadata(false);
+    }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
   const handleVideoFinish = () => {
     if (!window.AUTOPLAY_ENABLED) return;
@@ -280,6 +300,7 @@ const App = () => {
         .filter((f) => _isVideo(f))
         .map((v) => ({
           url: _toAuthenticatedUrl(`${window.PUBLIC_URL}/media/${v.url}`),
+          filename: v.name,
           title: v.name
             .replaceAll("-", " ")
             .replaceAll("__", " - ")
@@ -292,6 +313,16 @@ const App = () => {
 
       // Fix for Safari : .ogg files are not supported
       if (_isSafari) _videoFiles = _videoFiles.filter((f) => f.extension !== "ogg");
+
+      // Mark video files that have a corresponding metadata file, if any
+      _videoFiles = _videoFiles.map((v) => ({
+        ...v,
+        metadataURL: (
+          files.find((f) => f.name === v.filename.replace(`.${v.extension}`, ".json")) || {
+            url: false,
+          }
+        ).url,
+      }));
 
       setVideos((freshVideos) => {
         if (!hasCache) return _videoFiles;
@@ -459,7 +490,10 @@ const App = () => {
               <>
                 {Feed}
                 {visibleVideos[currentVideoIndex] && (
-                  <BottomMetadata video={visibleVideos[currentVideoIndex]} />
+                  <BottomMetadata
+                    video={visibleVideos[currentVideoIndex]}
+                    extraMetadata={currentVideoMetadata}
+                  />
                 )}
                 <BottomNavbar
                   onDownload={download}

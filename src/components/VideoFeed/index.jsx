@@ -40,8 +40,12 @@ const VideoFeed = ({
   // Mechanism - On video end, call a listener to trigger autoscroll + autoplay if enabled + progress tracker
   const handleVideoTimeUpdate = (e) => {
     const progressRate = e.target.currentTime / (e.target.duration % 60);
+
+    if (!progressRef.current) return;
+
     progressRef.current.style.transform = `scaleX(${progressRate})`;
   };
+
   const replayVideo = (e) => {
     e.target.play();
     onFinishVideo();
