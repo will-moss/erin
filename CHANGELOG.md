@@ -1,3 +1,10 @@
+# [1.10.0](https://github.com/will-moss/erin/compare/v1.9.0...v1.10.0) (2024-09-14)
+
+
+### Features
+
+* **project:** added support for video metadata using Tiktok UI with channel, link, and caption ([bd61dec](https://github.com/will-moss/erin/commit/bd61dec01135dfa389b2d0720cf8e99affce946f)), closes [#7](https://github.com/will-moss/erin/issues/7)
+
 # [1.9.0](https://github.com/will-moss/erin/compare/v1.8.0...v1.9.0) (2024-09-13)
 
 
