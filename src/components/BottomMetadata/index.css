@@ -1,8 +1,11 @@
 .bottom-metadata {
   position: fixed;
-  bottom: 60px;
+  bottom: 57px;
   width: 100%;
   z-index: 10;
+  background: rgba(0, 0, 0, 0.1);
+  padding-top: 8px;
+  padding-bottom: 3px;
 }
 .bottom-metadata .video-title {
   width: 100%;
@@ -61,5 +64,8 @@
   margin-bottom: 12px;
   font-size: 13px;
   padding-left: 8px;
+  padding-right: 16px;
   line-height: 125%;
+  max-height: 50px;
+  overflow: auto;
 }
