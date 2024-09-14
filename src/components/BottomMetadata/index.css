@@ -1,17 +1,22 @@
 .bottom-metadata {
-  height: 30px;
-  display: flex;
-  align-items: center;
   position: fixed;
   bottom: 60px;
   width: 100%;
   z-index: 10;
 }
-.bottom-metadata svg {
+.bottom-metadata .video-title {
+  width: 100%;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.bottom-metadata .video-title svg {
   color: white;
 }
 
-.bottom-metadata p {
+.bottom-metadata .video-title p {
   font-size: 16px;
   font-weight: 400;
   color: #fff;
@@ -20,4 +25,41 @@
   overflow: hidden;
   max-width: 90%;
   line-height: normal;
+}
+
+.bottom-metadata .channel {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  gap: 6px;
+  padding-left: 8px;
+  margin-bottom: 12px;
+}
+
+.bottom-metadata .channel .avatar-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #555;
+}
+
+.bottom-metadata .channel .avatar-wrapper img {
+  width: 100%;
+}
+.bottom-metadata .channel > span {
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+}
+.bottom-metadata .video-caption {
+  color: white;
+  margin-bottom: 12px;
+  font-size: 13px;
+  padding-left: 8px;
+  line-height: 125%;
 }
