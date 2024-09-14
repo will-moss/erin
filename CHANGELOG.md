@@ -1,3 +1,10 @@
+## [1.10.1](https://github.com/will-moss/erin/compare/v1.10.0...v1.10.1) (2024-09-14)
+
+
+### Bug Fixes
+
+* **style:** improved video metadata's style for long content and contrast ([231241c](https://github.com/will-moss/erin/commit/231241c2dad8959a4046ad5162abbd1e0cda27cc))
+
 # [1.10.0](https://github.com/will-moss/erin/compare/v1.9.0...v1.10.0) (2024-09-14)
 
 
