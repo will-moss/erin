@@ -31,13 +31,14 @@
 			Access-Control-Expose-Headers "Authorization"
 			Access-Control-Allow-Credentials "true"
 			Access-Control-Allow-Request-Headers "Authorization"
+      Access-Control-Expose-Headers "X-ERIN-HASH"
 			Vary Origin
 		}
 
 		# CORS - Preflight
 		handle @cors_preflight {
 			header {
-				Access-Control-Allow-Methods "GET, POST, PUT, PATCH, DELETE"
+				Access-Control-Allow-Methods "HEAD, GET, POST, PUT, PATCH, DELETE"
 				Access-Control-Allow-Headers "Authorization"
 				Access-Control-Allow-Credentials "true"
 				Access-Control-Max-Age "3600"
@@ -46,12 +47,12 @@
 		}
 
 		# Authentication
-		@auth_active expression {method} == "GET" && {vars.auth_enabled} == true && !query({'hash': '{$AUTH_SECRET}'})
+		@auth_active expression method('GET','HEAD') && {vars.auth_enabled} == true && !query({'hash': '{$AUTH_SECRET}'})
     handle @auth_active {
       basic_auth {
         Erin {$AUTH_SECRET}
       }
-      respond "{ \"hash\": \"{$AUTH_SECRET}\" }"
+      header X-ERIN-HASH "{$AUTH_SECRET}"
     }
 	}
 

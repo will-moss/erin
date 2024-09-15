@@ -129,7 +129,7 @@ const App = () => {
 
     // Fetch metadata if any
     if (v && v.metadataURL) {
-      return fetch(_toAuthenticatedUrl(`${window.PUBLIC_URL}/media/${v.metadataURL}`), {
+      return fetch(v.metadataURL, {
         method: "GET",
         headers: _makeHTTPHeaders(),
       })
@@ -235,18 +235,18 @@ const App = () => {
     if (evt) setHasEverSubmitted(true);
 
     fetch(`${window.PUBLIC_URL}/media/`, {
-      method: "GET",
+      method: "HEAD",
       cache: "no-cache",
       headers: _makeHTTPHeaders(),
     })
       .then((r) => {
         if (!r.ok) throw new Error();
-        return r.json();
+        return r;
       })
       .then((r) => {
         if (window.USE_SECRET) {
           _storeSecret(formSecret);
-          setSecureHash(r.hash);
+          setSecureHash(r.headers.get("x-erin-hash"));
         }
         setHasReachedRemoteServer(true);
       })
@@ -296,33 +296,44 @@ const App = () => {
     _retrieveVideosRecursively(startingPath).then((files) => {
       if (!files) setLoading(false);
 
-      let _videoFiles = files
-        .filter((f) => _isVideo(f))
-        .map((v) => ({
-          url: _toAuthenticatedUrl(`${window.PUBLIC_URL}/media/${v.url}`),
-          filename: v.name,
-          title: v.name
-            .replaceAll("-", " ")
-            .replaceAll("__", " - ")
-            .split(".")
-            .slice(0, -1)
-            .join(""),
-          extension: v.url.split(".").at(-1).toLowerCase(),
-        }));
+      // Put the metadata (JSON) files at the end, to optimize looping order and prevent misses
+      files.sort((a, b) => (a.name.endsWith(".json") ? 1 : -1));
+
+      let _videoFiles = {};
+      for (let i = 0; i < files.length; i++) {
+        const current = files[i];
+        const _id = current.name.split(".").at(0);
+
+        if (!_id || current.is_dir) continue;
+
+        // Case : Video file
+        if (_isVideo(current)) {
+          if (!_isSafari || (_isSafari && current.extension !== "ogg"))
+            _videoFiles[_id] = {
+              url: _toAuthenticatedUrl(`${window.PUBLIC_URL}/media/${current.url}`),
+              filename: current.name,
+              title: current.name
+                .replaceAll("-", " ")
+                .replaceAll("__", " - ")
+                .split(".")
+                .slice(0, -1)
+                .join(""),
+              extension: current.url.split(".").at(-1).toLowerCase(),
+              metadataURL: false,
+            };
+
+          continue;
+        }
+
+        // Case : Metadata file
+        if (_id in _videoFiles)
+          _videoFiles[_id].metadataURL = _toAuthenticatedUrl(
+            `${window.PUBLIC_URL}/media/${current.url}`
+          );
+      }
+
+      _videoFiles = Object.values(_videoFiles);
       _shuffleArray(_videoFiles);
-
-      // Fix for Safari : .ogg files are not supported
-      if (_isSafari) _videoFiles = _videoFiles.filter((f) => f.extension !== "ogg");
-
-      // Mark video files that have a corresponding metadata file, if any
-      _videoFiles = _videoFiles.map((v) => ({
-        ...v,
-        metadataURL: (
-          files.find((f) => f.name === v.filename.replace(`.${v.extension}`, ".json")) || {
-            url: false,
-          }
-        ).url,
-      }));
 
       setVideos((freshVideos) => {
         if (!hasCache) return _videoFiles;
