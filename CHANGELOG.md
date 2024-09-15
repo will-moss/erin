@@ -1,3 +1,10 @@
+## [1.10.2](https://github.com/will-moss/erin/compare/v1.10.1...v1.10.2) (2024-09-15)
+
+
+### Performance Improvements
+
+* **client:** big performance improvement on metadata-loading and authentication ([ee2bda5](https://github.com/will-moss/erin/commit/ee2bda506addfd1bf81913481a06b25cf587a5f3))
+
 ## [1.10.1](https://github.com/will-moss/erin/compare/v1.10.0...v1.10.1) (2024-09-14)
 
 
