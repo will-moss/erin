@@ -7,11 +7,15 @@
    </p>
 </p>
 
+| | | |
+|:-------------------------:|:-------------------------:|:-------------------------:|
+|<img width="1604" src="/screenshots/SCREENSHOT-1.png"/> |  <img width="1604" src="/screenshots/SCREENSHOT-2.png"/> | <img width="1604" src="/screenshots/SCREENSHOT-3.png"/> |
+
 ## Introduction
 
 Erin is a simple and self-hostable service that enables you to view your own clips using TikTok's well-known vertical swipe feed.
 [A request was made on Reddit](https://www.reddit.com/r/selfhosted/comments/1dogl9d/selfhost_a_site_for_short_videos_like_tiktok/)
-for a self-hostable app that can show filtered videos using TikTok's interface, so I made it. ([See screenshots](/screenshots))
+for a self-hostable app that can show filtered videos using TikTok's interface, so I made it.
 
 ## Features
 
