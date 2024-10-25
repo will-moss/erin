@@ -1,3 +1,16 @@
+# [1.11.0](https://github.com/will-moss/erin/compare/v1.10.3...v1.11.0) (2024-10-25)
+
+
+### Bug Fixes
+
+* **cache:** fixed caching mechanism broken due to random shuffling in the first place ([69c50db](https://github.com/will-moss/erin/commit/69c50dbb7d84ca0bb21c2d9ee81f33b449b5a629))
+
+
+### Features
+
+* **client:** added double-tap-to-toggle fullscreen feature ([43b26d9](https://github.com/will-moss/erin/commit/43b26d9867bdd96dd70093be35c22b2d5dad1451)), closes [#10](https://github.com/will-moss/erin/issues/10)
+* **project:** added support for playlists with UI navigation and auto-discovery on the server ([09daea9](https://github.com/will-moss/erin/commit/09daea9d0677e9f14f3c1b82c8f3cc2547d097ad)), closes [#10](https://github.com/will-moss/erin/issues/10)
+
 ## [1.10.2](https://github.com/will-moss/erin/compare/v1.10.1...v1.10.2) (2024-09-15)
 
 
