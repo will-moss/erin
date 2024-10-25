@@ -1,5 +1,6 @@
 // Assets
 import {
+  faCompactDisc,
   faDownload,
   faEyeSlash,
   faVolumeMute,
@@ -9,9 +10,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./index.css";
 import { useLongPress } from "@uidotdev/usehooks";
 
-const BottomNavbar = ({ isMuted, onToggleMute, onDownload, onBlacklist, onOpenBlacklist }) => {
+const BottomNavbar = ({
+  isMuted,
+  onToggleMute,
+  onDownload,
+  onBlacklist,
+  onOpenBlacklist,
+  onOpenPlaylistsViewer,
+}) => {
   return (
     <div className="bottom-navbar">
+      <button type="button" className="nav-item" onClick={onOpenPlaylistsViewer}>
+        <FontAwesomeIcon icon={faCompactDisc} className="icon" />
+      </button>
       <button
         type="button"
         className="nav-item"

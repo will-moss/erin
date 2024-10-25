@@ -22,9 +22,10 @@ for a self-hostable app that can show filtered videos using TikTok's interface, 
 Erin has all these features implemented :
 - Display your own videos using TikTok's swipe feed
 - Mask the videos you don't want to see in your feed\*
-- Choose which feed you want to play\*\*
+- Choose which feed (playlist) you want to play\*\*
 - Autoplay your feed without even swiping
 - Seek forward and backward using your keyboard, or using double taps
+- Enter / Exit fullscreen using a double tap in the center
 - Show video metadata using TikTok's UI\*\*\*
 - Simple lazy-loading mechanism for your videos
 - Automatic clip naming based on file name
@@ -37,7 +38,7 @@ Caddy takes care of authentication, serving static files, and serving the React 
 
 > \*: You can mask videos to hide them from your feed. Should you want to see which videos were masked, and even unmask them, you can long-press the `Mask` button, and the manager will open.
 
-> \*\*: By default, Erin will create a random feed from all the videos in your folder and its subdirectories. However, if you would like to create custom feeds, you can set your URL to any of the subdirectories path. For example: `https://my-server.tld/directory-a` will create a feed from the videos located in the `/directory-a` directory, and it works with any path (so, nested folders are supported).
+> \*\*: By default, Erin will create a random feed from all the videos in your folder and its subdirectories. However, if you would like to create custom feeds (playlists), you can create subdirectories and organize your videos accordingly. For example: `https://my-server.tld/directory-a` will create a feed from the videos located in the `/directory-a` directory, and it works with any path (so, nested folders are supported).
 
 > \*\*\*: You can show a channel (with an avatar and name), a caption and a link for all your videos using a metadata file. The metadata file can be located anywhere inside your videos folder, and it must match its associated video's filename, while replacing the extension with JSON. For example: `my-video.mp4` can have its metadata in `my-video.json`. The metadata format [is shown here](/examples/video-metadata.json), and note that you can use raw HTML in the caption for custom styling and effects.
 

@@ -12,6 +12,7 @@ import { usePrevious } from "@uidotdev/usehooks";
 import "./App.css";
 import BlacklistManager from "./components/BlacklistManager";
 import BottomMetadata from "./components/BottomMetadata";
+import PlaylistsViewer from "./components/PlaylistViewer";
 
 const App = () => {
   // Misc - General niceties
@@ -119,7 +120,7 @@ const App = () => {
     setMuted(!muted);
   };
 
-  // Member - Saves a { url , title } dictionary for every video discovered
+  // Member - Saves a { url , title , extension , filename , metadataURL  } dictionary for every video discovered
   const [videos, setVideos] = useState([]);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [currentVideoMetadata, setCurrentVideoMetadata] = useState(false);
@@ -151,6 +152,9 @@ const App = () => {
     if (!window.AUTOPLAY_ENABLED) return;
     document.querySelector(".feed").scrollBy({ top: 1, left: 0, behavior: "smooth" });
   };
+
+  // Member - Save playlists
+  const [playlists, setPlaylists] = useState([]);
 
   // Member - Trick to trigger state updates on localStorage updates
   const [blackListUpdater, setBlacklistUpdater] = useState(0);
@@ -230,6 +234,15 @@ const App = () => {
     setBlacklistUpdater(blackListUpdater + 1);
   };
 
+  // Member - Manage playlist viewer UI
+  const [playlistsViewerOpen, setPlaylistsViewerOpen] = useState(false);
+  const openPlaylistsViewer = () => {
+    setPlaylistsViewerOpen(true);
+  };
+  const hidePlaylistsViewer = () => {
+    setPlaylistsViewerOpen(false);
+  };
+
   // Method - Test connectivity with the remote server
   const attemptToReachRemoteServer = (evt) => {
     if (evt) evt.preventDefault();
@@ -290,14 +303,11 @@ const App = () => {
       .catch((_) => new Promise((res, rej) => res([])));
   };
 
-  // Method - Retrieve all the video links
+  // Method - Retrieve all the video links (and generate the associated playlists based on folder structure)
   const retrieveVideos = () => {
     if (!hasCache) setLoading(true);
 
-    let startingPath = window.location.pathname.slice(1);
-    if (startingPath.length > 1 && !startingPath.endsWith("/")) startingPath += "/";
-
-    _retrieveVideosRecursively(startingPath).then((files) => {
+    _retrieveVideosRecursively().then((files) => {
       if (!files) setLoading(false);
 
       // Put the metadata (JSON) files at the end, to optimize looping order and prevent misses
@@ -323,6 +333,7 @@ const App = () => {
                 .slice(0, -1)
                 .join(""),
               extension: current.url.split(".").at(-1).toLowerCase(),
+              playlist: current.url.replace(current.name, ""),
               metadataURL: false,
             };
 
@@ -337,16 +348,24 @@ const App = () => {
       }
 
       _videoFiles = Object.values(_videoFiles);
+      _storeVideos(_videoFiles);
+
+      // Playlist extraction
+      setPlaylists([...new Set(_videoFiles.map((v) => v.playlist).filter((p) => p))].sort());
+
+      // Filter video files retrieved according to the current url-defined playlist
+      let currentPlaylist = window.location.pathname.substring(1);
+      if (currentPlaylist && currentPlaylist.substr(-1) !== "/") currentPlaylist += "/";
+      _videoFiles = _videoFiles.filter((v) => v.playlist === currentPlaylist);
 
       setVideos((freshVideos) => {
-        if (!hasCache) return _shuffleArray(_videoFiles);
+        if (!hasCache || currentPlaylist) return _shuffleArray(_videoFiles);
         else if (hasCache && !_arraysAreEqual(_videoFiles, freshVideos))
           return _shuffleArray([
             ...freshVideos,
             ..._videoFiles.filter((f) => !freshVideos.some((v) => v.url === f.url)),
           ]);
       });
-      _storeVideos(_videoFiles);
 
       if (!hasCache) {
         setLoading(false);
@@ -515,12 +534,18 @@ const App = () => {
                   isMuted={muted}
                   onBlacklist={blacklist}
                   onOpenBlacklist={openBlacklist}
+                  onOpenPlaylistsViewer={openPlaylistsViewer}
                 />
                 <BlacklistManager
                   visible={blacklistOpen}
                   videos={_getBlacklist()}
                   onClose={hideBlacklist}
                   onUnmask={removeFromBlacklist}
+                />
+                <PlaylistsViewer
+                  visible={playlistsViewerOpen}
+                  playlists={playlists}
+                  onClose={hidePlaylistsViewer}
                 />
               </>
             )}
