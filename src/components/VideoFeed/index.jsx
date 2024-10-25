@@ -37,6 +37,9 @@ const VideoFeed = ({
   // Member - Prevent double jump forward
   const hasJumpedForward = useRef(false);
 
+  // Member - Track state of fullscreen activation
+  let _isInFullscreen = false;
+
   // Mechanism - On video end, call a listener to trigger autoscroll + autoplay if enabled + progress tracker
   const handleVideoTimeUpdate = (e) => {
     const progressRate = e.target.currentTime / (e.target.duration % 60);
@@ -180,6 +183,22 @@ const VideoFeed = ({
     else if (e.code === "ArrowUp")
       feedRef.current.scrollBy({ top: -1, left: 0, behavior: "smooth" });
   };
+  const toggleFullscreen = () => {
+    const element = document.documentElement;
+    const requestMethod =
+      element.requestFullScreen ||
+      element.webkitRequestFullScreen ||
+      element.mozRequestFullScreen ||
+      element.msRequestFullScreen;
+
+    if (!_isInFullscreen) {
+      _isInFullscreen = true;
+      requestMethod.call(element);
+    } else {
+      _isInFullscreen = false;
+      document.exitFullscreen();
+    }
+  };
   const seekVideoForward = () => {
     currentVideoElement.current.currentTime += 5;
   };
@@ -187,10 +206,16 @@ const VideoFeed = ({
     currentVideoElement.current.currentTime -= 5;
   };
   const handleVideoTapToSeek = (e) => {
-    const halfWidth = e.target.offsetWidth / 2;
+    const fullWidth = e.target.offsetWidth;
 
-    if (e.clientX > halfWidth) seekVideoForward();
-    else seekVideoBackward();
+    const firstThird = fullWidth / 3;
+    const secondThird = (fullWidth / 3) * 2;
+
+    console.log(e.clientX, fullWidth, firstThird, secondThird);
+
+    if (e.clientX >= 0 && e.clientX <= firstThird) seekVideoBackward();
+    else if (e.clientX > firstThird && e.clientX <= secondThird) toggleFullscreen();
+    else if (e.clientX > secondThird) seekVideoForward();
   };
   useEffect(() => {
     document.addEventListener("keydown", handleKeyboardSeeking);
