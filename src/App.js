@@ -84,10 +84,14 @@ const App = () => {
     return true;
   };
   const _shuffleArray = (arr) => {
-    for (let i = arr.length - 1; i > 0; i--) {
+    const copy = [...arr];
+
+    for (let i = copy.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
-      [arr[i], arr[j]] = [arr[j], arr[i]];
+      [copy[i], copy[j]] = [copy[j], copy[i]];
     }
+
+    return copy;
   };
 
   // Members - Form & Auth management
@@ -333,15 +337,14 @@ const App = () => {
       }
 
       _videoFiles = Object.values(_videoFiles);
-      _shuffleArray(_videoFiles);
 
       setVideos((freshVideos) => {
-        if (!hasCache) return _videoFiles;
+        if (!hasCache) return _shuffleArray(_videoFiles);
         else if (hasCache && !_arraysAreEqual(_videoFiles, freshVideos))
-          return [
+          return _shuffleArray([
             ...freshVideos,
             ..._videoFiles.filter((f) => !freshVideos.some((v) => v.url === f.url)),
-          ];
+          ]);
       });
       _storeVideos(_videoFiles);
 
