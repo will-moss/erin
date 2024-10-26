@@ -147,3 +147,11 @@
   font-size: 18px;
   color: white;
 }
+@media (prefers-color-scheme: dark) {
+  .blacklist-entry {
+    background: #222;
+  }
+  .blacklist-entry .left p {
+    color: #ddd;
+  }
+}

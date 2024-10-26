@@ -95,3 +95,12 @@
   font-weight: 600;
   height: 18px;
 }
+
+@media (prefers-color-scheme: dark) {
+  .playlists-viewer-entry {
+    background: #222;
+  }
+  .playlists-viewer-entry .left p {
+    color: #ddd;
+  }
+}
