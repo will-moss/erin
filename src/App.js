@@ -221,6 +221,18 @@ const App = () => {
     );
   };
 
+  // Video control - Toggle Play / Pause
+  const [isPlaying, setIsPlaying] = useState(true);
+  const togglePlayPause = () => {
+    const currentVideo = document.querySelector(`video[data-index="${currentVideoIndex}"]`);
+    if (!currentVideo) return;
+
+    if (!currentVideo.paused) currentVideo.pause();
+    else currentVideo.play();
+
+    setIsPlaying(!isPlaying);
+  };
+
   // Member - Manage blacklist UI
   const [blacklistOpen, setBlacklistOpen] = useState(false);
   const openBlacklist = () => {
@@ -373,11 +385,12 @@ const App = () => {
     });
   };
 
-  // Hook - When a new video is focused, update its muted state
+  // Hook - When a new video is focused, update its muted state, and assume it is playing internally
   useEffect(() => {
     const currentVideo = document.querySelector(`video[data-index="${currentVideoIndex}"]`);
     if (!currentVideo) return;
     currentVideo.muted = muted;
+    setIsPlaying(true);
   }, [currentVideoIndex]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Memoized component - Video Feed
@@ -532,9 +545,11 @@ const App = () => {
                   onDownload={download}
                   onToggleMute={toggleMute}
                   isMuted={muted}
+                  isPlaying={isPlaying}
                   onBlacklist={blacklist}
                   onOpenBlacklist={openBlacklist}
                   onOpenPlaylistsViewer={openPlaylistsViewer}
+                  onTogglePlayPause={togglePlayPause}
                 />
                 <BlacklistManager
                   visible={blacklistOpen}

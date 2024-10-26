@@ -3,6 +3,8 @@ import {
   faCompactDisc,
   faDownload,
   faEyeSlash,
+  faPause,
+  faPlay,
   faVolumeMute,
   faVolumeUp,
 } from "@fortawesome/free-solid-svg-icons";
@@ -12,8 +14,10 @@ import { useLongPress } from "@uidotdev/usehooks";
 
 const BottomNavbar = ({
   isMuted,
+  isPlaying,
   onToggleMute,
   onDownload,
+  onTogglePlayPause,
   onBlacklist,
   onOpenBlacklist,
   onOpenPlaylistsViewer,
@@ -30,6 +34,10 @@ const BottomNavbar = ({
         {...useLongPress(onOpenBlacklist, { threshold: 500 })}
       >
         <FontAwesomeIcon icon={faEyeSlash} className="icon" />
+      </button>
+      <button type="button" className="nav-item" onClick={onTogglePlayPause}>
+        {!isPlaying && <FontAwesomeIcon icon={faPlay} className="icon" />}
+        {isPlaying && <FontAwesomeIcon icon={faPause} className="icon" />}
       </button>
       <button type="button" className="nav-item" onClick={onDownload}>
         <FontAwesomeIcon icon={faDownload} className="icon" />
