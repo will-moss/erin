@@ -82,10 +82,10 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  max-width: 90%;
+  max-width: 95%;
 }
 .playlists-viewer-entry .left p {
-  max-width: 240px;
+  max-width: 100%;
   text-overflow: ellipsis;
   overflow: hidden;
   text-align: left;

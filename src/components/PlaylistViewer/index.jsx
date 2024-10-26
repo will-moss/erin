@@ -1,7 +1,7 @@
 // Assets
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./index.css";
-import { faClose, faEye } from "@fortawesome/free-solid-svg-icons";
+import { faClose } from "@fortawesome/free-solid-svg-icons";
 
 const PlaylistsViewer = ({ visible, playlists, onClose }) => {
   return (

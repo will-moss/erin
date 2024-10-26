@@ -345,7 +345,7 @@ const App = () => {
                 .slice(0, -1)
                 .join(""),
               extension: current.url.split(".").at(-1).toLowerCase(),
-              playlist: current.url.replace(current.name, ""),
+              playlist: decodeURI(current.url).replace(current.name, ""),
               metadataURL: false,
             };
 
@@ -361,12 +361,13 @@ const App = () => {
 
       _videoFiles = Object.values(_videoFiles);
       _storeVideos(_videoFiles);
+      console.log(_videoFiles);
 
       // Playlist extraction
       setPlaylists([...new Set(_videoFiles.map((v) => v.playlist).filter((p) => p))].sort());
 
       // Filter video files retrieved according to the current url-defined playlist
-      let currentPlaylist = window.location.pathname.substring(1);
+      let currentPlaylist = decodeURIComponent(window.location.pathname.substring(1));
       if (currentPlaylist && currentPlaylist.substr(-1) !== "/") currentPlaylist += "/";
       _videoFiles = _videoFiles.filter((v) => v.playlist === currentPlaylist);
 
