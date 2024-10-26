@@ -38,7 +38,13 @@ const VideoFeed = ({
   const hasJumpedForward = useRef(false);
 
   // Member - Track state of fullscreen activation
-  let _isInFullscreen = false;
+  let isInFullscreen = useRef(false);
+
+  // Member - Prevent showing the navigation when the mouse moves during a double click to enter fullscreen
+  let fullscreenIsSafe = useRef(false);
+
+  // Member - Prevent clogging CPU with setTimeout calls on mouse move (fullscren-mode only)
+  let timer = useRef();
 
   // Mechanism - On video end, call a listener to trigger autoscroll + autoplay if enabled + progress tracker
   const handleVideoTimeUpdate = (e) => {
@@ -174,7 +180,7 @@ const VideoFeed = ({
     };
   }, [videos]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Hook - On very first mount - Set keyboard forward/backward shortcuts
+  // Hook - On very first mount - Set keyboard forward/backward shortcuts + Mouse move listener for fullscreen mode
   const handleKeyboardSeeking = (e) => {
     if (e.code === "ArrowRight") seekVideoForward();
     else if (e.code === "ArrowLeft") seekVideoBackward();
@@ -191,11 +197,18 @@ const VideoFeed = ({
       element.mozRequestFullScreen ||
       element.msRequestFullScreen;
 
-    if (!_isInFullscreen) {
-      _isInFullscreen = true;
+    if (!isInFullscreen.current) {
+      isInFullscreen.current = true;
+      document.body.classList.add("fullscreen");
       requestMethod.call(element);
+      setTimeout(() => {
+        fullscreenIsSafe.current = true;
+      }, 1000);
     } else {
-      _isInFullscreen = false;
+      isInFullscreen.current = false;
+      fullscreenIsSafe.current = false;
+      document.body.classList.remove("fullscreen");
+      if (timer.current) clearTimeout(timer.current);
       document.exitFullscreen();
     }
   };
@@ -211,15 +224,33 @@ const VideoFeed = ({
     const firstThird = fullWidth / 3;
     const secondThird = (fullWidth / 3) * 2;
 
-    console.log(e.clientX, fullWidth, firstThird, secondThird);
-
     if (e.clientX >= 0 && e.clientX <= firstThird) seekVideoBackward();
     else if (e.clientX > firstThird && e.clientX <= secondThird) toggleFullscreen();
     else if (e.clientX > secondThird) seekVideoForward();
   };
+  const handleMouseMove = () => {
+    if (!isInFullscreen.current) return;
+    if (!fullscreenIsSafe.current) return;
+
+    if (timer.current) clearTimeout(timer.current);
+
+    document.body.classList.remove("fullscreen");
+
+    timer.current = setTimeout(() => {
+      document.body.classList.add("fullscreen");
+    }, 3000);
+  };
   useEffect(() => {
+    // Seeking mechanism
     document.addEventListener("keydown", handleKeyboardSeeking);
-    return () => document.removeEventListener("keydown", handleKeyboardSeeking);
+
+    // Fullscreen navigation
+    document.addEventListener("mousemove", handleMouseMove);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyboardSeeking);
+      document.removeEventListener("mousemove", handleMouseMove);
+    };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   initialIndex = _bufferSize === videos.length ? 0 : initialIndex;
