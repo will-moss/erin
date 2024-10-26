@@ -1,3 +1,17 @@
+# [1.12.0](https://github.com/will-moss/erin/compare/v1.11.0...v1.12.0) (2024-10-26)
+
+
+### Bug Fixes
+
+* **playlists:** added support for Asian (and non-ascii) characters in general ([61de3b5](https://github.com/will-moss/erin/commit/61de3b5664b9a9914da75a54665ca73a10a6fd5c)), closes [#10](https://github.com/will-moss/erin/issues/10)
+
+
+### Features
+
+* **client:** added (OS-based) dark theme support for playlist and blacklist managers ([b1b98d1](https://github.com/will-moss/erin/commit/b1b98d1cf6ded831f7445911cf501216fdc08c66)), closes [#10](https://github.com/will-moss/erin/issues/10)
+* **client:** added a dedicated play/pause button to replace the tap-to-pause gesture ([cbcbeeb](https://github.com/will-moss/erin/commit/cbcbeebdb2244b61d78fc8707da4ffe3fde7fa75)), closes [#10](https://github.com/will-moss/erin/issues/10)
+* **client:** added collapsible navigation in fullscreen mode, with mouse move activation ([4023e7d](https://github.com/will-moss/erin/commit/4023e7d657c8654defe3e1fd7696325033209607)), closes [#10](https://github.com/will-moss/erin/issues/10)
+
 # [1.11.0](https://github.com/will-moss/erin/compare/v1.10.3...v1.11.0) (2024-10-25)
 
 
