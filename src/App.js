@@ -94,6 +94,11 @@ const App = () => {
 
     return copy;
   };
+  // Source : https://stackoverflow.com/questions/7449588/why-does-decodeuricomponent-lock-up-my-browser
+  const _decodeURIComponentSafe = (s) => {
+    if (!s) return s;
+    return decodeURIComponent(s.replace(/%(?![0-9a-fA-F]+)/g, "%25"));
+  };
 
   // Members - Form & Auth management
   const [autoconnect, setAutoconnect] = useState(false);
@@ -290,7 +295,7 @@ const App = () => {
 
   // Method - Recursive video retrieval
   const _retrieveVideosRecursively = (path = "") => {
-    return fetch(_toAuthenticatedUrl(`${window.PUBLIC_URL}/media/${path}`), {
+    return fetch(_toAuthenticatedUrl(`${window.PUBLIC_URL}/media/${encodeURIComponent(path)}`), {
       method: "GET",
       cache: "no-cache",
       headers: _makeHTTPHeaders(),
@@ -345,7 +350,7 @@ const App = () => {
                 .slice(0, -1)
                 .join(""),
               extension: current.url.split(".").at(-1).toLowerCase(),
-              playlist: decodeURI(current.url).replace(current.name, ""),
+              playlist: current.url.replace(encodeURIComponent(current.name), ""),
               metadataURL: false,
             };
 
@@ -361,13 +366,12 @@ const App = () => {
 
       _videoFiles = Object.values(_videoFiles);
       _storeVideos(_videoFiles);
-      console.log(_videoFiles);
 
       // Playlist extraction
       setPlaylists([...new Set(_videoFiles.map((v) => v.playlist).filter((p) => p))].sort());
 
       // Filter video files retrieved according to the current url-defined playlist
-      let currentPlaylist = decodeURIComponent(window.location.pathname.substring(1));
+      let currentPlaylist = _decodeURIComponentSafe(window.location.pathname.substring(1));
       if (currentPlaylist && currentPlaylist.substr(-1) !== "/") currentPlaylist += "/";
       _videoFiles = _videoFiles.filter((v) => v.playlist === currentPlaylist);
 
