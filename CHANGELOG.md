@@ -1,3 +1,10 @@
+## [1.12.2](https://github.com/will-moss/erin/compare/v1.12.1...v1.12.2) (2024-10-27)
+
+
+### Bug Fixes
+
+* **encoding:** added support for special symbols and percents in the playlists' and files' name ([d05719a](https://github.com/will-moss/erin/commit/d05719a89cc0a272665904c8dc1a0c8e677f436e)), closes [#10](https://github.com/will-moss/erin/issues/10)
+
 ## [1.12.1](https://github.com/will-moss/erin/compare/v1.12.0...v1.12.1) (2024-10-27)
 
 
