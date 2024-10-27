@@ -1,3 +1,10 @@
+## [1.12.1](https://github.com/will-moss/erin/compare/v1.12.0...v1.12.1) (2024-10-27)
+
+
+### Bug Fixes
+
+* **encoding:** added support for emojis in the playlists' and files' name ([464b199](https://github.com/will-moss/erin/commit/464b199123c7fd71cce2dca824b485e6e739dfe4)), closes [#10](https://github.com/will-moss/erin/issues/10)
+
 # [1.12.0](https://github.com/will-moss/erin/compare/v1.11.0...v1.12.0) (2024-10-26)
 
 
