@@ -19,7 +19,7 @@ const PlaylistsViewer = ({ visible, playlists, onClose }) => {
           {/* FULL STATE */}
           {playlists &&
             playlists.map((p, idx) => (
-              <a key={idx} className="playlists-viewer-entry" href={`/${p}`}>
+              <a key={idx} className="playlists-viewer-entry" href={`/${encodeURI(p)}`}>
                 <div className="left">
                   <p>{p}</p>
                 </div>

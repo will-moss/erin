@@ -23,7 +23,7 @@ const VideoCard = ({ index, url, isLoaded, refForwarder, onDoubleClick }) => {
       <video
         className="player"
         data-index={index}
-        src={isLoaded ? url : null}
+        src={isLoaded ? encodeURI(url) : null}
         ref={forward}
         onDoubleClick={handleDoubleClick}
         playsInline={true}

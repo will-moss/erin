@@ -95,7 +95,7 @@ const App = () => {
     return copy;
   };
   // Source : https://stackoverflow.com/questions/7449588/why-does-decodeuricomponent-lock-up-my-browser
-  const _decodeURIComponentSafe = (s) => {
+  window._decodeURIComponentSafe = (s) => {
     if (!s) return s;
     return decodeURIComponent(s.replace(/%(?![0-9a-fA-F]+)/g, "%25"));
   };
@@ -341,7 +341,9 @@ const App = () => {
         if (_isVideo(current)) {
           if (!_isSafari || (_isSafari && current.extension !== "ogg"))
             _videoFiles[_id] = {
-              url: _toAuthenticatedUrl(`${window.PUBLIC_URL}/media/${current.url}`),
+              url: window._decodeURIComponentSafe(
+                _toAuthenticatedUrl(`${window.PUBLIC_URL}/media/${current.url}`)
+              ),
               filename: current.name,
               title: current.name
                 .replaceAll("-", " ")
@@ -371,7 +373,7 @@ const App = () => {
       setPlaylists([...new Set(_videoFiles.map((v) => v.playlist).filter((p) => p))].sort());
 
       // Filter video files retrieved according to the current url-defined playlist
-      let currentPlaylist = _decodeURIComponentSafe(window.location.pathname.substring(1));
+      let currentPlaylist = window._decodeURIComponentSafe(window.location.pathname.substring(1));
       if (currentPlaylist && currentPlaylist.substr(-1) !== "/") currentPlaylist += "/";
       _videoFiles = _videoFiles.filter((v) => v.playlist === currentPlaylist);
 

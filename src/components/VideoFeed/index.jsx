@@ -141,7 +141,7 @@ const VideoFeed = ({
 
           // - - The first-has-become-last element is updated in the DOM
           firstElement.setAttribute("data-index", currentIndex + 1);
-          firstElement.setAttribute("src", videos[currentIndex + 1].url);
+          firstElement.setAttribute("src", encodeURI(videos[currentIndex + 1].url));
         }
       }
 
@@ -162,7 +162,7 @@ const VideoFeed = ({
 
           // - - The last-has-become-first element is updated in the DOM
           lastElement.setAttribute("data-index", currentIndex - 1);
-          lastElement.setAttribute("src", videos[currentIndex - 1].url);
+          lastElement.setAttribute("src", encodeURI(videos[currentIndex - 1].url));
         }
       }
     };
