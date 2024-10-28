@@ -12,6 +12,18 @@
     -Www-Authenticate
   }
 }
+(serve-react) {
+  root * /srv/
+  file_server
+  try_files /index.html
+
+  # React variables
+  replace __PUBLIC_URL__ {$PUBLIC_URL}
+  replace __USE_SECRET__ {$AUTH_ENABLED}
+  replace __APP_TITLE__  "{$APP_TITLE}"
+  replace __AUTOPLAY_ENABLED__  {$AUTOPLAY_ENABLED}
+  replace __PROGRESS_BAR_POSITION__  {$PROGRESS_BAR_POSITION}
+}
 
 # Server configuration
 {$PUBLIC_URL} {
@@ -65,21 +77,12 @@
 	}
 	@react-root path /
 	handle @react-root {
-		root * /srv/
-		file_server
-		try_files /index.html
-
-    # React variables
-    replace __PUBLIC_URL__ {$PUBLIC_URL}
-    replace __USE_SECRET__ {$AUTH_ENABLED}
-    replace __APP_TITLE__  "{$APP_TITLE}"
-    replace __AUTOPLAY_ENABLED__  {$AUTOPLAY_ENABLED}
-    replace __PROGRESS_BAR_POSITION__  {$PROGRESS_BAR_POSITION}
+    import serve-react
 	}
 
 	# 404 Redirect
 	handle /* {
-		import redirect-on-404
+    import serve-react
 	}
 	handle_errors 404 {
 		import redirect-on-404
