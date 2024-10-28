@@ -1,3 +1,10 @@
+## [1.12.4](https://github.com/will-moss/erin/compare/v1.12.3...v1.12.4) (2024-10-28)
+
+
+### Bug Fixes
+
+* **server:** edited Caddy configuration to support playlists rather than redirect 404 ([b0977b4](https://github.com/will-moss/erin/commit/b0977b471035ca181dc6fa80191d56b29ba687ea)), closes [#10](https://github.com/will-moss/erin/issues/10)
+
 ## [1.12.3](https://github.com/will-moss/erin/compare/v1.12.2...v1.12.3) (2024-10-28)
 
 
