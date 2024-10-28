@@ -1,3 +1,10 @@
+## [1.12.3](https://github.com/will-moss/erin/compare/v1.12.2...v1.12.3) (2024-10-28)
+
+
+### Bug Fixes
+
+* **encoding:** fixed and rewrote playlist identification and linking to better support every chars ([8f32876](https://github.com/will-moss/erin/commit/8f3287699585a269e314502204bea0c0d27e71ec)), closes [#10](https://github.com/will-moss/erin/issues/10)
+
 ## [1.12.2](https://github.com/will-moss/erin/compare/v1.12.1...v1.12.2) (2024-10-27)
 
 
