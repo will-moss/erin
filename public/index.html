@@ -21,7 +21,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
 
     <script>
-      window.PUBLIC_URL = "__PUBLIC_URL__";
+      window.PUBLIC_URL = window.location.origin;
       window.USE_SECRET = __USE_SECRET__;
       if (window.location.protocol === "https:")
         window.PUBLIC_URL = window.PUBLIC_URL.replace("http:", "https:");
