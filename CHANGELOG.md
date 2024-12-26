@@ -1,3 +1,10 @@
+## [1.12.5](https://github.com/will-moss/erin/compare/v1.12.4...v1.12.5) (2024-12-26)
+
+
+### Bug Fixes
+
+* **client:** changed the way the public url is built on the client to make it more flexible ([e48813e](https://github.com/will-moss/erin/commit/e48813ed30f14c87f4d3ce6aef815f343b5fdf3e)), closes [#13](https://github.com/will-moss/erin/issues/13)
+
 ## [1.12.4](https://github.com/will-moss/erin/compare/v1.12.3...v1.12.4) (2024-10-28)
 
 
