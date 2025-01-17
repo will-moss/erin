@@ -1,3 +1,10 @@
+# [1.13.0](https://github.com/will-moss/erin/compare/v1.12.5...v1.13.0) (2025-01-17)
+
+
+### Features
+
+* **client:** added support for ignoring hidden files and folders ([919073b](https://github.com/will-moss/erin/commit/919073be37d9ab333b11fd0894f9f8623020583f)), closes [#15](https://github.com/will-moss/erin/issues/15)
+
 ## [1.12.5](https://github.com/will-moss/erin/compare/v1.12.4...v1.12.5) (2024-12-26)
 
 
