@@ -306,10 +306,15 @@ const App = () => {
           new Promise((res, rej) => {
             if (!files) return res([]);
 
-            const _folders = files.filter((f) => f.is_dir);
-            const _files = files
+            let _folders = files.filter((f) => f.is_dir);
+            let _files = files
               .filter((f) => !f.is_dir)
               .map((f) => ({ ...f, url: `${path}${f.url.slice(2).trim()}` }));
+
+            if (window.IGNORE_HIDDEN_PATHS) {
+              _folders = _folders.filter((f) => !f.name.startsWith("."));
+              _files = _files.filter((f) => !f.name.startsWith("."));
+            }
 
             const promises = _folders.map((f) => _retrieveVideosRecursively(`${path}${f.name}`));
             Promise.all(promises).then((results) => {

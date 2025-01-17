@@ -23,6 +23,7 @@
   replace __APP_TITLE__  "{$APP_TITLE}"
   replace __AUTOPLAY_ENABLED__  {$AUTOPLAY_ENABLED}
   replace __PROGRESS_BAR_POSITION__  {$PROGRESS_BAR_POSITION}
+  replace __IGNORE_HIDDEN_PATHS__ {$IGNORE_HIDDEN_PATHS}
 }
 
 # Server configuration

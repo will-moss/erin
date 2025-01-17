@@ -113,6 +113,7 @@ To run Erin, you will need to set the following environment variables in a `.env
 | `APP_TITLE`             | `string`  | The custom title that you would like to display in the browser's tab. (Tip: You can use `[VIDEO_TITLE]` here if you want Erin to dynamically display the title of the current video.) | Erin - TikTok feed for your own clips |
 | `AUTOPLAY_ENABLED`      | `boolean` | Whether autoplay should be enabled. (This parameter is case sensitive) (Possible values : true, false) | false |
 | `PROGRESS_BAR_POSITION` | `string`  | Where the progress bar should be located on the screen. (This parameter is case sensitive) (Possible values : bottom, top) | bottom |
+| `IGNORE_HIDDEN_PATHS`   | `boolean`  | Whether all hidden files and directories (starting with a dot) should be ignored by Erin, and not loaded or scanned altogether | false |
 
 > **Tip :** To generate a secure hash for your instance, use the following command :
 
