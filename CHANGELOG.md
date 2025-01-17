@@ -1,3 +1,10 @@
+## [1.13.1](https://github.com/will-moss/erin/compare/v1.13.0...v1.13.1) (2025-01-17)
+
+
+### Bug Fixes
+
+* **build:** dummy commit for a newer version ([ecab50b](https://github.com/will-moss/erin/commit/ecab50b4710ea37a5927ac40b334fabe76467015))
+
 # [1.13.0](https://github.com/will-moss/erin/compare/v1.12.5...v1.13.0) (2025-01-17)
 
 
