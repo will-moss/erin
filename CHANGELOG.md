@@ -1,3 +1,10 @@
+# [1.14.0](https://github.com/will-moss/erin/compare/v1.13.1...v1.14.0) (2025-02-18)
+
+
+### Features
+
+* **client:** added support for horizontal feed scroll direction and associated env setting ([645e09e](https://github.com/will-moss/erin/commit/645e09e6907aacc28415b81cc5732e930d1c1df6)), closes [#17](https://github.com/will-moss/erin/issues/17)
+
 ## [1.13.1](https://github.com/will-moss/erin/compare/v1.13.0...v1.13.1) (2025-01-17)
 
 
