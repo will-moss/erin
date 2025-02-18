@@ -13,6 +13,7 @@
 .feed::-webkit-scrollbar {
   display: none;
 }
+
 .video-track-progress {
   height: 1px;
   width: 100%;
@@ -27,4 +28,9 @@
 }
 .video-track-progress.top {
   top: 0;
+}
+
+html[data-scroll-direction="horizontal"] .feed {
+  display: flex;
+  scroll-snap-type: x mandatory;
 }

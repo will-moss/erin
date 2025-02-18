@@ -99,6 +99,7 @@ const App = () => {
     if (!s) return s;
     return decodeURIComponent(s.replace(/%(?![0-9a-fA-F]+)/g, "%25"));
   };
+  const _scrollDirection = document.querySelector("html").getAttribute("data-scroll-direction");
 
   // Members - Form & Auth management
   const [autoconnect, setAutoconnect] = useState(false);
@@ -155,7 +156,13 @@ const App = () => {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
   const handleVideoFinish = () => {
     if (!window.AUTOPLAY_ENABLED) return;
-    document.querySelector(".feed").scrollBy({ top: 1, left: 0, behavior: "smooth" });
+    document
+      .querySelector(".feed")
+      .scrollBy(
+        _scrollDirection === "vertical"
+          ? { top: 1, left: 0, behavior: "smooth" }
+          : { top: 0, left: 1, behavior: "smooth" }
+      );
   };
 
   // Member - Save playlists
@@ -198,9 +205,21 @@ const App = () => {
     _addToBlackList(video);
 
     if (currentVideoIndex === visibleVideos.length - 1 && visibleVideos.length > 1) {
-      document.querySelector(".feed").scrollBy({ top: -1, left: 0, behavior: "smooth" });
+      document
+        .querySelector(".feed")
+        .scrollBy(
+          _scrollDirection === "vertical"
+            ? { top: -1, left: 0, behavior: "smooth" }
+            : { top: 0, left: -1, behavior: "smooth" }
+        );
     } else {
-      document.querySelector(".feed").scrollBy({ top: 1, left: 0, behavior: "smooth" });
+      document
+        .querySelector(".feed")
+        .scrollBy(
+          _scrollDirection === "vertical"
+            ? { top: 1, left: 0, behavior: "smooth" }
+            : { top: 0, left: 1, behavior: "smooth" }
+        );
     }
 
     setTimeout(

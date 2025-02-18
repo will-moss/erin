@@ -34,6 +34,9 @@ const VideoFeed = ({
   // Member - Number of videos to load at a time
   const _bufferSize = 3;
 
+  // Member - Current scroll direction
+  const _scrollDirection = document.querySelector("html").getAttribute("data-scroll-direction");
+
   // Member - Prevent double jump forward
   const hasJumpedForward = useRef(false);
 
@@ -62,11 +65,16 @@ const VideoFeed = ({
 
   // Hook - On mount - Set the current scroll
   useEffect(() => {
-    if (jumpToEnd) return feedRef.current.scrollBy({ top: 1, left: 0 });
+    if (jumpToEnd)
+      return feedRef.current.scrollBy(
+        _scrollDirection === "vertical" ? { top: 1, left: 0 } : { top: 0, left: 1 }
+      );
     if (jumpBackForward) {
       if (!hasJumpedForward.current) {
         hasJumpedForward.current = true;
-        return feedRef.current.scrollBy({ top: 1, left: 0 });
+        return feedRef.current.scrollBy(
+          _scrollDirection === "vertical" ? { top: 1, left: 0 } : { top: 0, left: 1 }
+        );
       }
 
       hasJumpedForward.current = false;
@@ -121,6 +129,9 @@ const VideoFeed = ({
       const videoHeight = videoRefs.current[1].parentNode.getBoundingClientRect().height;
       const padHeight = videoHeight * (currentIndex - 1);
 
+      const videoWidth = videoRefs.current[1].parentNode.getBoundingClientRect().width;
+      const padWidth = videoWidth * (currentIndex - 1);
+
       currentVideoIndex.current = visibleIndex;
 
       // Update the DOM based on the scroll action performed
@@ -133,7 +144,9 @@ const VideoFeed = ({
           videoRefs.current.push(firstElement);
 
           // - - The first element is moved from back to front in the DOM, to enable scroll
-          padRef.current.style.height = `${padHeight}px`;
+          if (_scrollDirection === "vertical") padRef.current.style.height = `${padHeight}px`;
+          else padRef.current.style.width = `${padWidth}px`;
+
           videoRefs.current[_bufferSize - 2].parentNode.insertAdjacentElement(
             "afterend",
             firstElement.parentNode
@@ -158,7 +171,9 @@ const VideoFeed = ({
             "beforebegin",
             lastElement.parentNode
           );
-          padRef.current.style.height = `${padHeight}px`;
+
+          if (_scrollDirection === "vertical") padRef.current.style.height = `${padHeight}px`;
+          else padRef.current.style.width = `${padWidth}px`;
 
           // - - The last-has-become-first element is updated in the DOM
           lastElement.setAttribute("data-index", currentIndex - 1);
@@ -185,9 +200,17 @@ const VideoFeed = ({
     if (e.code === "ArrowRight") seekVideoForward();
     else if (e.code === "ArrowLeft") seekVideoBackward();
     else if (e.code === "ArrowDown")
-      feedRef.current.scrollBy({ top: 1, left: 0, behavior: "smooth" });
+      feedRef.current.scrollBy(
+        _scrollDirection === "vertical"
+          ? { top: 1, left: 0, behavior: "smooth" }
+          : { top: 0, left: 1, behavior: "smooth" }
+      );
     else if (e.code === "ArrowUp")
-      feedRef.current.scrollBy({ top: -1, left: 0, behavior: "smooth" });
+      feedRef.current.scrollBy(
+        _scrollDirection === "vertical"
+          ? { top: -1, left: 0, behavior: "smooth" }
+          : { top: 0, left: -1, behavior: "smooth" }
+      );
   };
   const toggleFullscreen = () => {
     const element = document.documentElement;

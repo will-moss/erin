@@ -9,6 +9,10 @@
   height: 100%;
 }
 
+html[data-scroll-direction="horizontal"] .video {
+  min-width: 100%;
+}
+
 .video::before {
   content: "";
   display: block;
