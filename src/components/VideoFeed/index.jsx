@@ -79,7 +79,7 @@ const VideoFeed = ({
 
       hasJumpedForward.current = false;
     }
-  }, [initialIndex, jumpBackForward, jumpToEnd]);
+  }, [initialIndex, jumpBackForward, jumpToEnd, _scrollDirection]);
 
   // Hook - When videos are loaded - Set up the UI scroll observer
   useEffect(() => {

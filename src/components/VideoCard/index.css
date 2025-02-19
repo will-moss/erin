@@ -10,7 +10,8 @@
 }
 
 html[data-scroll-direction="horizontal"] .video {
-  min-width: 100%;
+  flex-grow: 1;
+  flex-shrink: 0;
 }
 
 .video::before {
