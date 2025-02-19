@@ -1,3 +1,10 @@
+## [1.14.1](https://github.com/will-moss/erin/compare/v1.14.0...v1.14.1) (2025-02-19)
+
+
+### Bug Fixes
+
+* **client:** fixed CSS styling causing horizontal scrolling glitches ([d166944](https://github.com/will-moss/erin/commit/d1669447a4637891765de4609467d6433b6154ef)), closes [#17](https://github.com/will-moss/erin/issues/17)
+
 # [1.14.0](https://github.com/will-moss/erin/compare/v1.13.1...v1.14.0) (2025-02-18)
 
 
