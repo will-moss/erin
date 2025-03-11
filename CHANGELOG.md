@@ -1,3 +1,10 @@
+## [1.14.2](https://github.com/will-moss/erin/compare/v1.14.1...v1.14.2) (2025-03-11)
+
+
+### Bug Fixes
+
+* **client:** added a guard to prevent the app from crashing when a lot of files were loaded ([4df6be5](https://github.com/will-moss/erin/commit/4df6be51b8ff06ad604c4ac6c0e5dd1060192604)), closes [#18](https://github.com/will-moss/erin/issues/18)
+
 ## [1.14.1](https://github.com/will-moss/erin/compare/v1.14.0...v1.14.1) (2025-02-19)
 
 
