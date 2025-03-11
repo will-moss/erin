@@ -392,7 +392,9 @@ const App = () => {
       }
 
       _videoFiles = Object.values(_videoFiles);
-      _storeVideos(_videoFiles);
+      try {
+        _storeVideos(_videoFiles);
+      } catch (_) {}
 
       // Playlist extraction
       setPlaylists([...new Set(_videoFiles.map((v) => v.playlist).filter((p) => p))].sort());
