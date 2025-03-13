@@ -1,3 +1,10 @@
+## [1.14.3](https://github.com/will-moss/erin/compare/v1.14.2...v1.14.3) (2025-03-13)
+
+
+### Bug Fixes
+
+* **client:** added a check to ensure that video files are filtered by playlist only when necessary ([63508b2](https://github.com/will-moss/erin/commit/63508b24400eb911a927b40d32b77c4c3eb307c2)), closes [#18](https://github.com/will-moss/erin/issues/18)
+
 ## [1.14.2](https://github.com/will-moss/erin/compare/v1.14.1...v1.14.2) (2025-03-11)
 
 
