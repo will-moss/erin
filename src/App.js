@@ -403,7 +403,8 @@ const App = () => {
       let currentPlaylist = window._decodeURIComponentSafe(window.location.pathname.substring(1));
       if (currentPlaylist && currentPlaylist.substr(-1) === "/")
         currentPlaylist = currentPlaylist.substring(0, currentPlaylist.length - 1);
-      _videoFiles = _videoFiles.filter((v) => v.playlist === currentPlaylist);
+
+      if (currentPlaylist) _videoFiles = _videoFiles.filter((v) => v.playlist === currentPlaylist);
 
       setVideos((freshVideos) => {
         if (!hasCache || currentPlaylist) return _shuffleArray(_videoFiles);
