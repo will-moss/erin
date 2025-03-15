@@ -83,6 +83,8 @@
   flex-direction: column;
   justify-content: center;
   max-width: 95%;
+  width: 100%;
+  text-decoration: none;
 }
 .playlists-viewer-entry .left p {
   max-width: 100%;
@@ -94,6 +96,34 @@
   color: black;
   font-weight: 600;
   height: 18px;
+}
+.playlists-viewer-entry .right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  margin-left: auto;
+  flex-shrink: 0;
+  width: 48px;
+}
+.playlists-viewer-entry .right button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: blue;
+  height: 48px;
+  width: 48px;
+  border-radius: 23051998px;
+  outline: 0;
+  cursor: pointer;
+  border: 0;
+}
+.playlists-viewer-entry .right button:hover {
+  /* background: ; */
+}
+.playlists-viewer-entry .right button svg {
+  font-size: 18px;
+  color: white;
 }
 
 @media (prefers-color-scheme: dark) {

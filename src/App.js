@@ -9,10 +9,11 @@ import VideoFeed from "./components/VideoFeed";
 import { faCompactDisc } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { usePrevious } from "@uidotdev/usehooks";
-import "./App.css";
 import BlacklistManager from "./components/BlacklistManager";
 import BottomMetadata from "./components/BottomMetadata";
-import PlaylistsViewer from "./components/PlaylistViewer";
+import PlaylistsViewer from "./components/PlaylistsViewer";
+import PlaylistGallery from "./components/PlaylistGallery";
+import "./App.css";
 
 const App = () => {
   // Misc - General niceties
@@ -126,7 +127,10 @@ const App = () => {
     setMuted(!muted);
   };
 
-  // Member - Saves a { url , title , extension , filename , metadataURL  } dictionary for every video discovered
+  // Member - Saves a { url , title , extension , filename , playlist , metadataURL  } dictionary for every video discovered
+  // "allVideos" and "videos" differ in that "allVideos" hold all the files regardless of current playlist
+  // while "videos" holds only the current playlist's videos ( = all videos if no playlist, or a segment of it if any )
+  const [allVideos, setAllVideos] = useState([]);
   const [videos, setVideos] = useState([]);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [currentVideoMetadata, setCurrentVideoMetadata] = useState(false);
@@ -279,6 +283,26 @@ const App = () => {
     setPlaylistsViewerOpen(false);
   };
 
+  // Member - Manage playlist gallery UI
+  const [activePlaylistForGallery, setActivePlaylistForGallery] = useState({});
+  const [playlistGalleryOpen, setPlaylistGalleryOpen] = useState(false);
+  const openPlaylistGallery = (playlist) => {
+    setActivePlaylistForGallery({
+      name: playlist,
+      videos: allVideos.filter(
+        (_v) =>
+          _v.playlist === playlist &&
+          !_getBlacklist()
+            .map((v) => v.url)
+            .includes(_v.url)
+      ),
+    });
+    setPlaylistGalleryOpen(true);
+  };
+  const hidePlaylistGallery = () => {
+    setPlaylistGalleryOpen(false);
+  };
+
   // Method - Test connectivity with the remote server
   const attemptToReachRemoteServer = (evt) => {
     if (evt) evt.preventDefault();
@@ -396,6 +420,9 @@ const App = () => {
         _storeVideos(_videoFiles);
       } catch (_) {}
 
+      // Record all videos for later use
+      setAllVideos(_videoFiles);
+
       // Playlist extraction
       setPlaylists([...new Set(_videoFiles.map((v) => v.playlist).filter((p) => p))].sort());
 
@@ -404,15 +431,39 @@ const App = () => {
       if (currentPlaylist && currentPlaylist.substr(-1) === "/")
         currentPlaylist = currentPlaylist.substring(0, currentPlaylist.length - 1);
 
-      if (currentPlaylist) _videoFiles = _videoFiles.filter((v) => v.playlist === currentPlaylist);
+      if (currentPlaylist) {
+        _videoFiles = _videoFiles.filter((v) => v.playlist === currentPlaylist);
+        setActivePlaylistForGallery({ name: currentPlaylist, videos: _videoFiles });
+      }
+
+      // If any video is provided in the URL, make sure that it appears first
+      const query = new URLSearchParams(window.location.search);
+      let currentVideoFromURL = null;
+      if (query.has("play")) {
+        currentVideoFromURL = _videoFiles.find((v) => v.filename === query.get("play"));
+
+        if (currentVideoFromURL)
+          _videoFiles = _videoFiles.filter((v) => v.filename !== query.get("play"));
+      }
 
       setVideos((freshVideos) => {
-        if (!hasCache || currentPlaylist) return _shuffleArray(_videoFiles);
+        if (!hasCache || currentPlaylist)
+          return currentVideoFromURL
+            ? [currentVideoFromURL, ..._shuffleArray(_videoFiles)]
+            : _shuffleArray(_videoFiles);
         else if (hasCache && !_arraysAreEqual(_videoFiles, freshVideos))
-          return _shuffleArray([
-            ...freshVideos,
-            ..._videoFiles.filter((f) => !freshVideos.some((v) => v.url === f.url)),
-          ]);
+          return currentVideoFromURL
+            ? [
+                currentVideoFromURL,
+                ..._shuffleArray([
+                  ...freshVideos,
+                  ..._videoFiles.filter((f) => !freshVideos.some((v) => v.url === f.url)),
+                ]),
+              ]
+            : _shuffleArray([
+                ...freshVideos,
+                ..._videoFiles.filter((f) => !freshVideos.some((v) => v.url === f.url)),
+              ]);
       });
 
       if (!hasCache) {
@@ -597,6 +648,12 @@ const App = () => {
                   visible={playlistsViewerOpen}
                   playlists={playlists}
                   onClose={hidePlaylistsViewer}
+                  onOpenPlaylistGallery={openPlaylistGallery}
+                />
+                <PlaylistGallery
+                  visible={playlistGalleryOpen}
+                  activePlaylist={activePlaylistForGallery}
+                  onClose={hidePlaylistGallery}
                 />
               </>
             )}

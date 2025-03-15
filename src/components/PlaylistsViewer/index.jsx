@@ -1,9 +1,9 @@
 // Assets
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./index.css";
-import { faClose } from "@fortawesome/free-solid-svg-icons";
+import { faAngleRight, faClose } from "@fortawesome/free-solid-svg-icons";
 
-const PlaylistsViewer = ({ visible, playlists, onClose }) => {
+const PlaylistsViewer = ({ visible, playlists, onClose, onOpenPlaylistGallery }) => {
   return (
     <div className={`playlists-viewer ${visible ? "visible" : ""}`}>
       <div className="playlists-viewer-inner">
@@ -19,11 +19,21 @@ const PlaylistsViewer = ({ visible, playlists, onClose }) => {
           {/* FULL STATE */}
           {playlists &&
             playlists.map((p, idx) => (
-              <a key={idx} className="playlists-viewer-entry" href={`/${encodeURI(p)}`}>
-                <div className="left">
+              <div key={idx} className="playlists-viewer-entry">
+                <a className="left" href={`/${encodeURI(p)}`}>
                   <p>{p}</p>
+                </a>
+                <div className="right">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      onOpenPlaylistGallery(p);
+                    }}
+                  >
+                    <FontAwesomeIcon icon={faAngleRight} />
+                  </button>
                 </div>
-              </a>
+              </div>
             ))}
         </div>
         <div className="playlists-viewer-controls">
