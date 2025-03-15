@@ -1,3 +1,10 @@
+# [1.15.0](https://github.com/will-moss/erin/compare/v1.14.3...v1.15.0) (2025-03-15)
+
+
+### Features
+
+* **client:** added playlist gallery feature with direct link to either play playlist or video ([16ae9dd](https://github.com/will-moss/erin/commit/16ae9dd37e24cb0c523312c3728e53699bb81db3)), closes [#16](https://github.com/will-moss/erin/issues/16)
+
 ## [1.14.3](https://github.com/will-moss/erin/compare/v1.14.2...v1.14.3) (2025-03-13)
 
 
