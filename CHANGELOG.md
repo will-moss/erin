@@ -1,3 +1,15 @@
+# [1.16.0](https://github.com/will-moss/erin/compare/v1.15.0...v1.16.0) (2025-05-12)
+
+
+### Bug Fixes
+
+* **client:** improved styling of playlist gallery on larger screens ([9721ec5](https://github.com/will-moss/erin/commit/9721ec512fb0de71eee3b0967382d283191191c7)), closes [#16](https://github.com/will-moss/erin/issues/16)
+
+
+### Features
+
+* **styling:** added support for custom styling via a stylesheet injected at runtime ([a582f62](https://github.com/will-moss/erin/commit/a582f62fd9f3d54bbd47481cc53b7256c6a7b57c)), closes [#19](https://github.com/will-moss/erin/issues/19)
+
 # [1.15.0](https://github.com/will-moss/erin/compare/v1.14.3...v1.15.0) (2025-03-15)
 
 
