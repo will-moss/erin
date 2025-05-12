@@ -189,6 +189,9 @@ Here's a few examples to help you name your files :
 - `Spanish-language__Lesson-1.mp4` becomes `Spanish language - Lesson 1`
 - `Spiderman-1.ogg` becomes `Spiderman 1`
 
+Finally, please refrain from using the `#` symbol in your filenames, as
+it is a browser anchor, and it will prevent Erin from playing your files.
+
 #### In what order will my files appear in the feed?
 
 Erin randomly shuffles your video files on every browser refresh.
