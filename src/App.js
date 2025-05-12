@@ -74,6 +74,15 @@ const App = () => {
       else document.title = _veryFirsPageTitle.replace("[VIDEO_TITLE]", video.title);
     } else if (window.USE_SECRET) document.title = "Erin - Authentication";
   };
+  const _injectCustomStylesheet = () => {
+    const node = document.createElement("link");
+
+    node.type = "text/css";
+    node.rel = "stylesheet";
+    node.href = "/custom.css";
+
+    document.head.appendChild(node);
+  };
   const _arraysAreEqual = (a, b) => {
     if (a === b) return true;
     if (a == null || b == null) return false;
@@ -506,13 +515,19 @@ const App = () => {
     [visibleVideos] // eslint-disable-line react-hooks/exhaustive-deps
   );
 
-  // Hook - On mount - Retrieve the locally-stored secret / Attempt to hide the address bar / Retrieve the cache if any
+  // Hook - On mount
+  // - Retrieve the locally-stored secret
+  // - Attempt to hide the address bar
+  // - Retrieve the cache if any
+  // - Load the custom stylesheet if configured
   useEffect(() => {
     window.onload = () => {
       setTimeout(() => {
         window.scrollTo(0, 1);
       }, 0);
     };
+
+    if (window.USE_CUSTOM_SKIN) _injectCustomStylesheet();
 
     _updatePageTitle();
 
