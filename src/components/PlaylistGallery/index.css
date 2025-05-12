@@ -143,6 +143,21 @@
   overflow: auto;
   outline: 2px solid white;
 }
+@media screen and (min-width: 768px) {
+  .playlist-gallery-inner .playlist-media {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+@media screen and (min-width: 920px) {
+  .playlist-gallery-inner .playlist-media {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+@media screen and (min-width: 1268px) {
+  .playlist-gallery-inner .playlist-media {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
 .playlist-gallery-inner .playlist-media .playlist-video-wrapper {
   display: flex;
   outline: 1px solid white;
