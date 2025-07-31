@@ -1,3 +1,10 @@
+# [1.17.0](https://github.com/will-moss/erin/compare/v1.16.0...v1.17.0) (2025-07-31)
+
+
+### Features
+
+* **playlists:** added support for playlist-level/folder-level metadata ([ebf5b26](https://github.com/will-moss/erin/commit/ebf5b267a26b9ce120f1dfca4c69f0fa7d9ea9bd)), closes [#23](https://github.com/will-moss/erin/issues/23)
+
 # [1.16.0](https://github.com/will-moss/erin/compare/v1.15.0...v1.16.0) (2025-05-12)
 
 
