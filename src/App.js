@@ -1,5 +1,5 @@
 // Dependencies
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 // Components
 import BottomNavbar from "./components/BottomNavbar";
@@ -163,6 +163,14 @@ const App = () => {
 
           if (r.video_title) _updatePageTitle({ title: r.video_title });
         });
+    }
+    // Retrieve metadata from the parent playlist if any
+    else if (v && _freshPlaylists.current.some((p) => p.name === v.playlist && p.metadataURL)) {
+      const _playlist = _freshPlaylists.current.find((p) => p.name === v.playlist);
+      setCurrentVideoMetadata(_playlist.metadata);
+
+      if (_playlist.metadata && _playlist.metadata.channel_title)
+        _updatePageTitle({ title: _playlist.metadata.channel_title });
     } else {
       setCurrentVideoMetadata(false);
     }
@@ -180,6 +188,14 @@ const App = () => {
 
   // Member - Save playlists
   const [playlists, setPlaylists] = useState([]);
+  const _playlistsMetadataLoaded = useRef(false);
+
+  // An internal member used as a trick to get the latest playlists information
+  // within the setCurrentVideoMetadata() callback
+  const _freshPlaylists = useRef(playlists);
+  useEffect(() => {
+    _freshPlaylists.current = playlists;
+  }, [playlists]);
 
   // Member - Trick to trigger state updates on localStorage updates
   const [blackListUpdater, setBlacklistUpdater] = useState(0);
@@ -297,14 +313,15 @@ const App = () => {
   const [playlistGalleryOpen, setPlaylistGalleryOpen] = useState(false);
   const openPlaylistGallery = (playlist) => {
     setActivePlaylistForGallery({
-      name: playlist,
+      name: playlist.name,
       videos: allVideos.filter(
         (_v) =>
-          _v.playlist === playlist &&
+          _v.playlist === playlist.name &&
           !_getBlacklist()
             .map((v) => v.url)
             .includes(_v.url)
       ),
+      metadata: playlist.metadata,
     });
     setPlaylistGalleryOpen(true);
   };
@@ -387,6 +404,7 @@ const App = () => {
       // Put the metadata (JSON) files at the end, to optimize looping order and prevent misses
       files.sort((a, b) => (a.name.endsWith(".json") ? 1 : -1));
 
+      let _playlistsMetadataTracker = {};
       let _videoFiles = {};
       for (let i = 0; i < files.length; i++) {
         const current = files[i];
@@ -417,11 +435,21 @@ const App = () => {
           continue;
         }
 
-        // Case : Metadata file
-        if (_id in _videoFiles)
+        // Case : Metadata file for a video
+        if (_id in _videoFiles) {
           _videoFiles[_id].metadataURL = _toAuthenticatedUrl(
             `${window.PUBLIC_URL}/media/${current.url}`
           );
+          continue;
+        }
+
+        // Case : Metadata file for a playlist
+        if (_id === "metadata") {
+          const _name = current.url.substr(0, current.url.lastIndexOf("/"));
+          _playlistsMetadataTracker[_name] = _toAuthenticatedUrl(
+            `${window.PUBLIC_URL}/media/${current.url}`
+          );
+        }
       }
 
       _videoFiles = Object.values(_videoFiles);
@@ -433,7 +461,15 @@ const App = () => {
       setAllVideos(_videoFiles);
 
       // Playlist extraction
-      setPlaylists([...new Set(_videoFiles.map((v) => v.playlist).filter((p) => p))].sort());
+      const _allPlaylists = [
+        ...new Set(_videoFiles.map((v) => v.playlist).filter((p) => p)),
+      ].sort();
+      setPlaylists(
+        _allPlaylists.map((_p) => ({
+          name: _p,
+          metadataURL: _playlistsMetadataTracker[_p] || false,
+        }))
+      );
 
       // Filter video files retrieved according to the current url-defined playlist
       let currentPlaylist = window._decodeURIComponentSafe(window.location.pathname.substring(1));
@@ -565,6 +601,32 @@ const App = () => {
 
     retrieveVideos();
   }, [secureHash, hasReachedRemoteServer]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Hook - When the playlists are loaded
+  // - Load all their metadata via async HTTP calls
+  useEffect(() => {
+    if (!playlists || playlists.length === 0) return;
+
+    if (_playlistsMetadataLoaded.current) return;
+
+    Promise.all(
+      playlists.map((p) =>
+        !p.metadataURL
+          ? new Promise((res, rej) => res(p))
+          : fetch(p.metadataURL, { method: "GET", headers: _makeHTTPHeaders() })
+              .then((r) => r.json())
+              .then((r) => ({ ...p, metadata: r }))
+      )
+    ).then((results) => {
+      _playlistsMetadataLoaded.current = true;
+      setPlaylists(results);
+
+      // Force-refresh the video metadata after the playlists' metadata were loaded
+      setTimeout(() => {
+        handleVideoFocus(videos[currentVideoIndex], currentVideoIndex);
+      }, 0);
+    });
+  }, [playlists]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div className="screen">

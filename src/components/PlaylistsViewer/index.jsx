@@ -20,8 +20,12 @@ const PlaylistsViewer = ({ visible, playlists, onClose, onOpenPlaylistGallery })
           {playlists &&
             playlists.map((p, idx) => (
               <div key={idx} className="playlists-viewer-entry">
-                <a className="left" href={`/${encodeURI(p)}`}>
-                  <p>{p}</p>
+                <a className="left" href={`/${encodeURI(p.name)}`}>
+                  <p>
+                    {!p.metadata || (p.metadata && !p.metadata.channel_name)
+                      ? p.name
+                      : p.metadata.channel_name}
+                  </p>
                 </a>
                 <div className="right">
                   <button

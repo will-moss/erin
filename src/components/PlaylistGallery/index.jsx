@@ -1,7 +1,7 @@
 // Assets
 import { useEffect, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft, faClose, faCompactDisc, faPlay } from "@fortawesome/free-solid-svg-icons";
+import { faClose, faCompactDisc, faPlay } from "@fortawesome/free-solid-svg-icons";
 import "./index.css";
 
 const PlaylistGallery = ({ visible, activePlaylist, onClose }) => {
@@ -67,10 +67,20 @@ const PlaylistGallery = ({ visible, activePlaylist, onClose }) => {
         <div className="playlist-gallery-content">
           <div className="playlist-header">
             <div className="avatar-wrapper">
-              <FontAwesomeIcon icon={faCompactDisc} />
+              {!activePlaylist.metadata ||
+              (activePlaylist.metadata && !activePlaylist.metadata.channel_image) ? (
+                <FontAwesomeIcon icon={faCompactDisc} />
+              ) : (
+                <img src={activePlaylist.metadata.channel_image} alt="Playlist Channel Avatar" />
+              )}
             </div>
             <div className="playlist-info">
-              <span className="playlist-title">{activePlaylist.name}</span>
+              <span className="playlist-title">
+                {!activePlaylist.metadata ||
+                (activePlaylist.metadata && !activePlaylist.metadata.channel_name)
+                  ? activePlaylist.name
+                  : activePlaylist.metadata.channel_name}
+              </span>
               <span className="playlist-media-count">
                 {activePlaylist.videos.length} video{activePlaylist.videos.length !== 1 ? "s" : ""}
               </span>

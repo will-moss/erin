@@ -113,6 +113,12 @@
   height: 80%;
   animation: spin 2.5s infinite linear;
 }
+.playlist-header .avatar-wrapper:has(img) {
+  padding: 0;
+}
+.playlist-header .avatar-wrapper img {
+  width: 100%;
+}
 .playlist-header .playlist-info {
   display: flex;
   flex-direction: column;

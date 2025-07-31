@@ -26,7 +26,7 @@ Erin has all these features implemented :
 - Autoplay your feed without even swiping
 - Seek forward and backward using your keyboard, or using double taps
 - Enter / Exit fullscreen using a double tap in the center
-- Show video metadata using TikTok's UI\*\*\*
+- Show video and playlist metadata using TikTok's UI\*\*\*
 - Simple lazy-loading mechanism for your videos
 - Automatic clip naming based on file name
 - Simple and optional security using a master password
@@ -42,7 +42,7 @@ Caddy takes care of authentication, serving static files, and serving the React 
 
 > \*\*: By default, Erin will create a random feed from all the videos in your folder and its subdirectories. However, if you would like to create custom feeds (playlists), you can create subdirectories and organize your videos accordingly. For example: `https://my-server.tld/directory-a` will create a feed from the videos located in the `/directory-a` directory, and it works with any path (so, nested folders are supported).
 
-> \*\*\*: You can show a channel (with an avatar and name), a caption and a link for all your videos using a metadata file. The metadata file can be located anywhere inside your videos folder, and it must match its associated video's filename, while replacing the extension with JSON. For example: `my-video.mp4` can have its metadata in `my-video.json`. The metadata format [is shown here](/examples/video-metadata.json), and note that you can use raw HTML in the caption for custom styling and effects.
+> \*\*\*: You can show a channel (with an avatar and name), a caption and a link for all your videos using a metadata file. The metadata file can be located anywhere inside your videos folder, and it must match its associated video's filename, while replacing the extension with JSON. For example: `my-video.mp4` can have its metadata in `my-video.json`. The metadata format [is shown here](/examples/video-metadata.json), and note that you can use raw HTML in the caption for custom styling and effects. Moreover, you may define folder-level metadata to set a name and avatar for any playlist, and those information will be used for all the videos within that folder if they don't have their own metadata already. The folder-level metadata format [is shown here](/examples/folder-metadata.json) and it belongs to a file named `metadata.json` inside your folder.
 
 > \*\*\*\*: You can inject your own stylesheet to customize the appearance of the app by doing two things: 1) set `USE_CUSTOM_SKIN` to `true`, and 2) mount a `custom.css` file onto `/srv/custom.css` in your container.
 
