@@ -1,7 +1,7 @@
 .bottom-metadata {
   position: fixed;
   bottom: 57px;
-  width: 100%;
+  width: calc(100% - 60px); /* 60px is the width of the side controls */
   z-index: 10;
   background: rgba(0, 0, 0, 0.1);
   padding-top: 8px;

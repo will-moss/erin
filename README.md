@@ -26,6 +26,7 @@ Erin has all these features implemented :
 - Autoplay your feed without even swiping
 - Seek forward and backward using your keyboard, or using double taps
 - Enter / Exit fullscreen using a double tap in the center
+- Share any clip with a direct link
 - Show video and playlist metadata using TikTok's UI\*\*\*
 - Simple lazy-loading mechanism for your videos
 - Automatic clip naming based on file name

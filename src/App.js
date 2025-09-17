@@ -14,6 +14,7 @@ import BottomMetadata from "./components/BottomMetadata";
 import PlaylistsViewer from "./components/PlaylistsViewer";
 import PlaylistGallery from "./components/PlaylistGallery";
 import "./App.css";
+import SideControls from "./components/SideControls";
 
 const App = () => {
   // Misc - General niceties
@@ -65,6 +66,7 @@ const App = () => {
   };
   const _isVideo = (file) =>
     ["mp4", "ogg", "webm"].includes(file.name.toLowerCase().split(".").at(-1));
+  const _getShareFragment = (url) => url.replace(window.PUBLIC_URL, "").split("?")[0];
   const _isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
   const _toAuthenticatedUrl = (url) => `${url}?hash=${secureHash}`;
   const _veryFirsPageTitle = useMemo(() => document.title, []);
@@ -226,6 +228,20 @@ const App = () => {
     anchor.click();
 
     document.body.removeChild(anchor);
+  };
+
+  // Video side control - Share a link to the video
+  const share = async () => {
+    const videoMetadata = visibleVideos[currentVideoIndex];
+
+    const shareData = {
+      title: videoMetadata.title,
+      url: _getShareFragment(videoMetadata.url),
+    };
+
+    try {
+      await navigator.share(shareData);
+    } catch {}
   };
 
   // Video control - Blacklist
@@ -481,14 +497,15 @@ const App = () => {
         setActivePlaylistForGallery({ name: currentPlaylist, videos: _videoFiles });
       }
 
-      // If any video is provided in the URL, make sure that it appears first
+      // If any video is provided in the URL, make sure that it appears first ( = "share" feature )
       const query = new URLSearchParams(window.location.search);
       let currentVideoFromURL = null;
       if (query.has("play")) {
-        currentVideoFromURL = _videoFiles.find((v) => v.filename === query.get("play"));
-
-        if (currentVideoFromURL)
-          _videoFiles = _videoFiles.filter((v) => v.filename !== query.get("play"));
+        const suppliedFragment = query.get("play");
+        currentVideoFromURL = _videoFiles.find(
+          (v) => _getShareFragment(v.url) === suppliedFragment
+        );
+        _videoFiles = _videoFiles.filter((v) => v.url !== currentVideoFromURL.url);
       }
 
       setVideos((freshVideos) => {
@@ -501,7 +518,7 @@ const App = () => {
             ? [
                 currentVideoFromURL,
                 ..._shuffleArray([
-                  ...freshVideos,
+                  ...freshVideos.filter((f) => f.url !== currentVideoFromURL.url),
                   ..._videoFiles.filter((f) => !freshVideos.some((v) => v.url === f.url)),
                 ]),
               ]
@@ -715,6 +732,7 @@ const App = () => {
                   onOpenPlaylistsViewer={openPlaylistsViewer}
                   onTogglePlayPause={togglePlayPause}
                 />
+                <SideControls onShare={share} />
                 <BlacklistManager
                   visible={blacklistOpen}
                   videos={_getBlacklist()}
