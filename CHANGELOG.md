@@ -1,3 +1,10 @@
+# [1.18.0](https://github.com/will-moss/erin/compare/v1.17.0...v1.18.0) (2025-09-17)
+
+
+### Features
+
+* **client:** added a Share feature to send a link to a specific clip ([aef415c](https://github.com/will-moss/erin/commit/aef415c0b2951d5275d31f2b0da4457ceed108dc)), closes [#19](https://github.com/will-moss/erin/issues/19)
+
 # [1.17.0](https://github.com/will-moss/erin/compare/v1.16.0...v1.17.0) (2025-07-31)
 
 
