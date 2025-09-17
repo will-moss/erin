@@ -236,7 +236,7 @@ const App = () => {
 
     const shareData = {
       title: videoMetadata.title,
-      url: _getShareFragment(videoMetadata.url),
+      url: window.location.origin + "?play=" + _getShareFragment(videoMetadata.url),
     };
 
     try {
