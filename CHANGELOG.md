@@ -1,3 +1,10 @@
+## [1.18.1](https://github.com/will-moss/erin/compare/v1.18.0...v1.18.1) (2025-09-17)
+
+
+### Bug Fixes
+
+* **share:** fixed the share link generated when tapping the share button ([1e89055](https://github.com/will-moss/erin/commit/1e89055491fa8b544d9cab0f5a0026df79ff863f))
+
 # [1.18.0](https://github.com/will-moss/erin/compare/v1.17.0...v1.18.0) (2025-09-17)
 
 
