@@ -66,7 +66,11 @@ const App = () => {
   };
   const _isVideo = (file) =>
     ["mp4", "ogg", "webm"].includes(file.name.toLowerCase().split(".").at(-1));
-  const _getShareFragment = (url) => url.replace(window.PUBLIC_URL, "").split("?")[0];
+  const _getShareFragment = (v) =>
+    v.url
+      .replace(window.PUBLIC_URL, "")
+      .split("?")[0]
+      .replace(v.filename, encodeURIComponent(v.filename));
   const _isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
   const _toAuthenticatedUrl = (url) => `${url}?hash=${secureHash}`;
   const _veryFirsPageTitle = useMemo(() => document.title, []);
@@ -236,7 +240,7 @@ const App = () => {
 
     const shareData = {
       title: videoMetadata.title,
-      url: window.location.origin + "?play=" + _getShareFragment(videoMetadata.url),
+      url: window.location.origin + "?play=" + _getShareFragment(videoMetadata),
     };
 
     try {
@@ -502,10 +506,10 @@ const App = () => {
       let currentVideoFromURL = null;
       if (query.has("play")) {
         const suppliedFragment = query.get("play");
-        currentVideoFromURL = _videoFiles.find(
-          (v) => _getShareFragment(v.url) === suppliedFragment
-        );
-        _videoFiles = _videoFiles.filter((v) => v.url !== currentVideoFromURL.url);
+        currentVideoFromURL = _videoFiles.find((v) => _getShareFragment(v) === suppliedFragment);
+
+        if (currentVideoFromURL)
+          _videoFiles = _videoFiles.filter((v) => v.url !== currentVideoFromURL.url);
       }
 
       setVideos((freshVideos) => {

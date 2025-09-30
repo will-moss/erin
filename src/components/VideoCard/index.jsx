@@ -4,7 +4,7 @@ import { useCallback, useRef } from "react";
 // Assets
 import "./index.css";
 
-const VideoCard = ({ index, url, isLoaded, refForwarder, onDoubleClick }) => {
+const VideoCard = ({ index, video, isLoaded, refForwarder, onDoubleClick }) => {
   const videoRef = useRef(null);
 
   // Handle click
@@ -18,12 +18,23 @@ const VideoCard = ({ index, url, isLoaded, refForwarder, onDoubleClick }) => {
     refForwarder(_ref);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
+  // Safely encode only the filename part of the URL
+  let safeUrl = null;
+  if (isLoaded && video) {
+    try {
+      safeUrl = video.url.replace(video.filename, encodeURIComponent(video.filename));
+    } catch (e) {
+      console.error("Invalid URL in VideoCard:", video, e);
+      safeUrl = encodeURI(video.url); // fallback to original
+    }
+  }
+
   return (
     <div className="video">
       <video
         className="player"
         data-index={index}
-        src={isLoaded ? encodeURI(url) : null}
+        src={safeUrl}
         ref={forward}
         onDoubleClick={handleDoubleClick}
         playsInline={true}

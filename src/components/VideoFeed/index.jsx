@@ -285,7 +285,7 @@ const VideoFeed = ({
         <VideoCard
           key={k}
           index={k + initialIndex}
-          url={videos[k + initialIndex] ? videos[k + initialIndex].url : ""}
+          video={videos[k + initialIndex] ? videos[k + initialIndex] : null}
           onDoubleClick={handleVideoTapToSeek}
           isLoaded={true}
           refForwarder={saveVideoRef(k)}
