@@ -1,3 +1,10 @@
+## [1.18.2](https://github.com/will-moss/erin/compare/v1.18.1...v1.18.2) (2025-09-30)
+
+
+### Bug Fixes
+
+* **ui:** the mute/unmute button is now clickable (it wasn't before due to a CSS depth issue) ([58b2f54](https://github.com/will-moss/erin/commit/58b2f54d3a912db86db92a5ff2d63e15ef17bb4e)), closes [#27](https://github.com/will-moss/erin/issues/27)
+
 ## [1.18.1](https://github.com/will-moss/erin/compare/v1.18.0...v1.18.1) (2025-09-17)
 
 
