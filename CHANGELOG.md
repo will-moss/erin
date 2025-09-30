@@ -1,3 +1,10 @@
+## [1.18.3](https://github.com/will-moss/erin/compare/v1.18.2...v1.18.3) (2025-09-30)
+
+
+### Bug Fixes
+
+* **global:** enabled previously-forbidden characters in video filenames (# and @ + others) ([3a6cefb](https://github.com/will-moss/erin/commit/3a6cefb175eb6bc1e66c747d35e7ae0c8180acdc)), closes [#28](https://github.com/will-moss/erin/issues/28)
+
 ## [1.18.2](https://github.com/will-moss/erin/compare/v1.18.1...v1.18.2) (2025-09-30)
 
 
