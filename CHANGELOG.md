@@ -1,3 +1,10 @@
+## [1.18.4](https://github.com/will-moss/erin/compare/v1.18.3...v1.18.4) (2025-10-01)
+
+
+### Bug Fixes
+
+* **playlists:** updated the link/src encodings to match previous update and support # and @ in URL ([45061f1](https://github.com/will-moss/erin/commit/45061f122b428db8d6aa63f763978e54241f03da))
+
 ## [1.18.3](https://github.com/will-moss/erin/compare/v1.18.2...v1.18.3) (2025-09-30)
 
 
