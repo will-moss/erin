@@ -473,9 +473,9 @@ const App = () => {
       }
 
       _videoFiles = Object.values(_videoFiles);
-      try {
-        _storeVideos(_videoFiles);
-      } catch (_) {}
+      // try {
+      //   _storeVideos(_videoFiles);
+      // } catch (_) {}
 
       // Record all videos for later use
       setAllVideos(_videoFiles);
@@ -594,7 +594,7 @@ const App = () => {
 
     _updatePageTitle();
 
-    if (_hasStoredVideos()) setHasCache(true);
+    // if (_hasStoredVideos()) setHasCache(true);
 
     if (!window.USE_SECRET) {
       setAutoconnect(true);

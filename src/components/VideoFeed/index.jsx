@@ -154,7 +154,12 @@ const VideoFeed = ({
 
           // - - The first-has-become-last element is updated in the DOM
           firstElement.setAttribute("data-index", currentIndex + 1);
-          firstElement.setAttribute("src", encodeURI(videos[currentIndex + 1].url));
+
+          const _nextVideo = videos[currentIndex + 1];
+          firstElement.setAttribute(
+            "src",
+            _nextVideo.url.replace(_nextVideo.filename, encodeURIComponent(_nextVideo.filename))
+          );
         }
       }
 
@@ -177,7 +182,14 @@ const VideoFeed = ({
 
           // - - The last-has-become-first element is updated in the DOM
           lastElement.setAttribute("data-index", currentIndex - 1);
-          lastElement.setAttribute("src", encodeURI(videos[currentIndex - 1].url));
+          const _previousVideo = videos[currentIndex - 1];
+          lastElement.setAttribute(
+            "src",
+            _previousVideo.url.replace(
+              _previousVideo.filename,
+              encodeURIComponent(_previousVideo.filename)
+            )
+          );
         }
       }
     };
