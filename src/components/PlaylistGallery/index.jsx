@@ -97,7 +97,7 @@ const PlaylistGallery = ({ visible, activePlaylist, onClose }) => {
               >
                 <video
                   preload="none"
-                  data-src={v.url}
+                  data-src={v.url.replace(v.filename, encodeURIComponent(v.filename))}
                   playsInline={false}
                   muted={true}
                   ref={(el) => (videoRefs.current[idx] = el)}

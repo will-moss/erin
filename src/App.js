@@ -506,7 +506,13 @@ const App = () => {
       let currentVideoFromURL = null;
       if (query.has("play")) {
         const suppliedFragment = query.get("play");
-        currentVideoFromURL = _videoFiles.find((v) => _getShareFragment(v) === suppliedFragment);
+
+        if (!currentPlaylist)
+          currentVideoFromURL = _videoFiles.find((v) => _getShareFragment(v) === suppliedFragment);
+        else
+          currentVideoFromURL = _videoFiles.find(
+            (v) => encodeURIComponent(v.filename) === suppliedFragment
+          );
 
         if (currentVideoFromURL)
           _videoFiles = _videoFiles.filter((v) => v.url !== currentVideoFromURL.url);
