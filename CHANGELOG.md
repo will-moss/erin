@@ -1,3 +1,10 @@
+## [1.18.5](https://github.com/will-moss/erin/compare/v1.18.4...v1.18.5) (2025-10-01)
+
+
+### Bug Fixes
+
+* **encoding:** disabled cache entirely for now, and fixed the encoding on the lazyloading part ([74f40eb](https://github.com/will-moss/erin/commit/74f40eb6c945b55b07039ad39fbcfca2c327339a)), closes [#28](https://github.com/will-moss/erin/issues/28)
+
 ## [1.18.4](https://github.com/will-moss/erin/compare/v1.18.3...v1.18.4) (2025-10-01)
 
 
