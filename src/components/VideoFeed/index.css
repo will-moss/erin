@@ -34,6 +34,9 @@ html[data-scroll-direction="horizontal"] .feed-pad-top {
 .video-track-progress.top {
   top: 0;
 }
+body.fullscreen .video-track-progress.bottom {
+  bottom: 0;
+}
 
 html[data-scroll-direction="horizontal"] .feed {
   display: flex;
