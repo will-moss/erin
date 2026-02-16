@@ -1,3 +1,10 @@
+## [1.19.2](https://github.com/will-moss/erin/compare/v1.19.1...v1.19.2) (2026-02-16)
+
+
+### Bug Fixes
+
+* **build:** final fix to produce multi-arch image ([69166b8](https://github.com/will-moss/erin/commit/69166b854dd68b590bfae62c8550190cbbd38a66))
+
 ## [1.19.1](https://github.com/will-moss/erin/compare/v1.19.0...v1.19.1) (2026-02-16)
 
 
