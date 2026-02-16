@@ -4,6 +4,20 @@
 ### Bug Fixes
 
 * **build:** updated Caddy version to work with the replace-response plugin ([36dcb6d](https://github.com/will-moss/erin/commit/36dcb6d316a1256574755be39434dc8c149dd5db))
+* **build:** updated Dockerfile to make it easier to build multi-arch image on ARM ([6bd75ae](https://github.com/will-moss/erin/commit/6bd75ae81c7130908a3cc76e56f8e043cbd21ace))
+* **fullscreen:** adjusted the position of the video playback tracker in fullscreen mode ([43cc79e](https://github.com/will-moss/erin/commit/43cc79ec3970e72ee1b428c969601e82044bc45e))
+
+
+### Features
+
+* **player:** added a scrubber that can be dragged to jump to any point within the current video ([20788af](https://github.com/will-moss/erin/commit/20788aff077b78b1116f698bc43e4aa97a31cfd7))
+
+# [1.19.0](https://github.com/will-moss/erin/compare/v1.18.5...v1.19.0) (2026-02-16)
+
+
+### Bug Fixes
+
+* **build:** updated Caddy version to work with the replace-response plugin ([36dcb6d](https://github.com/will-moss/erin/commit/36dcb6d316a1256574755be39434dc8c149dd5db))
 * **fullscreen:** adjusted the position of the video playback tracker in fullscreen mode ([43cc79e](https://github.com/will-moss/erin/commit/43cc79ec3970e72ee1b428c969601e82044bc45e))
 
 
