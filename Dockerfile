@@ -1,7 +1,8 @@
 # 1- Build Caddy modules
 FROM --platform=$BUILDPLATFORM caddy:2.9.1-builder AS builder
 
-RUN xcaddy build \
+ARG TARGETARCH
+RUN GOARCH=$TARGETARCH xcaddy build \
     --with github.com/caddyserver/replace-response
 
 # 2 - Set up Caddy and the frontend built beforehand
