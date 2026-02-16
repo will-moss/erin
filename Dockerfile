@@ -1,11 +1,11 @@
 # 1- Build Caddy modules
-FROM caddy:2.9.1-builder AS builder
+FROM --platform=$BUILDPLATFORM caddy:2.9.1-builder AS builder
 
 RUN xcaddy build \
     --with github.com/caddyserver/replace-response
 
 # 2 - Set up Caddy and the frontend built beforehand
-FROM caddy:2.9.1-alpine
+FROM --platform=$TARGETPLATFORM caddy:2.9.1-alpine
 
 # Install the modules
 COPY --from=builder /usr/bin/caddy /usr/bin/caddy
