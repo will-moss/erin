@@ -15,7 +15,8 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .aliases
-scripts/_*.sh
+.zsh_aliases
+scripts
 .prettierrc
 tmp
 dev
