@@ -1,3 +1,10 @@
+## [1.19.1](https://github.com/will-moss/erin/compare/v1.19.0...v1.19.1) (2026-02-16)
+
+
+### Bug Fixes
+
+* **build:** removed unnecessary platform option causing crash on non-ARM machines ([6b151c9](https://github.com/will-moss/erin/commit/6b151c92dcc8971e9df7a779217c2ac5034d6b18))
+
 # [1.19.0](https://github.com/will-moss/erin/compare/v1.18.5...v1.19.0) (2026-02-16)
 
 
