@@ -34,21 +34,6 @@ const App = () => {
   const _storeSecret = (s) => {
     localStorage.setItem("erin_secret", s);
   };
-  const _hasStoredVideos = () => {
-    let v = localStorage.getItem("erin_videos");
-    if (!v) return false;
-    v = JSON.parse(v);
-    if (!v || v.length === 0) return false;
-    return true;
-  };
-  const _storeVideos = (v) => {
-    localStorage.setItem("erin_videos", JSON.stringify(v));
-  };
-  const _getStoredVideos = () => {
-    const v = localStorage.getItem("erin_videos");
-    if (!v) return [];
-    return JSON.parse(v);
-  };
   const _getBlacklist = () => {
     const l = localStorage.getItem("erin_blacklist");
     if (!l) return [];
@@ -76,8 +61,13 @@ const App = () => {
   const _veryFirsPageTitle = useMemo(() => document.title, []);
   const _updatePageTitle = (video = null) => {
     if (video) {
-      if (!_veryFirsPageTitle.includes("[VIDEO_TITLE]")) document.title = _veryFirsPageTitle;
-      else document.title = _veryFirsPageTitle.replace("[VIDEO_TITLE]", video.title);
+      if (!_veryFirsPageTitle.includes("[VIDEO_TITLE]"))
+        document.title = _veryFirsPageTitle;
+      else
+        document.title = _veryFirsPageTitle.replace(
+          "[VIDEO_TITLE]",
+          video.title,
+        );
     } else if (window.USE_SECRET) document.title = "Erin - Authentication";
   };
   const _injectCustomStylesheet = () => {
@@ -88,17 +78,6 @@ const App = () => {
     node.href = "/custom.css";
 
     document.head.appendChild(node);
-  };
-  const _arraysAreEqual = (a, b) => {
-    if (a === b) return true;
-    if (a == null || b == null) return false;
-    if (a.length !== b.length) return false;
-
-    const _a = [...a].sort();
-    const _b = [...b].sort();
-
-    for (let i = 0; i < _a.length; ++i) if (_a[i] !== _b[i]) return false;
-    return true;
   };
   const _shuffleArray = (arr) => {
     const copy = [...arr];
@@ -115,7 +94,9 @@ const App = () => {
     if (!s) return s;
     return decodeURIComponent(s.replace(/%(?![0-9a-fA-F]+)/g, "%25"));
   };
-  const _scrollDirection = document.querySelector("html").getAttribute("data-scroll-direction");
+  const _scrollDirection = document
+    .querySelector("html")
+    .getAttribute("data-scroll-direction");
 
   // Members - Form & Auth management
   const [autoconnect, setAutoconnect] = useState(false);
@@ -123,9 +104,6 @@ const App = () => {
   const [formSecret, setFormSecret] = useState("");
   const [secureHash, setSecureHash] = useState("");
   const handleInputSecret = (e) => setFormSecret(e.target.value);
-
-  // Members - Cache management
-  const [hasCache, setHasCache] = useState(false);
 
   // Member - Determines whether we are able to communicate with the remote server
   const [loading, setLoading] = useState(false);
@@ -136,7 +114,9 @@ const App = () => {
   const toggleMute = () => {
     const _newMuted = !muted;
 
-    const currentVideo = document.querySelector(`video[data-index="${currentVideoIndex}"]`);
+    const currentVideo = document.querySelector(
+      `video[data-index="${currentVideoIndex}"]`,
+    );
     currentVideo.muted = _newMuted;
 
     setMuted(!muted);
@@ -171,8 +151,15 @@ const App = () => {
         });
     }
     // Retrieve metadata from the parent playlist if any
-    else if (v && _freshPlaylists.current.some((p) => p.name === v.playlist && p.metadataURL)) {
-      const _playlist = _freshPlaylists.current.find((p) => p.name === v.playlist);
+    else if (
+      v &&
+      _freshPlaylists.current.some(
+        (p) => p.name === v.playlist && p.metadataURL,
+      )
+    ) {
+      const _playlist = _freshPlaylists.current.find(
+        (p) => p.name === v.playlist,
+      );
       setCurrentVideoMetadata(_playlist.metadata);
 
       if (_playlist.metadata && _playlist.metadata.channel_title)
@@ -188,7 +175,7 @@ const App = () => {
       .scrollBy(
         _scrollDirection === "vertical"
           ? { top: 1, left: 0, behavior: "smooth" }
-          : { top: 0, left: 1, behavior: "smooth" }
+          : { top: 0, left: 1, behavior: "smooth" },
       );
   };
 
@@ -213,9 +200,9 @@ const App = () => {
         (_v) =>
           !_getBlacklist()
             .map((v) => v.url)
-            .includes(_v.url)
+            .includes(_v.url),
       ),
-    [videos, blackListUpdater] // eslint-disable-line react-hooks/exhaustive-deps
+    [videos, blackListUpdater], // eslint-disable-line react-hooks/exhaustive-deps
   );
 
   // Video control - Download the current video
@@ -253,13 +240,16 @@ const App = () => {
     const video = visibleVideos[currentVideoIndex];
     _addToBlackList(video);
 
-    if (currentVideoIndex === visibleVideos.length - 1 && visibleVideos.length > 1) {
+    if (
+      currentVideoIndex === visibleVideos.length - 1 &&
+      visibleVideos.length > 1
+    ) {
       document
         .querySelector(".feed")
         .scrollBy(
           _scrollDirection === "vertical"
             ? { top: -1, left: 0, behavior: "smooth" }
-            : { top: 0, left: -1, behavior: "smooth" }
+            : { top: 0, left: -1, behavior: "smooth" },
         );
     } else {
       document
@@ -267,7 +257,7 @@ const App = () => {
         .scrollBy(
           _scrollDirection === "vertical"
             ? { top: 1, left: 0, behavior: "smooth" }
-            : { top: 0, left: 1, behavior: "smooth" }
+            : { top: 0, left: 1, behavior: "smooth" },
         );
     }
 
@@ -290,14 +280,16 @@ const App = () => {
       },
 
       // Show no delay when the last video is removed
-      visibleVideos.length > 1 ? 800 : 0
+      visibleVideos.length > 1 ? 800 : 0,
     );
   };
 
   // Video control - Toggle Play / Pause
   const [isPlaying, setIsPlaying] = useState(true);
   const togglePlayPause = () => {
-    const currentVideo = document.querySelector(`video[data-index="${currentVideoIndex}"]`);
+    const currentVideo = document.querySelector(
+      `video[data-index="${currentVideoIndex}"]`,
+    );
     if (!currentVideo) return;
 
     if (!currentVideo.paused) currentVideo.pause();
@@ -339,7 +331,7 @@ const App = () => {
           _v.playlist === playlist.name &&
           !_getBlacklist()
             .map((v) => v.url)
-            .includes(_v.url)
+            .includes(_v.url),
       ),
       metadata: playlist.metadata,
     });
@@ -384,11 +376,16 @@ const App = () => {
 
   // Method - Recursive video retrieval
   const _retrieveVideosRecursively = (path = "") => {
-    return fetch(_toAuthenticatedUrl(`${window.PUBLIC_URL}/media/${encodeURIComponent(path)}`), {
-      method: "GET",
-      cache: "no-cache",
-      headers: _makeHTTPHeaders(),
-    })
+    return fetch(
+      _toAuthenticatedUrl(
+        `${window.PUBLIC_URL}/media/${encodeURIComponent(path)}`,
+      ),
+      {
+        method: "GET",
+        cache: "no-cache",
+        headers: _makeHTTPHeaders(),
+      },
+    )
       .then((r) => r.json())
       .then(
         (files) =>
@@ -405,18 +402,20 @@ const App = () => {
               _files = _files.filter((f) => !f.name.startsWith("."));
             }
 
-            const promises = _folders.map((f) => _retrieveVideosRecursively(`${path}${f.name}`));
+            const promises = _folders.map((f) =>
+              _retrieveVideosRecursively(`${path}${f.name}`),
+            );
             Promise.all(promises).then((results) => {
               res([...results.flat(), ..._files]);
             });
-          })
+          }),
       )
       .catch((_) => new Promise((res, rej) => res([])));
   };
 
   // Method - Retrieve all the video links (and generate the associated playlists based on folder structure)
   const retrieveVideos = () => {
-    if (!hasCache) setLoading(true);
+    setLoading(true);
 
     _retrieveVideosRecursively().then((files) => {
       if (!files) setLoading(false);
@@ -437,7 +436,9 @@ const App = () => {
           if (!_isSafari || (_isSafari && current.extension !== "ogg"))
             _videoFiles[_id] = {
               url: window._decodeURIComponentSafe(
-                _toAuthenticatedUrl(`${window.PUBLIC_URL}/media/${current.url}`)
+                _toAuthenticatedUrl(
+                  `${window.PUBLIC_URL}/media/${current.url}`,
+                ),
               ),
               filename: current.name,
               title: current.name
@@ -458,7 +459,7 @@ const App = () => {
         // Case : Metadata file for a video
         if (_id in _videoFiles) {
           _videoFiles[_id].metadataURL = _toAuthenticatedUrl(
-            `${window.PUBLIC_URL}/media/${current.url}`
+            `${window.PUBLIC_URL}/media/${current.url}`,
           );
           continue;
         }
@@ -467,7 +468,7 @@ const App = () => {
         if (_id === "metadata") {
           const _name = current.url.substr(0, current.url.lastIndexOf("/"));
           _playlistsMetadataTracker[_name] = _toAuthenticatedUrl(
-            `${window.PUBLIC_URL}/media/${current.url}`
+            `${window.PUBLIC_URL}/media/${current.url}`,
           );
         }
       }
@@ -488,17 +489,25 @@ const App = () => {
         _allPlaylists.map((_p) => ({
           name: _p,
           metadataURL: _playlistsMetadataTracker[_p] || false,
-        }))
+        })),
       );
 
       // Filter video files retrieved according to the current url-defined playlist
-      let currentPlaylist = window._decodeURIComponentSafe(window.location.pathname.substring(1));
+      let currentPlaylist = window._decodeURIComponentSafe(
+        window.location.pathname.substring(1),
+      );
       if (currentPlaylist && currentPlaylist.substr(-1) === "/")
-        currentPlaylist = currentPlaylist.substring(0, currentPlaylist.length - 1);
+        currentPlaylist = currentPlaylist.substring(
+          0,
+          currentPlaylist.length - 1,
+        );
 
       if (currentPlaylist) {
         _videoFiles = _videoFiles.filter((v) => v.playlist === currentPlaylist);
-        setActivePlaylistForGallery({ name: currentPlaylist, videos: _videoFiles });
+        setActivePlaylistForGallery({
+          name: currentPlaylist,
+          videos: _videoFiles,
+        });
       }
 
       // If any video is provided in the URL, make sure that it appears first ( = "share" feature )
@@ -508,45 +517,35 @@ const App = () => {
         const suppliedFragment = query.get("play");
 
         if (!currentPlaylist)
-          currentVideoFromURL = _videoFiles.find((v) => _getShareFragment(v) === suppliedFragment);
+          currentVideoFromURL = _videoFiles.find(
+            (v) => _getShareFragment(v) === suppliedFragment,
+          );
         else
           currentVideoFromURL = _videoFiles.find(
-            (v) => encodeURIComponent(v.filename) === suppliedFragment
+            (v) => encodeURIComponent(v.filename) === suppliedFragment,
           );
 
         if (currentVideoFromURL)
-          _videoFiles = _videoFiles.filter((v) => v.url !== currentVideoFromURL.url);
+          _videoFiles = _videoFiles.filter(
+            (v) => v.url !== currentVideoFromURL.url,
+          );
       }
 
-      setVideos((freshVideos) => {
-        if (!hasCache || currentPlaylist)
-          return currentVideoFromURL
-            ? [currentVideoFromURL, ..._shuffleArray(_videoFiles)]
-            : _shuffleArray(_videoFiles);
-        else if (hasCache && !_arraysAreEqual(_videoFiles, freshVideos))
-          return currentVideoFromURL
-            ? [
-                currentVideoFromURL,
-                ..._shuffleArray([
-                  ...freshVideos.filter((f) => f.url !== currentVideoFromURL.url),
-                  ..._videoFiles.filter((f) => !freshVideos.some((v) => v.url === f.url)),
-                ]),
-              ]
-            : _shuffleArray([
-                ...freshVideos,
-                ..._videoFiles.filter((f) => !freshVideos.some((v) => v.url === f.url)),
-              ]);
+      setVideos(() => {
+        return currentVideoFromURL
+          ? [currentVideoFromURL, ..._shuffleArray(_videoFiles)]
+          : _shuffleArray(_videoFiles);
       });
 
-      if (!hasCache) {
-        setLoading(false);
-      }
+      setLoading(false);
     });
   };
 
   // Hook - When a new video is focused, update its muted state, and assume it is playing internally
   useEffect(() => {
-    const currentVideo = document.querySelector(`video[data-index="${currentVideoIndex}"]`);
+    const currentVideo = document.querySelector(
+      `video[data-index="${currentVideoIndex}"]`,
+    );
     if (!currentVideo) return;
     currentVideo.muted = muted;
     setIsPlaying(true);
@@ -560,22 +559,28 @@ const App = () => {
           key={blackListUpdater}
           initialIndex={
             currentVideoIndex > 0
-              ? previousVideoIndex <= visibleVideos.length - 1 && previousVideoIndex > 0
+              ? previousVideoIndex <= visibleVideos.length - 1 &&
+                previousVideoIndex > 0
                 ? currentVideoIndex - 2
                 : currentVideoIndex - 1
               : 0
           }
           jumpToEnd={
-            previousVideoIndex === visibleVideos.length && visibleVideos.length > 1 ? true : false
+            previousVideoIndex === visibleVideos.length &&
+            visibleVideos.length > 1
+              ? true
+              : false
           }
-          jumpBackForward={previousVideoIndex !== visibleVideos.length && currentVideoIndex > 1}
+          jumpBackForward={
+            previousVideoIndex !== visibleVideos.length && currentVideoIndex > 1
+          }
           videos={visibleVideos}
           onFocusVideo={handleVideoFocus}
           onFinishVideo={handleVideoFinish}
         />
       );
     },
-    [visibleVideos] // eslint-disable-line react-hooks/exhaustive-deps
+    [visibleVideos], // eslint-disable-line react-hooks/exhaustive-deps
   );
 
   // Hook - On mount
@@ -593,8 +598,6 @@ const App = () => {
     if (window.USE_CUSTOM_SKIN) _injectCustomStylesheet();
 
     _updatePageTitle();
-
-    // if (_hasStoredVideos()) setHasCache(true);
 
     if (!window.USE_SECRET) {
       setAutoconnect(true);
@@ -620,12 +623,6 @@ const App = () => {
   useEffect(() => {
     if (!hasReachedRemoteServer) return;
 
-    if (hasCache) {
-      setLoading(true);
-      setVideos(_getStoredVideos());
-      setLoading(false);
-    }
-
     retrieveVideos();
   }, [secureHash, hasReachedRemoteServer]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -642,8 +639,8 @@ const App = () => {
           ? new Promise((res, rej) => res(p))
           : fetch(p.metadataURL, { method: "GET", headers: _makeHTTPHeaders() })
               .then((r) => r.json())
-              .then((r) => ({ ...p, metadata: r }))
-      )
+              .then((r) => ({ ...p, metadata: r })),
+      ),
     ).then((results) => {
       _playlistsMetadataLoaded.current = true;
       setPlaylists(results);
@@ -687,7 +684,9 @@ const App = () => {
                         onInput={handleInputSecret}
                       />
                       <button type="submit">Connect</button>
-                      {hasEverSubmitted && <p className="form-error">Wrong password</p>}
+                      {hasEverSubmitted && (
+                        <p className="form-error">Wrong password</p>
+                      )}
                     </form>
                   </div>
                 )}
@@ -708,7 +707,11 @@ const App = () => {
 
                 {_getBlacklist().length > 0 && (
                   <>
-                    <button type="button" className="btn-alternate" onClick={openBlacklist}>
+                    <button
+                      type="button"
+                      className="btn-alternate"
+                      onClick={openBlacklist}
+                    >
                       Manage masked videos
                     </button>
                     <BlacklistManager
