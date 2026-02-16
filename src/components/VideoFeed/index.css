@@ -21,12 +21,15 @@ html[data-scroll-direction="horizontal"] .feed-pad-top {
 
 .video-track-progress {
   height: 1px;
-  width: 100%;
+  width: 0%;
   background: blue;
   position: fixed;
-  transform: scaleX(0);
-  transform-origin: left;
-  z-index: 9;
+  will-change: width;
+  z-index: 102;
+  overflow: visible;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 }
 .video-track-progress.bottom {
   bottom: 57px;
@@ -36,6 +39,20 @@ html[data-scroll-direction="horizontal"] .feed-pad-top {
 }
 body.fullscreen .video-track-progress.bottom {
   bottom: 0;
+}
+
+.video-track-scrubber {
+  width: 12px;
+  height: 4px;
+  border-radius: 23051998px;
+  background: blue;
+  border: 0;
+  outline: 0;
+  flex-shrink: 0;
+}
+.video-track-scrubber.is-dragged {
+  width: 16px;
+  height: 16px;
 }
 
 html[data-scroll-direction="horizontal"] .feed {
