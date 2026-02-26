@@ -42,8 +42,8 @@ body.fullscreen .video-track-progress.bottom {
 }
 
 .video-track-scrubber {
-  width: 12px;
-  height: 4px;
+  width: 18px;
+  height: 7px;
   border-radius: 23051998px;
   background: blue;
   border: 0;
@@ -51,8 +51,8 @@ body.fullscreen .video-track-progress.bottom {
   flex-shrink: 0;
 }
 .video-track-scrubber.is-dragged {
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
 }
 
 html[data-scroll-direction="horizontal"] .feed {
