@@ -1,3 +1,10 @@
+## [1.19.3](https://github.com/will-moss/erin/compare/v1.19.2...v1.19.3) (2026-02-26)
+
+
+### Bug Fixes
+
+* **ui:** increased the size of the video scrubber to make it easier to use on mobile ([159884b](https://github.com/will-moss/erin/commit/159884b27d50b61239c515b8d3a186d9ea5d32bf)), closes [#31](https://github.com/will-moss/erin/issues/31)
+
 ## [1.19.2](https://github.com/will-moss/erin/compare/v1.19.1...v1.19.2) (2026-02-16)
 
 
