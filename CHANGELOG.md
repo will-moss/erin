@@ -1,3 +1,10 @@
+## [1.19.4](https://github.com/will-moss/erin/compare/v1.19.3...v1.19.4) (2026-02-27)
+
+
+### Bug Fixes
+
+* **ui:** added an invisible space around the scrubber to make it even easier to drag ([a561d4d](https://github.com/will-moss/erin/commit/a561d4d6020f90c8b8f3c22ed284524f64fe95e7)), closes [#31](https://github.com/will-moss/erin/issues/31)
+
 ## [1.19.3](https://github.com/will-moss/erin/compare/v1.19.2...v1.19.3) (2026-02-26)
 
 
