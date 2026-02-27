@@ -42,6 +42,20 @@ body.fullscreen .video-track-progress.bottom {
 }
 
 .video-track-scrubber {
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  outline: 0;
+  border: 0;
+  padding: 0;
+}
+
+.video-track-scrubber i {
+  margin-left: auto;
+  display: block;
   width: 18px;
   height: 7px;
   border-radius: 23051998px;

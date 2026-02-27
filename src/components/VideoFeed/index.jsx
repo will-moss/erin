@@ -342,7 +342,9 @@ const VideoFeed = ({
         />
       ))}
       <div className={`video-track-progress ${window.PROGRESS_BAR_POSITION}`} ref={progressRef}>
-        <button ref={scrubberRef} className="video-track-scrubber"></button>
+        <button ref={scrubberRef} className="video-track-scrubber">
+          <i />
+        </button>
       </div>
     </div>
   );
