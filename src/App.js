@@ -52,10 +52,11 @@ const App = () => {
   const _isVideo = (file) =>
     ["mp4", "ogg", "webm"].includes(file.name.toLowerCase().split(".").at(-1));
   const _getShareFragment = (v) =>
-    v.url
-      .replace(window.PUBLIC_URL, "")
-      .split("?")[0]
-      .replace(v.filename, encodeURIComponent(v.filename));
+    btoa(
+      v.url
+        .replace(window.PUBLIC_URL, "")
+        .split("?")[0]
+    );
   const _isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
   const _toAuthenticatedUrl = (url) => `${url}?hash=${secureHash}`;
   const _veryFirsPageTitle = useMemo(() => document.title, []);
@@ -522,7 +523,7 @@ const App = () => {
           );
         else
           currentVideoFromURL = _videoFiles.find(
-            (v) => encodeURIComponent(v.filename) === suppliedFragment,
+            (v) => btoa(v.filename) === suppliedFragment,
           );
 
         if (currentVideoFromURL)
