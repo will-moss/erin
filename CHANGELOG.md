@@ -1,3 +1,10 @@
+## [1.19.5](https://github.com/will-moss/erin/compare/v1.19.4...v1.19.5) (2026-03-10)
+
+
+### Bug Fixes
+
+* **playlists:** updated the sharing/playlist fragment gen to be more reliable with special chars ([9d77b84](https://github.com/will-moss/erin/commit/9d77b842beec7a91e0f6138c5bd7b30ccafbeb6f)), closes [#32](https://github.com/will-moss/erin/issues/32)
+
 ## [1.19.4](https://github.com/will-moss/erin/compare/v1.19.3...v1.19.4) (2026-02-27)
 
 
