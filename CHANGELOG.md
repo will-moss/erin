@@ -1,3 +1,10 @@
+# [1.20.0](https://github.com/will-moss/erin/compare/v1.19.5...v1.20.0) (2026-03-11)
+
+
+### Features
+
+* **playback:** added the ability to select where to start playing videos from (start, mid, random) ([93c3d09](https://github.com/will-moss/erin/commit/93c3d09c923d3f6189c766a6bd43b9efa605395b)), closes [#33](https://github.com/will-moss/erin/issues/33)
+
 ## [1.19.5](https://github.com/will-moss/erin/compare/v1.19.4...v1.19.5) (2026-03-10)
 
 
