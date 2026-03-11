@@ -66,6 +66,12 @@ const VideoFeed = ({
     onFinishVideo();
   };
 
+  const startVideoAtSpecificPoint = (e) => {
+    e.target.currentTime = window.VIDEO_START_POSITION === 'middle'
+      ? e.target.duration / 2
+      : Math.random() * e.target.duration;
+  }
+
   // Hook - On mount - Set the current scroll
   useEffect(() => {
     if (jumpToEnd)
@@ -105,6 +111,12 @@ const VideoFeed = ({
         if (entry.isIntersecting) {
           visibleIndex = currentIndex;
           videoElement.play().catch((_) => {});
+
+          if ( window.VIDEO_START_POSITION !== 'start' ) {
+            if ( videoElement.readyState >= 1 ) startVideoAtSpecificPoint({ target: videoElement });
+            else videoElement.addEventListener('loadedmetadata', startVideoAtSpecificPoint, true);
+          }
+
           onFocusVideo(videos[currentIndex], currentIndex);
           videoElement.addEventListener("timeupdate", handleVideoTimeUpdate, true);
           videoElement.addEventListener("ended", replayVideo, true);
@@ -116,6 +128,10 @@ const VideoFeed = ({
           videoElement.pause();
           videoElement.removeEventListener("timeupdate", handleVideoTimeUpdate, true);
           videoElement.removeEventListener("ended", replayVideo, true);
+
+          if ( window.VIDEO_START_POSITION !== 'start' ) {
+            videoElement.removeEventListener('loadedmetadata', startVideoAtSpecificPoint, true);
+          }
         }
       });
 

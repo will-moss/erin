@@ -26,6 +26,7 @@
   replace __IGNORE_HIDDEN_PATHS__ {$IGNORE_HIDDEN_PATHS}
   replace __USE_CUSTOM_SKIN__ {$USE_CUSTOM_SKIN}
   replace __SCROLL_DIRECTION__  "{$SCROLL_DIRECTION}"
+  replace __VIDEO_START_POSITION__  "{$VIDEO_START_POSITION}"
 }
 
 # Server configuration

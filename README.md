@@ -32,6 +32,7 @@ Erin has all these features implemented :
 - Automatic clip naming based on file name
 - Simple and optional security using a master password
 - Support for Horizontal and Vertical scroll direction
+- Support for starting video playback from the start, middle, or random point in the video
 - Support for custom styling\*\*\*\*
 - Support for HTTP and HTTPS
 - Support for Docker / proxy deployment
@@ -121,6 +122,7 @@ To run Erin, you will need to set the following environment variables in a `.env
 | `IGNORE_HIDDEN_PATHS`   | `boolean` | Whether all hidden files and directories (starting with a dot) should be ignored by Erin, and not loaded or scanned altogether | false |
 | `SCROLL_DIRECTION`      | `string`  | The scroll direction of your video feed. (Possible values : vertical, horizontal ) | vertical |
 | `USE_CUSTOM_SKIN`       | `boolean` | Whether a custom skin should be loaded on startup. (Possible values : true, false) | false |
+| `VIDEO_START_POSITION`  | `string`  | Where videos start playing. (Possible values : start, middle, random) | start |
 
 > **Tip :** To generate a secure hash for your instance, use the following command :
 
