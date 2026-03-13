@@ -1,3 +1,10 @@
+## [1.20.1](https://github.com/will-moss/erin/compare/v1.20.0...v1.20.1) (2026-03-13)
+
+
+### Bug Fixes
+
+* **playlists:** fixed a bug causing playlist gallery view and sharing to crash due to non-latin char ([2938326](https://github.com/will-moss/erin/commit/293832632d2cf384116ad08bed2d55173f4bf0fe)), closes [#32](https://github.com/will-moss/erin/issues/32)
+
 # [1.20.0](https://github.com/will-moss/erin/compare/v1.19.5...v1.20.0) (2026-03-11)
 
 
