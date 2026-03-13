@@ -52,7 +52,7 @@ const App = () => {
   const _isVideo = (file) =>
     ["mp4", "ogg", "webm"].includes(file.name.toLowerCase().split(".").at(-1));
   const _getShareFragment = (v) =>
-    btoa(
+    window._btoaSafe(
       v.url
         .replace(window.PUBLIC_URL, "")
         .split("?")[0]
@@ -95,6 +95,8 @@ const App = () => {
     if (!s) return s;
     return decodeURIComponent(s.replace(/%(?![0-9a-fA-F]+)/g, "%25"));
   };
+  window._btoaSafe = (s) => btoa(unescape(encodeURIComponent(s)));
+
   const _scrollDirection = document
     .querySelector("html")
     .getAttribute("data-scroll-direction");
@@ -523,7 +525,7 @@ const App = () => {
           );
         else
           currentVideoFromURL = _videoFiles.find(
-            (v) => btoa(v.filename) === suppliedFragment,
+            (v) => window._btoaSafe(v.filename) === suppliedFragment,
           );
 
         if (currentVideoFromURL)

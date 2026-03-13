@@ -91,7 +91,7 @@ const PlaylistGallery = ({ visible, activePlaylist, onClose }) => {
               <a
                 key={idx}
                 className="playlist-video-wrapper"
-                href={`/${encodeURIComponent(activePlaylist.name)}?play=${btoa(v.filename)}`}
+                href={`/${encodeURIComponent(activePlaylist.name)}?play=${window._btoaSafe(v.filename)}`}
               >
                 <video
                   preload="none"
