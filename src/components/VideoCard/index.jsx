@@ -38,7 +38,7 @@ const VideoCard = ({ index, video, isLoaded, refForwarder, onDoubleClick }) => {
         ref={forward}
         onDoubleClick={handleDoubleClick}
         playsInline={true}
-        muted={true}
+        muted={window.START_MUTED ?? true}
         preload="auto"
       />
     </div>

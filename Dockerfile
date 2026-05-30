@@ -23,6 +23,7 @@ ENV AUTH_SECRET="\$2a\$14\$qRW8no8UDmSwIWM6KHwdRe1j/LMrxoP4NSM756RVodqeUq5HzG6t.
 ENV PUBLIC_URL="https://localhost"
 ENV APP_TITLE="Erin - TikTok feed for your own clips"
 ENV AUTOPLAY_ENABLED="false"
+ENV START_MUTED="true"
 ENV PROGRESS_BAR_POSITION="bottom"
 ENV IGNORE_HIDDEN_PATHS="false"
 ENV SCROLL_DIRECTION="vertical"
