@@ -336,9 +336,11 @@ const VideoFeed = ({
       document.removeEventListener("keydown", handleKeyboardSeeking);
       document.removeEventListener("mousemove", handleMouseMove);
 
-      scrubberRef.current.removeEventListener('touchstart', handleScrubStart);
-      scrubberRef.current.removeEventListener('touchmove', handleScrubDrag);
-      scrubberRef.current.removeEventListener('touchend', handleScrubEnd);
+      if ( scrubberRef.current ) {
+        scrubberRef.current.removeEventListener('touchstart', handleScrubStart);
+        scrubberRef.current.removeEventListener('touchmove', handleScrubDrag);
+        scrubberRef.current.removeEventListener('touchend', handleScrubEnd);
+      }
     };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
