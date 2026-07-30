@@ -1,3 +1,18 @@
+# [1.21.0](https://github.com/will-moss/erin/compare/v1.20.1...v1.21.0) (2026-07-30)
+
+
+### Bug Fixes
+
+* **blacklist:** masking a video won't anymore cause a crash / blackout of the user interface ([4eff2ca](https://github.com/will-moss/erin/commit/4eff2ca393468452ef9de76b38ed5842c45f8ae8)), closes [#34](https://github.com/will-moss/erin/issues/34)
+* **client:** files that include dots in their names will now be properly matched and non-collided ([d92b5c6](https://github.com/will-moss/erin/commit/d92b5c6fb5d1147619690b81bc7cbf1630f45543)), closes [#45](https://github.com/will-moss/erin/issues/45)
+* **docs:** correct PUBLIC_URL type ([b2e8337](https://github.com/will-moss/erin/commit/b2e83372af2b70e81e64c26c04d6b5cffaf4ee1b))
+* **sharing:** added a fallback for browsers / environments where sharing isn't available ([dd0d5cd](https://github.com/will-moss/erin/commit/dd0d5cddf718ce6b7093f816a23d1542f980748d)), closes [#35](https://github.com/will-moss/erin/issues/35)
+
+
+### Features
+
+* **config:** allow starting videos unmuted ([42ca25e](https://github.com/will-moss/erin/commit/42ca25e0408e19c4fb63bf7bb61fe2e7713c037e))
+
 ## [1.20.1](https://github.com/will-moss/erin/compare/v1.20.0...v1.20.1) (2026-03-13)
 
 
