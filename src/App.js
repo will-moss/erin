@@ -137,7 +137,7 @@ const App = () => {
   const [hasReachedRemoteServer, setHasReachedRemoteServer] = useState(false);
 
   // Member - Determines whether the audio is currently muted
-  const [muted, setMuted] = useState(true);
+  const [muted, setMuted] = useState(window.START_MUTED ?? true);
   const toggleMute = () => {
     const _newMuted = !muted;
 
