@@ -125,7 +125,7 @@ To run Erin, you will need to set the following environment variables in a `.env
 | `USE_CUSTOM_SKIN`       | `boolean` | Whether a custom skin should be loaded on startup. (Possible values : true, false) | false |
 | `VIDEO_START_POSITION`  | `string`  | Where videos start playing. (Possible values : start, middle, random) | start |
 
-> **Note :** Browsers may block autoplay with sound before the user interacts with the page, even when `START_MUTED` is set to `false`.
+> **Note :** Browsers may block autoplay with sound before the user interacts with the page when `START_MUTED` is set to `false`.
 
 > **Tip :** To generate a secure hash for your instance, use the following command :
 
