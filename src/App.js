@@ -57,6 +57,30 @@ const App = () => {
         .replace(window.PUBLIC_URL, "")
         .split("?")[0]
     );
+  const _copyText = async (text) => {
+    if (navigator.clipboard && window.isSecureContext) {
+      try {
+        await navigator.clipboard.writeText(text);
+        return;
+      } catch {}
+    }
+
+    const textarea = document.createElement("textarea");
+    textarea.value = text;
+    textarea.setAttribute("readonly", "");
+    textarea.style.position = "fixed";
+    textarea.style.opacity = "0";
+
+    document.body.appendChild(textarea);
+    textarea.select();
+
+    try {
+      if (!document.execCommand("copy"))
+        throw new Error("Unable to copy share URL");
+    } finally {
+      document.body.removeChild(textarea);
+    }
+  };
   const _isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
   const _toAuthenticatedUrl = (url) => `${url}?hash=${secureHash}`;
   const _veryFirsPageTitle = useMemo(() => document.title, []);
@@ -227,15 +251,38 @@ const App = () => {
   // Video side control - Share a link to the video
   const share = async () => {
     const videoMetadata = visibleVideos[currentVideoIndex];
+    const shareURL = new URL("/", window.location.origin);
+    shareURL.searchParams.set("play", _getShareFragment(videoMetadata));
 
     const shareData = {
       title: videoMetadata.title,
-      url: window.location.origin + "?play=" + _getShareFragment(videoMetadata),
+      url: shareURL.toString(),
     };
 
+    let canUseNativeShare = typeof navigator.share === "function";
+    if (canUseNativeShare && typeof navigator.canShare === "function") {
+      try {
+        canUseNativeShare = navigator.canShare(shareData);
+      } catch {
+        canUseNativeShare = false;
+      }
+    }
+
+    if (canUseNativeShare) {
+      try {
+        await navigator.share(shareData);
+        return { status: "shared" };
+      } catch (error) {
+        if (error.name === "AbortError") return { status: "cancelled" };
+      }
+    }
+
     try {
-      await navigator.share(shareData);
-    } catch {}
+      await _copyText(shareData.url);
+      return { status: "copied" };
+    } catch {
+      return { status: "manual-copy", url: shareData.url };
+    }
   };
 
   // Video control - Blacklist

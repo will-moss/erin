@@ -33,3 +33,57 @@
   font-size: 14px;
   width: 100%;
 }
+
+.side-controls .inner button:disabled {
+  display: none;
+}
+
+.share-status {
+  position: fixed;
+  left: 50%;
+  bottom: 70px;
+  transform: translateX(-50%);
+  min-width: max-content;
+  padding: 8px 12px;
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  pointer-events: none;
+}
+
+.share-status:empty {
+  display: none;
+}
+
+.share-dialog-backdrop {
+  position: fixed;
+  z-index: 1000;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.75);
+}
+
+.share-dialog {
+  width: min(100%, 480px);
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #111;
+  color: white;
+}
+
+.share-dialog h2 {
+  margin-top: 0;
+}
+
+.share-dialog input {
+  width: 100%;
+  margin: 12px 0;
+  padding: 10px;
+}
+
+.share-dialog button {
+  padding: 10px 16px;
+}
