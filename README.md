@@ -118,11 +118,14 @@ To run Erin, you will need to set the following environment variables in a `.env
 | `AUTH_SECRET`           | `string`  | The secure hash of the password used to protect your instance of Erin. | Hash of `secure-password` |
 | `APP_TITLE`             | `string`  | The custom title that you would like to display in the browser's tab. (Tip: You can use `[VIDEO_TITLE]` here if you want Erin to dynamically display the title of the current video.) | Erin - TikTok feed for your own clips |
 | `AUTOPLAY_ENABLED`      | `boolean` | Whether autoplay should be enabled. (This parameter is case sensitive) (Possible values : true, false) | false |
+| `START_MUTED`           | `boolean` | Whether videos should start muted. (This parameter is case sensitive) (Possible values : true, false) | true |
 | `PROGRESS_BAR_POSITION` | `string`  | Where the progress bar should be located on the screen. (This parameter is case sensitive) (Possible values : bottom, top) | bottom |
 | `IGNORE_HIDDEN_PATHS`   | `boolean` | Whether all hidden files and directories (starting with a dot) should be ignored by Erin, and not loaded or scanned altogether | false |
 | `SCROLL_DIRECTION`      | `string`  | The scroll direction of your video feed. (Possible values : vertical, horizontal ) | vertical |
 | `USE_CUSTOM_SKIN`       | `boolean` | Whether a custom skin should be loaded on startup. (Possible values : true, false) | false |
 | `VIDEO_START_POSITION`  | `string`  | Where videos start playing. (Possible values : start, middle, random) | start |
+
+> **Note :** Browsers may block autoplay with sound before the user interacts with the page, even when `START_MUTED` is set to `false`.
 
 > **Tip :** To generate a secure hash for your instance, use the following command :
 
@@ -241,4 +244,3 @@ Big thanks to the individuals / teams behind these projects :
 - The countless others!
 
 And don't forget to mention Erin if you like it or if it helps you in any way!
-
