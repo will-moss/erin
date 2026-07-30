@@ -477,9 +477,13 @@ const App = () => {
       let _videoFiles = {};
       for (let i = 0; i < files.length; i++) {
         const current = files[i];
-        const _id = current.name.split(".").at(0);
+        const _filenameStem = current.name
+          .split(".")
+          .slice(0, -1)
+          .join(".");
+        const _id = current.url.split(".").slice(0, -1).join(".");
 
-        if (!_id || current.is_dir) continue;
+        if (!_filenameStem || current.is_dir) continue;
 
         // Case : Video file
         if (_isVideo(current)) {
@@ -515,7 +519,7 @@ const App = () => {
         }
 
         // Case : Metadata file for a playlist
-        if (_id === "metadata") {
+        if (_filenameStem === "metadata") {
           const _name = current.url.substr(0, current.url.lastIndexOf("/"));
           _playlistsMetadataTracker[_name] = _toAuthenticatedUrl(
             `${window.PUBLIC_URL}/media/${current.url}`,
