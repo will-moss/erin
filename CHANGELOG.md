@@ -1,3 +1,10 @@
+# [1.22.0](https://github.com/will-moss/erin/compare/v1.21.0...v1.22.0) (2026-08-15)
+
+
+### Features
+
+* **images:** implemented the "Erin for photos" feature ([12dd49a](https://github.com/will-moss/erin/commit/12dd49a92cd0b07fa1895bc6bed3d0d94d80eef0)), closes [#11](https://github.com/will-moss/erin/issues/11)
+
 # [1.21.0](https://github.com/will-moss/erin/compare/v1.20.1...v1.21.0) (2026-07-30)
 
 
