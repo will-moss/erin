@@ -8,14 +8,14 @@ const BlacklistManager = ({ visible, videos, onClose, onUnmask }) => {
     <div className={`blacklist-manager ${visible ? "visible" : ""}`}>
       <div className="blacklist-inner">
         <div className="blacklist-header">
-          <span>Masked videos</span>
+          <span>Masked media</span>
         </div>
         <div className="blacklist-content">
           {/* EMPTY STATE */}
           {!videos ||
             (videos.length === 0 && (
               <div className="blacklist-placeholder">
-                <p>You currently have no videos masked from your feed</p>
+                <p>You currently have no media masked from your feed</p>
               </div>
             ))}
 

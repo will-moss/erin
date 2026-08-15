@@ -1,9 +1,9 @@
 <p align="center">
     <h1 align="center">Erin</h1>
     <p align="center">
-      Self-hostable TikTok feed for your clips
+      Self-hostable TikTok feed for your media
       <br />
-      Make a TikTok feed with your own videos
+      Make a TikTok feed with your own images and videos
    </p>
 </p>
 
@@ -13,23 +13,23 @@
 
 ## Introduction
 
-Erin is a simple and self-hostable service that enables you to view your own clips using TikTok's well-known vertical swipe feed.
+Erin is a simple and self-hostable service that enables you to view your own images and video clips using TikTok's well-known vertical swipe feed.
 [A request was made on Reddit](https://www.reddit.com/r/selfhosted/comments/1dogl9d/selfhost_a_site_for_short_videos_like_tiktok/)
 for a self-hostable app that can show filtered videos using TikTok's interface, so I made it.
 
 ## Features
 
 Erin has all these features implemented :
-- Display your own videos using TikTok's swipe feed
-- Mask the videos you don't want to see in your feed\*
+- Display your own images and videos using TikTok's swipe feed
+- Mask the media you don't want to see in your feed\*
 - Choose which feed (playlist) you want to play\*\*
 - Autoplay your feed without even swiping
 - Seek forward and backward using your keyboard, or using double taps
 - Enter / Exit fullscreen using a double tap in the center
-- Share any clip with a direct link
-- Show video and playlist metadata using TikTok's UI\*\*\*
-- Simple lazy-loading mechanism for your videos
-- Automatic clip naming based on file name
+- Share any media item with a direct link
+- Show media and playlist metadata using TikTok's UI\*\*\*
+- Simple lazy-loading mechanism for your media
+- Automatic media naming based on file name
 - Simple and optional security using a master password
 - Support for Horizontal and Vertical scroll direction
 - Support for starting video playback from the start, middle, or random point in the video
@@ -40,11 +40,11 @@ Erin has all these features implemented :
 On top of these, please note that Erin is only a React app powered entirely by [Caddy](https://github.com/caddyserver/caddy).
 Caddy takes care of authentication, serving static files, and serving the React app all at once.
 
-> \*: You can mask videos to hide them from your feed. Should you want to see which videos were masked, and even unmask them, you can long-press the `Mask` button, and the manager will open.
+> \*: You can mask media to hide it from your feed. Should you want to see which items were masked, and even unmask them, you can long-press the `Mask` button, and the manager will open.
 
-> \*\*: By default, Erin will create a random feed from all the videos in your folder and its subdirectories. However, if you would like to create custom feeds (playlists), you can create subdirectories and organize your videos accordingly. For example: `https://my-server.tld/directory-a` will create a feed from the videos located in the `/directory-a` directory, and it works with any path (so, nested folders are supported).
+> \*\*: By default, Erin will create a random feed from all the media in your folder and its subdirectories. However, if you would like to create custom feeds (playlists), you can create subdirectories and organize your images and videos accordingly. For example: `https://my-server.tld/directory-a` will create a feed from the media located in the `/directory-a` directory, and it works with any path (so, nested folders are supported).
 
-> \*\*\*: You can show a channel (with an avatar and name), a caption and a link for all your videos using a metadata file. The metadata file can be located anywhere inside your videos folder, and it must match its associated video's filename, while replacing the extension with JSON. For example: `my-video.mp4` can have its metadata in `my-video.json`. The metadata format [is shown here](/examples/video-metadata.json), and note that you can use raw HTML in the caption for custom styling and effects. Moreover, you may define folder-level metadata to set a name and avatar for any playlist, and those information will be used for all the videos within that folder if they don't have their own metadata already. The folder-level metadata format [is shown here](/examples/folder-metadata.json) and it belongs to a file named `metadata.json` inside your folder.
+> \*\*\*: You can show a channel (with an avatar and name), a caption and a link for your media using an adjacent metadata file. It must match the associated media filename while replacing the extension with JSON: `my-video.mp4` and `my-photo.jpg` use `my-video.json` and `my-photo.json`. Videos support `video_title`, `video_caption`, and `video_link`, as [shown here](/examples/video-metadata.json). Images support `image_title`, `image_caption`, and `image_link`, as [shown here](/examples/image-metadata.json). Images ignore `video_*` fields and videos ignore `image_*` fields. Captions may contain trusted raw HTML for custom styling and effects. You may also define [folder-level metadata](/examples/folder-metadata.json) in a file named `metadata.json`; its channel name and avatar are inherited by all media in that folder when item-specific channel metadata is absent.
 
 > \*\*\*\*: You can inject your own stylesheet to customize the appearance of the app by doing two things: 1) set `USE_CUSTOM_SKIN` to `true`, and 2) mount a `custom.css` file onto `/srv/custom.css` in your container.
 
@@ -53,7 +53,7 @@ For more information, read about [Configuration](#configuration).
 ## Deployment and Examples
 
 Before proceeding, regardless of Docker, Docker Compose, or a standalone deployment, please make sure
-that you have created a `videos` directory containing all your video files. Later on, this directory will
+that you have created a `videos` directory containing all your media files. Later on, this directory will
 be made available to your instance of Erin (by binding a volume to your Docker container, or putting the directory
 next to your Caddyfile).
 
@@ -116,12 +116,13 @@ To run Erin, you will need to set the following environment variables in a `.env
 | `PUBLIC_URL`            | `string`  | The public URL used to remotely access your instance of Erin. (Please include HTTP / HTTPS and the port if not standard 80 or 443. Do not include a trailing slash) (Read the [official Caddy documentation](https://caddyserver.com/docs/caddyfile/concepts#addresses)) | https://localhost |
 | `AUTH_ENABLED`          | `string`  | Whether Basic Authentication should be enabled. (This parameter is case sensitive) (Possible values : true, false) | true |
 | `AUTH_SECRET`           | `string`  | The secure hash of the password used to protect your instance of Erin. | Hash of `secure-password` |
-| `APP_TITLE`             | `string`  | The custom title that you would like to display in the browser's tab. (Tip: You can use `[VIDEO_TITLE]` here if you want Erin to dynamically display the title of the current video.) | Erin - TikTok feed for your own clips |
+| `APP_TITLE`             | `string`  | The custom title that you would like to display in the browser's tab. (Tip: You can use `[VIDEO_TITLE]` here if you want Erin to dynamically display the title of the current image or video.) | Erin - TikTok feed for your own media |
 | `AUTOPLAY_ENABLED`      | `boolean` | Whether autoplay should be enabled. (This parameter is case sensitive) (Possible values : true, false) | false |
+| `IMAGE_DISPLAY_DURATION` | `number` | How many seconds an image remains on screen before its timeline restarts or autoplay advances the feed. Positive decimals are supported. | 5 |
 | `START_MUTED`           | `boolean` | Whether videos should start muted. (This parameter is case sensitive) (Possible values : true, false) | true |
 | `PROGRESS_BAR_POSITION` | `string`  | Where the progress bar should be located on the screen. (This parameter is case sensitive) (Possible values : bottom, top) | bottom |
 | `IGNORE_HIDDEN_PATHS`   | `boolean` | Whether all hidden files and directories (starting with a dot) should be ignored by Erin, and not loaded or scanned altogether | false |
-| `SCROLL_DIRECTION`      | `string`  | The scroll direction of your video feed. (Possible values : vertical, horizontal ) | vertical |
+| `SCROLL_DIRECTION`      | `string`  | The scroll direction of your media feed. (Possible values : vertical, horizontal ) | vertical |
 | `USE_CUSTOM_SKIN`       | `boolean` | Whether a custom skin should be loaded on startup. (Possible values : true, false) | false |
 | `VIDEO_START_POSITION`  | `string`  | Where videos start playing. (Possible values : start, middle, random) | start |
 
@@ -166,29 +167,29 @@ Other than that, please make sure that the following requirements are met :
 
 In any case, the crucial part is [Configuration](#configuration) and reading the official Caddy documentation.
 
-#### Erin says that no video was found on my server
+#### Erin says that no media was found on my server
 
-For Erin to serve your video files, those must respect the following requirements :
-- The file extension is one of `.mp4`, `.ogg`, `.webm`. (There are the only extensions supported by web browsers.)
+For Erin to serve your media files, they must respect the following requirements :
+- The file extension is one of `.mp4`, `.ogg`, `.webm`, `.jpg`, `.jpeg`, `.png`, or `.webp`.
 - The files are located in `/srv/videos` on your Docker container using a volume.
 
-To make sure that your videos are inside your Docker container and in the right place, you can :
+To make sure that your media are inside your Docker container and in the right place, you can :
 - Run `docker exec -it <NAME-OF-YOUR-CONTAINER> sh`
 - Inside the newly-opened shell, run : `ls /srv/videos`
-- You should see your video files here. If not, then check your volume-binding.
+- You should see your media files here. If not, then check your volume-binding.
 
-If Erin is still unable to find your videos despite everything being well-configured, please open an issue
+If Erin is still unable to find your media despite everything being well-configured, please open an issue
 including the output of your browser's Javascript console and network tab when the request goes to `/media/`.
 It may have to do with browser-caching, invalid configuration, or invalid credentials.
 
-#### How can I add new videos to my feed?
+#### How can I add new media to my feed?
 
-For now, you should just put your new video files into your videos directory that is mounted with Docker.
+Put your new image and video files into the `videos` directory that is mounted with Docker.
 Erin will automatically pick up these new files, and when you refresh your browser you'll see them.
 
-#### How should I name my video files?
+#### How should I name my media files?
 
-Erin will automatically translate your file name into a title to display on the interface.
+Erin will automatically translate each media filename into a title to display on the interface.
 
 The conversion operated is as follows :
 - `-` becomes ` `
@@ -201,15 +202,15 @@ Here's a few examples to help you name your files :
 
 #### In what order will my files appear in the feed?
 
-Erin randomly shuffles your video files on every browser refresh.
+Erin randomly shuffles your media files on every browser refresh.
 
-As a result, there is no specific order for your videos to appear.
+As a result, there is no specific order for your media to appear.
 
-#### Some of my videos seem to be missing or not loaded at all
+#### Some of my media seem to be missing or not loaded at all
 
-For now, Erin will only attempt to retrieve the videos that have a supported extension.
+Erin will only attempt to retrieve media that has a supported extension.
 
-Supported extensions are : `.webm`, `.mp4`, and `.ogg`.
+Supported video extensions are `.webm`, `.mp4`, and `.ogg`. Supported image extensions are `.jpg`, `.jpeg`, `.png`, and `.webp`.
 
 However, please note that Safari doesn't seem to support `.ogg`, hence these videos will be ignored for Safari users.
 

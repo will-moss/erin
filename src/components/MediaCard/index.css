@@ -1,4 +1,4 @@
-.video {
+.media {
   position: relative;
   width: 100%;
   text-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
@@ -7,14 +7,15 @@
   display: flex;
   flex-direction: column;
   height: 100%;
+  background: black;
 }
 
-html[data-scroll-direction="horizontal"] .video {
+html[data-scroll-direction="horizontal"] .media {
   flex-grow: 1;
   flex-shrink: 0;
 }
 
-.video::before {
+.media::before {
   content: "";
   display: block;
   box-shadow: 0 -33px 48px rgba(0, 0, 0, 0.5) inset;
@@ -35,4 +36,12 @@ html[data-scroll-direction="horizontal"] .video {
   z-index: 1;
   height: calc(100% - 56px);
   flex-shrink: 0;
+}
+
+.player[hidden] {
+  display: none;
+}
+
+.media-image {
+  object-fit: contain;
 }

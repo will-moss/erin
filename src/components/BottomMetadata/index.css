@@ -17,6 +17,7 @@
 
 .bottom-metadata .video-title svg {
   color: white;
+  flex-shrink: 0;
 }
 
 .bottom-metadata .video-title p {

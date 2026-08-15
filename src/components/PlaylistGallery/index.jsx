@@ -82,7 +82,8 @@ const PlaylistGallery = ({ visible, activePlaylist, onClose }) => {
                   : activePlaylist.metadata.channel_name}
               </span>
               <span className="playlist-media-count">
-                {activePlaylist.videos.length} video{activePlaylist.videos.length !== 1 ? "s" : ""}
+                {activePlaylist.videos.length} media item
+                {activePlaylist.videos.length !== 1 ? "s" : ""}
               </span>
             </div>
           </div>
@@ -90,16 +91,30 @@ const PlaylistGallery = ({ visible, activePlaylist, onClose }) => {
             {activePlaylist.videos.map((v, idx) => (
               <a
                 key={idx}
-                className="playlist-video-wrapper"
+                className="playlist-media-wrapper"
                 href={`/${encodeURIComponent(activePlaylist.name)}?play=${window._btoaSafe(v.filename)}`}
               >
-                <video
-                  preload="none"
-                  data-src={v.url.replace(v.filename, encodeURIComponent(v.filename))}
-                  playsInline={false}
-                  muted={true}
-                  ref={(el) => (videoRefs.current[idx] = el)}
-                ></video>
+                {v.type === "image" ? (
+                  <img
+                    src={v.url.replace(
+                      v.filename,
+                      encodeURIComponent(v.filename),
+                    )}
+                    alt={v.title}
+                    loading="lazy"
+                  />
+                ) : (
+                  <video
+                    preload="none"
+                    data-src={v.url.replace(
+                      v.filename,
+                      encodeURIComponent(v.filename),
+                    )}
+                    playsInline={false}
+                    muted={true}
+                    ref={(el) => (videoRefs.current[idx] = el)}
+                  ></video>
+                )}
               </a>
             ))}
           </div>

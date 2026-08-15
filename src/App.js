@@ -51,6 +51,10 @@ const App = () => {
   };
   const _isVideo = (file) =>
     ["mp4", "ogg", "webm"].includes(file.name.toLowerCase().split(".").at(-1));
+  const _isImage = (file) =>
+    ["jpg", "jpeg", "png", "webp"].includes(
+      file.name.toLowerCase().split(".").at(-1),
+    );
   const _getShareFragment = (v) =>
     window._btoaSafe(
       v.url
@@ -84,14 +88,14 @@ const App = () => {
   const _isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
   const _toAuthenticatedUrl = (url) => `${url}?hash=${secureHash}`;
   const _veryFirsPageTitle = useMemo(() => document.title, []);
-  const _updatePageTitle = (video = null) => {
-    if (video) {
+  const _updatePageTitle = (media = null) => {
+    if (media) {
       if (!_veryFirsPageTitle.includes("[VIDEO_TITLE]"))
         document.title = _veryFirsPageTitle;
       else
         document.title = _veryFirsPageTitle.replace(
           "[VIDEO_TITLE]",
-          video.title,
+          media.title,
         );
     } else if (window.USE_SECRET) document.title = "Erin - Authentication";
   };
@@ -139,15 +143,10 @@ const App = () => {
   // Member - Determines whether the audio is currently muted
   const [muted, setMuted] = useState(window.START_MUTED ?? true);
   const toggleMute = () => {
-    const _newMuted = !muted;
-
-    const currentVideo = document.querySelector(
-      `video[data-index="${currentVideoIndex}"]`,
-    );
-    currentVideo.muted = _newMuted;
-
     setMuted(!muted);
   };
+
+  const feedRef = useRef(null);
 
   // Member - Saves a { url , title , extension , filename , playlist , metadataURL  } dictionary for every video discovered
   // "allVideos" and "videos" differ in that "allVideos" hold all the files regardless of current playlist
@@ -156,8 +155,11 @@ const App = () => {
   const [videos, setVideos] = useState([]);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [currentVideoMetadata, setCurrentVideoMetadata] = useState(false);
+  const focusRequestRef = useRef(0);
   const previousVideoIndex = usePrevious(currentVideoIndex);
   const handleVideoFocus = useCallback((v, i) => {
+    const focusRequest = ++focusRequestRef.current;
+
     // Update the browser tab's title
     _updatePageTitle(v);
 
@@ -172,9 +174,20 @@ const App = () => {
       })
         .then((r) => r.json())
         .then((r) => {
-          setCurrentVideoMetadata(r);
+          if (focusRequest !== focusRequestRef.current) return;
 
-          if (r.video_title) _updatePageTitle({ title: r.video_title });
+          const playlistMetadata =
+            _freshPlaylists.current.find((p) => p.name === v.playlist)
+              ?.metadata || {};
+          setCurrentVideoMetadata({
+            channel_image: playlistMetadata.channel_image,
+            channel_name: playlistMetadata.channel_name,
+            ...r,
+          });
+
+          const titleField =
+            v.type === "image" ? "image_title" : "video_title";
+          if (r[titleField]) _updatePageTitle({ title: r[titleField] });
         });
     }
     // Retrieve metadata from the parent playlist if any
@@ -337,15 +350,7 @@ const App = () => {
   // Video control - Toggle Play / Pause
   const [isPlaying, setIsPlaying] = useState(true);
   const togglePlayPause = () => {
-    const currentVideo = document.querySelector(
-      `video[data-index="${currentVideoIndex}"]`,
-    );
-    if (!currentVideo) return;
-
-    if (!currentVideo.paused) currentVideo.pause();
-    else currentVideo.play();
-
-    setIsPlaying(!isPlaying);
+    feedRef.current?.togglePlayback();
   };
 
   // Member - Manage blacklist UI
@@ -470,8 +475,12 @@ const App = () => {
     _retrieveVideosRecursively().then((files) => {
       if (!files) setLoading(false);
 
-      // Put the metadata (JSON) files at the end, to optimize looping order and prevent misses
-      files.sort((a, b) => (a.name.endsWith(".json") ? 1 : -1));
+      // Put metadata files at the end to prevent misses while matching media.
+      files.sort(
+        (a, b) =>
+          Number(a.name.toLowerCase().endsWith(".json")) -
+          Number(b.name.toLowerCase().endsWith(".json")),
+      );
 
       let _playlistsMetadataTracker = {};
       let _videoFiles = {};
@@ -485,10 +494,13 @@ const App = () => {
 
         if (!_filenameStem || current.is_dir) continue;
 
-        // Case : Video file
-        if (_isVideo(current)) {
-          if (!_isSafari || (_isSafari && current.extension !== "ogg"))
+        // Case : Supported media file
+        if (_isVideo(current) || _isImage(current)) {
+          const type = _isImage(current) ? "image" : "video";
+          const extension = current.name.toLowerCase().split(".").at(-1);
+          if (type === "image" || !_isSafari || extension !== "ogg")
             _videoFiles[_id] = {
+              type,
               url: window._decodeURIComponentSafe(
                 _toAuthenticatedUrl(
                   `${window.PUBLIC_URL}/media/${current.url}`,
@@ -501,7 +513,7 @@ const App = () => {
                 .split(".")
                 .slice(0, -1)
                 .join(""),
-              extension: current.url.split(".").at(-1).toLowerCase(),
+              extension,
               // playlist: current.url.replace(current.name, ""),
               playlist: current.url.substr(0, current.url.lastIndexOf("/")),
               metadataURL: false,
@@ -510,7 +522,7 @@ const App = () => {
           continue;
         }
 
-        // Case : Metadata file for a video
+        // Case : Metadata file for a media item
         if (_id in _videoFiles) {
           _videoFiles[_id].metadataURL = _toAuthenticatedUrl(
             `${window.PUBLIC_URL}/media/${current.url}`,
@@ -595,21 +607,12 @@ const App = () => {
     });
   };
 
-  // Hook - When a new video is focused, update its muted state, and assume it is playing internally
-  useEffect(() => {
-    const currentVideo = document.querySelector(
-      `video[data-index="${currentVideoIndex}"]`,
-    );
-    if (!currentVideo) return;
-    currentVideo.muted = muted;
-    setIsPlaying(true);
-  }, [currentVideoIndex]); // eslint-disable-line react-hooks/exhaustive-deps
-
   // Memoized component - Video Feed
   const Feed = useMemo(
     () => {
       return (
         <VideoFeed
+          ref={feedRef}
           key={blackListUpdater}
           initialIndex={
             currentVideoIndex > 0
@@ -629,12 +632,14 @@ const App = () => {
             previousVideoIndex !== visibleVideos.length && currentVideoIndex > 1
           }
           videos={visibleVideos}
+          muted={muted}
           onFocusVideo={handleVideoFocus}
           onFinishVideo={handleVideoFinish}
+          onPlaybackStateChange={setIsPlaying}
         />
       );
     },
-    [visibleVideos], // eslint-disable-line react-hooks/exhaustive-deps
+    [visibleVideos, muted], // eslint-disable-line react-hooks/exhaustive-deps
   );
 
   // Hook - On mount
@@ -727,7 +732,7 @@ const App = () => {
                       <img src={`/logo.png`} alt="Erin logo" />
                     </div>
                     <h1>Welcome to Erin</h1>
-                    <p>Let's connect and watch a few clips</p>
+                    <p>Let's connect and browse your media</p>
                     <form onSubmit={attemptToReachRemoteServer}>
                       <label htmlFor="password">Your password</label>
                       <input
@@ -747,14 +752,14 @@ const App = () => {
               </>
             )}
 
-            {/* STATE - Reached remote server but no video was found */}
+            {/* STATE - Reached remote server but no media was found */}
             {hasReachedRemoteServer && visibleVideos.length === 0 && (
               <div className="empty-state">
                 <div className="icon-wrapper">
                   <img src={`/logo.png`} alt="Erin logo" />
                 </div>
                 <h1>Nothing to watch</h1>
-                <p>No video was found on your remote server</p>
+                <p>No media was found on your remote server</p>
                 <button type="button" onClick={_reloadPage}>
                   Refresh
                 </button>
@@ -766,7 +771,7 @@ const App = () => {
                       className="btn-alternate"
                       onClick={openBlacklist}
                     >
-                      Manage masked videos
+                      Manage masked media
                     </button>
                     <BlacklistManager
                       visible={blacklistOpen}
@@ -779,7 +784,7 @@ const App = () => {
               </div>
             )}
 
-            {/* STATE - Reached remote server and retrieved videos */}
+            {/* STATE - Reached remote server and retrieved media */}
             {hasReachedRemoteServer && visibleVideos.length > 0 && (
               <>
                 {Feed}
